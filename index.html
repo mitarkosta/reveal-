@@ -4071,31 +4071,38 @@ document
 
 
 </script>
- <!-- =========================================
-     PART 6 / FINAL PATCH + CONNECTION
-     ПОСТАВИ СЛЕД PART 5
+<!-- =========================================
+ PART 6 OPTIMIZED FINAL ENGINE
+ REPLACE OLD PART 6
 ========================================= -->
-
 
 <script>
 
 
-// =========================================
-// FINAL SPIN PATCH
-// =========================================
-
-
-// заменя стария spin engine
-const finalOldStartSpin = startSpin;
-
+// ================================
+// OPTIMIZED SPIN ENGINE
+// ================================
 
 
 startSpin=function(){
 
 
-
-if(spinning)
+if(
+spinning ||
+holdActive
+)
 return;
+
+
+
+if(sessionSpins>=SESSION_LIMIT){
+
+startHold();
+
+return;
+
+}
+
 
 
 
@@ -4109,14 +4116,12 @@ sessionSpins++;
 
 
 
-updateCounter();
 
-saveGame();
+updateCounter();
 
 
 
 spinSound();
-
 
 
 phoneVibrate();
@@ -4125,16 +4130,14 @@ phoneVibrate();
 
 
 
-// включване на blur въртене
+// включване blur
 
 
 slots.forEach(slot=>{
 
-
 slot.classList.add(
 "spinning"
 );
-
 
 });
 
@@ -4143,7 +4146,11 @@ slot.classList.add(
 
 
 
-// последователно спиране на ролките
+let stopped=0;
+
+
+
+
 
 
 slots.forEach((slot,index)=>{
@@ -4166,21 +4173,18 @@ slot.classList.add(
 
 
 
-
-slot.innerHTML =
+slot.innerHTML=
 
 symbols[
-
 Math.floor(
 Math.random()*symbols.length
 )
-
 ];
 
 
 
-reelStopSound();
 
+reelStopSound();
 
 
 
@@ -4193,23 +4197,18 @@ slot.classList.remove(
 );
 
 
-
-},700);
-
+},500);
 
 
 
 
-},900+(index*550));
-
-
-
-});
+stopped++;
 
 
 
 
 
+if(stopped===slots.length){
 
 
 
@@ -4220,11 +4219,28 @@ finishSpin();
 
 
 
+saveGame();
+
+
+
 spinning=false;
 
 
 
-},2800);
+},300);
+
+
+
+}
+
+
+
+
+},900+(index*450));
+
+
+
+});
 
 
 
@@ -4236,46 +4252,34 @@ spinning=false;
 
 
 
-
-
-// =========================================
-// FIVE SPIN ANTICIPATION
-// =========================================
+// ================================
+// ANTICIPATION OPTIMIZED
+// ================================
 
 
 function fiveSpinAnticipation(){
 
 
 
-if(totalSpins % 5 !== 0)
+if(totalSpins%5!==0)
 
 return;
 
 
 
-
-
-let lastSlot =
-slots[2];
+let reel=slots[2];
 
 
 
-
-lastSlot.classList.add(
-
+reel.classList.add(
 "lastReelFire"
-
 );
-
-
 
 
 
 message.innerHTML=
 
-"🔥 JACKPOT IS CLOSE...";
-
-
+"🔥 JACKPOT IS CLOSE";
 
 
 
@@ -4283,15 +4287,13 @@ message.innerHTML=
 setTimeout(()=>{
 
 
-lastSlot.classList.remove(
-
+reel.classList.remove(
 "lastReelFire"
-
 );
 
 
 
-},4000);
+},2500);
 
 
 
@@ -4301,14 +4303,8 @@ lastSlot.classList.remove(
 
 
 
-
-
-
-
-// добавяме към finishSpin
-
-
-const finalOldFinish = finishSpin;
+const optimizedFinish =
+finishSpin;
 
 
 
@@ -4316,7 +4312,7 @@ finishSpin=function(){
 
 
 
-finalOldFinish();
+optimizedFinish();
 
 
 
@@ -4332,14 +4328,118 @@ fiveSpinAnticipation();
 
 
 
+// ================================
+// MOBILE AUDIO UNLOCK
+// ================================
 
 
-// =========================================
-// HOLD SOUND FIX
-// =========================================
+document.addEventListener(
+
+"touchstart",
+
+()=>{
 
 
-const finalOldHold=startHold;
+if(audioContext &&
+audioContext.state==="suspended"){
+
+
+audioContext.resume();
+
+
+}
+
+
+},
+
+{
+once:true
+}
+
+);
+
+
+
+
+
+
+
+
+
+// ================================
+// LIGHTER SNOW SYSTEM
+// ================================
+
+
+function createSnow(){
+
+
+
+let amount =
+window.innerWidth < 600
+?
+35
+:
+60;
+
+
+
+for(let i=0;i<amount;i++){
+
+
+
+let snow=document.createElement(
+"div"
+);
+
+
+
+snow.className="snowflake";
+
+
+snow.innerHTML="❄";
+
+
+
+snow.style.left=
+Math.random()*100+"vw";
+
+
+
+snow.style.animationDuration=
+(5+Math.random()*5)+"s";
+
+
+
+snow.style.fontSize=
+(12+Math.random()*18)+"px";
+
+
+
+document.body.appendChild(snow);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ================================
+// CLEAN HOLD
+// ================================
+
+
+const optimizedHold=startHold;
 
 
 
@@ -4347,11 +4447,13 @@ startHold=function(){
 
 
 
-finalOldHold();
+optimizedHold();
 
 
 
-freezeSound();
+machine.classList.add(
+"frozen"
+);
 
 
 
@@ -4364,33 +4466,79 @@ freezeSound();
 
 
 
-
-// =========================================
-// MOBILE PORTRAIT MODE
-// =========================================
-
-
-function mobilePortrait(){
+// ================================
+// CLEAN JACKPOT
+// ================================
 
 
-
-document.body.style.width="100vw";
-
-document.body.style.height="100vh";
+const optimizedJackpot =
+completeGame;
 
 
 
-
-
-if(window.innerWidth > window.innerHeight){
+completeGame=function(){
 
 
 
-console.log(
-"Landscape mode detected"
+optimizedJackpot();
+
+
+
+if(
+navigator.vibrate
+){
+
+
+navigator.vibrate(
+[
+100,
+50,
+250
+]
 );
 
 
+}
+
+
+
+};
+
+
+
+
+
+
+
+
+// ================================
+// MOBILE PERFORMANCE
+// ================================
+
+
+function optimizeMobile(){
+
+
+
+if(window.innerWidth<600){
+
+
+
+document.body.style.touchAction=
+"none";
+
+
+
+slots.forEach(slot=>{
+
+
+slot.style.willChange=
+"transform, filter";
+
+
+});
+
+
 
 }
 
@@ -4399,6 +4547,8 @@ console.log(
 }
 
 
+
+optimizeMobile();
 
 
 
@@ -4406,95 +4556,39 @@ window.addEventListener(
 
 "resize",
 
-mobilePortrait
+optimizeMobile
 
 );
 
 
 
-mobilePortrait();
 
 
 
 
-
-
-
-
-
-// =========================================
-// SAVE BEFORE CLOSE
-// =========================================
+// ================================
+// AUTO SAVE
+// ================================
 
 
 window.addEventListener(
 
-"beforeunload",
+"pagehide",
 
 ()=>{
 
-
 saveGame();
 
-
 }
 
 );
 
 
 
-
-
-
-
-
-
-// =========================================
-// PREVENT DOUBLE TAP ZOOM
-// =========================================
-
-
-document.addEventListener(
-
-"touchstart",
-
-function(e){
-
-
-if(e.touches.length>1){
-
-
-e.preventDefault();
-
-
-}
-
-
-},
-
-{
-passive:false
-}
-
-);
-
-
-
-
-
-
-
-
-
-// =========================================
-// FINAL BUILD READY
-// =========================================
 
 
 console.log(
-
-"Frozen Jackpot V3 Loaded"
-
+"Frozen Jackpot Optimized Build"
 );
 
 
