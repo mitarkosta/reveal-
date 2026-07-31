@@ -7,10 +7,14 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Frozen Jackpot</title>
+<title>Frozen Jackpot Casino</title>
 
 
 <style>
+
+/* ==========================
+   RESET
+========================== */
 
 *{
 margin:0;
@@ -19,11 +23,32 @@ box-sizing:border-box;
 }
 
 
+/* ==========================
+   MOBILE BASE
+========================== */
+
+html,
 body{
 
-height:100vh;
+width:100%;
+height:100%;
 
 overflow:hidden;
+
+font-family:
+
+Arial,
+Helvetica,
+sans-serif;
+
+}
+
+
+/* ==========================
+   CASINO BACKGROUND
+========================== */
+
+body{
 
 display:flex;
 
@@ -31,23 +56,26 @@ justify-content:center;
 
 align-items:center;
 
-font-family:Arial, sans-serif;
 
 background:
 
 radial-gradient(
-circle,
-#8b0000,
+circle at center,
+#990000 0%,
+#350000 35%,
 #050505 80%
 );
 
+
 color:white;
+
+position:relative;
 
 }
 
 
 
-/* BACKGROUND */
+/* движещи се светлини */
 
 body::before{
 
@@ -55,7 +83,68 @@ content:"";
 
 position:absolute;
 
+inset:-50%;
+
+
+background:
+
+conic-gradient(
+
+from 0deg,
+
+transparent,
+
+rgba(255,215,0,.25),
+
+transparent,
+
+rgba(255,0,0,.25),
+
+transparent
+
+);
+
+
+animation:
+
+casinoLights 12s linear infinite;
+
+
+}
+
+
+
+@keyframes casinoLights{
+
+
+from{
+
+transform:rotate(0deg);
+
+}
+
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+
+}
+
+
+
+/* златни частици */
+
+body::after{
+
+content:"";
+
+position:absolute;
+
 inset:0;
+
 
 background-image:
 
@@ -64,102 +153,148 @@ gold 1px,
 transparent 1px
 );
 
-background-size:45px 45px;
 
-opacity:.25;
+background-size:
+
+35px 35px;
+
+
+opacity:.18;
+
 
 animation:
 
-moveBg 20s linear infinite;
+particlesMove 15s linear infinite;
+
 
 }
 
 
-@keyframes moveBg{
+
+@keyframes particlesMove{
+
 
 from{
-transform:translateY(0);
+
+background-position:
+
+0 0;
+
 }
+
 
 to{
-transform:translateY(100px);
-}
+
+background-position:
+
+200px 300px;
 
 }
 
 
+}
 
-/* MACHINE */
+
+
+
+
+/* ==========================
+   MAIN CONTAINER
+========================== */
 
 
 .machine{
 
+
 position:relative;
 
-z-index:2;
+z-index:5;
+
 
 width:95%;
 
-max-width:700px;
+max-width:500px;
 
-padding:45px;
+
+padding:25px;
+
 
 background:
 
+
 linear-gradient(
+
 145deg,
+
 #252525,
+
 #050505
+
 );
 
 
-border:5px solid gold;
-
 border-radius:35px;
 
-text-align:center;
+
+border:
+
+5px solid gold;
+
 
 
 box-shadow:
 
-0 0 40px gold,
-0 0 100px orange;
+
+0 0 25px gold,
+
+0 0 80px orange;
 
 
-transition:1.5s;
+
+text-align:center;
+
 
 }
 
 
 
-.machine.frozen{
-
-filter:
-
-brightness(.45)
-blur(3px)
-saturate(.2);
-
-
-transform:scale(.97);
-
-}
-
-
+/* ==========================
+   TITLE
+========================== */
 
 
 h1{
 
-font-size:75px;
 
-font-weight:900;
+font-size:
 
-color:#ffd700;
+clamp(45px,12vw,75px);
+
+
+font-weight:
+
+900;
+
+
+letter-spacing:
+
+5px;
+
+
+
+color:
+
+#ffd700;
+
+
 
 text-shadow:
 
-0 0 20px gold,
-0 0 60px orange;
+
+0 0 15px gold,
+
+0 0 50px orange;
+
 
 }
 
@@ -167,34 +302,59 @@ text-shadow:
 
 .subtitle{
 
-margin-top:10px;
 
-letter-spacing:8px;
+margin-top:5px;
 
-color:#ccc;
+
+font-size:14px;
+
+
+letter-spacing:7px;
+
+
+color:#ddd;
+
 
 }
 
 
 
-/* DISPLAY */
+/* ==========================
+   SLOT DISPLAY
+========================== */
 
 
 .display{
 
-margin-top:40px;
 
-padding:30px;
+margin-top:30px;
 
-background:#000;
+
+padding:20px;
+
+
+background:
+
+#000;
+
+
 
 border-radius:25px;
 
-border:3px solid #555;
+
+
+border:
+
+3px solid #555;
+
+
 
 box-shadow:
 
+
 inset 0 0 40px black;
+
+
 
 }
 
@@ -202,11 +362,15 @@ inset 0 0 40px black;
 
 .slots{
 
+
 display:flex;
+
 
 justify-content:center;
 
-gap:20px;
+
+gap:10px;
+
 
 }
 
@@ -214,177 +378,273 @@ gap:20px;
 
 .slot{
 
-width:120px;
 
-height:120px;
+width:
+
+90px;
+
+
+height:
+
+90px;
+
+
 
 display:flex;
 
-justify-content:center;
 
 align-items:center;
 
-font-size:70px;
+
+justify-content:center;
+
+
+
+font-size:
+
+55px;
+
 
 
 background:
 
+
 linear-gradient(
+
 145deg,
+
 #333,
+
 #111
+
 );
 
 
-border:4px solid gold;
 
-border-radius:20px;
+border:
+
+3px solid gold;
+
+
+
+border-radius:18px;
+
 
 
 box-shadow:
 
-inset 0 0 20px black,
-0 0 20px gold;
+
+0 0 15px gold,
+
+inset 0 0 20px black;
+
 
 }
 
 
 
-.spin{
+/* spin animation */
+
+
+.slot.spin{
+
 
 animation:
 
-spinMove .12s infinite;
+slotSpin .12s infinite;
+
 
 }
 
 
 
-@keyframes spinMove{
+@keyframes slotSpin{
+
+
+0%{
+
+transform:translateY(-10px);
+
+}
+
 
 50%{
 
-transform:translateY(20px);
+transform:translateY(10px);
 
 }
 
+
+100%{
+
+transform:translateY(-10px);
+
+}
+
+
 }
 
 
 
-/* BUTTON */
+/* ==========================
+   BUTTON
+========================== */
 
 
 button{
 
-margin-top:40px;
 
-padding:20px 70px;
+margin-top:30px;
 
-font-size:30px;
+
+width:90%;
+
+
+padding:18px;
+
+
+font-size:25px;
+
 
 font-weight:bold;
 
+
 border:none;
 
+
 border-radius:50px;
+
+
 
 cursor:pointer;
 
 
+
 background:
 
+
 linear-gradient(
+
 gold,
+
 orange
+
 );
+
+
+
+color:#222;
+
 
 
 box-shadow:
 
-0 0 40px gold;
 
-}
+0 0 30px gold;
 
 
-button:disabled{
-
-opacity:.4;
 
 }
 
 
 
-/* TEXT */
+/* ==========================
+   TEXT
+========================== */
 
 
 #message{
 
-margin-top:30px;
 
-font-size:35px;
+margin-top:25px;
+
+
+font-size:28px;
+
 
 color:gold;
 
+
+
 text-shadow:
+
 
 0 0 20px gold;
 
-}
 
+
+}
 
 
 #counter{
 
+
 margin-top:15px;
 
-font-size:20px;
 
-color:#aaa;
+font-size:18px;
+
+
+color:#bbb;
+
 
 }
 
 
 
-/* ICE OVERLAY */
+</style>
+/* ==========================
+   HOLD FREEZE MODE
+========================== */
 
 
 #ice{
 
+
 display:none;
+
 
 position:fixed;
 
+
 inset:0;
 
-z-index:10;
+
+z-index:20;
+
 
 pointer-events:none;
 
 
+
 background:
+
 
 radial-gradient(
 
 circle,
 
-transparent 40%,
+transparent 35%,
 
-rgba(160,240,255,.5),
+rgba(120,220,255,.35),
 
-rgba(255,255,255,.8)
+rgba(255,255,255,.85)
 
 );
 
 
+
 box-shadow:
 
-inset 0 0 120px 60px #9eeaff;
+
+inset 0 0 100px 40px #8deaff;
+
 
 
 animation:
 
 icePulse 2s infinite alternate;
+
 
 }
 
@@ -392,11 +652,13 @@ icePulse 2s infinite alternate;
 
 @keyframes icePulse{
 
+
 from{
 
 opacity:.5;
 
 }
+
 
 to{
 
@@ -404,41 +666,55 @@ opacity:1;
 
 }
 
+
 }
 
+
+
+/* движещ лед */
 
 
 #ice::before{
 
+
 content:"";
 
+
 position:absolute;
+
 
 inset:0;
 
 
+
 background:
 
+
 linear-gradient(
+
 120deg,
+
 transparent,
-white,
+
+rgba(255,255,255,.8),
+
 transparent
+
 );
 
-
-opacity:.5;
 
 
 animation:
 
-iceMove 4s infinite;
+iceSweep 4s infinite;
+
 
 }
 
 
 
-@keyframes iceMove{
+@keyframes iceSweep{
+
 
 from{
 
@@ -446,67 +722,108 @@ transform:translateX(-100%);
 
 }
 
+
 to{
 
 transform:translateX(100%);
 
 }
 
+
 }
 
 
 
-#ice::after{
 
-content:"❄ ❄ ❄ ❄ ❄ ❄";
 
-position:absolute;
+/* снежинки */
+
+.snowflake{
+
+
+position:fixed;
+
 
 top:-40px;
 
-left:0;
 
-width:100%;
+color:white;
 
-font-size:60px;
 
-letter-spacing:70px;
+z-index:50;
+
+
+pointer-events:none;
+
+
+opacity:.9;
+
 
 animation:
 
-snow 8s linear infinite;
+snowFall linear infinite;
+
 
 }
 
 
-@keyframes snow{
+
+@keyframes snowFall{
+
+
+from{
+
+transform:
+
+translateY(-50px)
+rotate(0deg);
+
+}
+
 
 to{
 
-transform:translateY(120vh);
+transform:
+
+translateY(110vh)
+rotate(360deg);
 
 }
 
+
 }
 
 
-/* HOLD SCREEN */
+
+
+
+
+/* ==========================
+   HOLD OVERLAY
+========================== */
 
 
 #holdOverlay{
 
+
 display:none;
+
 
 position:fixed;
 
+
 inset:0;
 
-z-index:20;
+
+z-index:30;
+
 
 
 justify-content:center;
 
+
 align-items:center;
+
 
 
 background:
@@ -514,86 +831,207 @@ background:
 rgba(0,0,0,.85);
 
 
-backdrop-filter:blur(10px);
+
+backdrop-filter:
+
+blur(12px);
+
+
 
 }
+
+
+
+
+/* ледена рамка по екрана */
+
+
+#holdOverlay::before{
+
+
+content:"";
+
+
+position:absolute;
+
+
+inset:0;
+
+
+
+border:
+
+25px solid rgba(170,240,255,.35);
+
+
+
+box-shadow:
+
+
+inset 0 0 100px cyan;
+
+
+
+animation:
+
+iceBorder 3s infinite alternate;
+
+
+}
+
+
+
+@keyframes iceBorder{
+
+
+from{
+
+opacity:.4;
+
+}
+
+
+to{
+
+opacity:1;
+
+}
+
+
+}
+
+
 
 
 
 #holdBox{
 
-width:500px;
 
-padding:50px;
+position:relative;
+
+
+width:90%;
+
+
+max-width:450px;
+
+
+
+padding:40px;
+
+
 
 text-align:center;
 
 
+
 background:
 
+
 linear-gradient(
+
 145deg,
+
 #222,
+
 #050505
+
 );
 
 
-border:5px solid gold;
 
-border-radius:40px;
+border-radius:35px;
+
+
+
+border:
+
+4px solid gold;
+
 
 
 box-shadow:
 
-0 0 60px cyan,
+
+0 0 50px cyan,
+
 0 0 100px gold;
+
 
 
 overflow:hidden;
 
+
 }
+
 
 
 
 
 #holdTitle{
 
-font-size:100px;
 
-font-weight:900;
+font-size:
 
-letter-spacing:15px;
+clamp(60px,20vw,100px);
+
+
+
+font-weight:
+
+900;
+
+
+
+letter-spacing:
+
+12px;
+
 
 
 background:
 
+
 linear-gradient(
+
 white,
-gold,
-cyan
+
+cyan,
+
+gold
+
 );
+
 
 
 -webkit-background-clip:text;
 
+
 color:transparent;
+
 
 
 text-shadow:
 
-0 0 30px cyan,
-0 0 50px gold;
+
+0 0 20px cyan,
+
+0 0 50px white;
+
 
 
 animation:
 
-holdGlow 2s infinite alternate;
+
+freezeText 2s infinite alternate;
+
 
 }
 
 
 
-@keyframes holdGlow{
+@keyframes freezeText{
+
 
 from{
 
@@ -601,98 +1039,373 @@ transform:scale(1);
 
 }
 
+
 to{
 
-transform:scale(1.05);
+transform:scale(1.08);
 
 }
 
+
 }
 
+
+
+
+
+/* таймер */
 
 
 #timer{
 
-font-size:55px;
 
-margin-top:30px;
+margin-top:25px;
+
+
+font-size:50px;
+
+
+font-weight:bold;
+
 
 color:white;
 
+
+
 text-shadow:
+
 
 0 0 30px cyan;
 
+
 }
 
+
+
+
+
+
+/* прогрес бар */
 
 
 .progress{
 
-height:30px;
 
-width:380px;
+width:90%;
+
+
+height:25px;
+
 
 margin:30px auto;
 
-border:3px solid gold;
 
-border-radius:30px;
-
-overflow:hidden;
 
 background:#111;
 
+
+
+border:
+
+3px solid gold;
+
+
+
+border-radius:30px;
+
+
+
+overflow:hidden;
+
+
+
 }
+
 
 
 
 #progressBar{
 
+
 height:100%;
+
 
 width:100%;
 
+
+
 background:
 
+
 linear-gradient(
+
 90deg,
-gold,
+
+cyan,
+
 white,
-cyan
+
+gold
+
 );
+
 
 
 transition:
 
 width 1s linear;
 
+
 }
+
+
+
+
 
 
 .holdText{
 
-color:#aaa;
+
+font-size:16px;
+
 
 letter-spacing:3px;
+
+
+color:#aaa;
+
 
 }
 
 
-/* FINAL */
+
+
+
+
+/* ==========================
+   FIRE ANTICIPATION
+========================== */
+
+
+.fireGlow{
+
+
+border-color:
+
+#ff6600!important;
+
+
+
+box-shadow:
+
+
+0 0 20px red,
+
+0 0 50px orange,
+
+0 0 90px yellow!important;
+
+
+
+animation:
+
+firePulse .35s infinite alternate;
+
+
+}
+
+
+
+@keyframes firePulse{
+
+
+from{
+
+transform:scale(1);
+
+}
+
+
+to{
+
+transform:scale(1.12);
+
+}
+
+
+}
+
+
+
+
+
+
+
+/* ==========================
+   SHAKE EFFECT
+========================== */
+
+
+.shake{
+
+
+animation:
+
+machineShake .25s;
+
+
+}
+
+
+
+@keyframes machineShake{
+
+
+0%{
+
+transform:translateX(-8px);
+
+}
+
+
+25%{
+
+transform:translateX(8px);
+
+}
+
+
+50%{
+
+transform:translateX(-8px);
+
+}
+
+
+75%{
+
+transform:translateX(8px);
+
+}
+
+
+100%{
+
+transform:translateX(0);
+
+}
+
+
+}
+
+
+
+
+
+
+
+/* ==========================
+   JACKPOT FLASH
+========================== */
+
+
+#flash{
+
+
+position:fixed;
+
+
+inset:0;
+
+
+z-index:100;
+
+
+
+background:white;
+
+
+
+opacity:0;
+
+
+
+pointer-events:none;
+
+
+}
+
+
+
+
+#flash.show{
+
+
+animation:
+
+flashEffect .5s;
+
+
+}
+
+
+
+@keyframes flashEffect{
+
+
+0%{
+
+opacity:0;
+
+}
+
+
+30%{
+
+opacity:1;
+
+}
+
+
+100%{
+
+opacity:0;
+
+}
+
+
+}
+
+
+
+
+
+
+/* ==========================
+   JACKPOT FINAL
+========================== */
 
 
 #final{
 
+
 margin-top:30px;
 
-opacity:0;
 
-font-size:24px;
+font-size:22px;
+
 
 line-height:1.6;
 
-transition:2s;
+
+
+opacity:0;
+
+
+transition:
+
+2s;
+
 
 }
 
@@ -700,69 +1413,76 @@ transition:2s;
 
 #final.show{
 
+
 opacity:1;
 
-}
-
-
-/* CONFETTI */
-
-
-.confetti{
-
-position:fixed;
-
-top:-20px;
-
-width:15px;
-
-height:25px;
-
-z-index:50;
-
-animation:
-
-fall 4s linear forwards;
 
 }
 
 
-@keyframes fall{
 
-to{
 
-transform:
+#final h2{
 
-translateY(110vh)
 
-rotate(720deg);
+font-size:
+
+45px;
+
+
+color:gold;
+
+
+
+text-shadow:
+
+
+0 0 30px gold,
+
+0 0 70px orange;
+
 
 }
-
-}
-
-
-</style>
-
 </head>
 
-
 <body>
-
+  <!-- ==========================
+     ICE LAYER
+========================== -->
 
 <div id="ice"></div>
 
 
+<!-- светлинен flash при jackpot -->
+
+<div id="flash"></div>
+
+
+
+
+<!-- ==========================
+     CASINO MACHINE
+========================== -->
+
+
 <div class="machine" id="machine">
+
+
 
 <h1>
 JACKPOT
 </h1>
 
 
+
 <div class="subtitle">
+
 VARIABLE REWARD
+
 </div>
+
+
+
 
 
 <div class="display">
@@ -772,44 +1492,88 @@ VARIABLE REWARD
 
 
 <div class="slot" id="s1">
+
 🍒
+
 </div>
+
 
 
 <div class="slot" id="s2">
+
 ⭐
+
 </div>
+
 
 
 <div class="slot" id="s3">
+
 💎
+
 </div>
+
 
 
 </div>
 
+
 </div>
+
+
+
+
 
 
 <button id="spinBtn">
+
 🎰 SPIN
+
 </button>
 
 
+
+
+
+
 <div id="message">
+
 Almost...
+
 </div>
+
+
+
+
 
 
 <div id="counter">
+
 Spin: 0 / 100
+
+</div>
+
+
+
+
+
+<div id="final">
+
 </div>
 
 
-<div id="final"></div>
 
 
 </div>
+
+
+
+
+
+
+<!-- ==========================
+       HOLD SCREEN
+========================== -->
 
 
 <div id="holdOverlay">
@@ -818,26 +1582,53 @@ Spin: 0 / 100
 <div id="holdBox">
 
 
+
 <div id="holdTitle">
+
 HOLD
+
 </div>
+
+
 
 
 <div id="timer">
+
 02:00
+
 </div>
+
+
+
 
 
 <div class="progress">
 
-<div id="progressBar"></div>
+
+<div id="progressBar">
 
 </div>
+
+
+</div>
+
+
+
+
 
 
 <div class="holdText">
 
-Please wait for the next spins...
+The machine is freezing...
+
+<br>
+
+Please wait for next spins
+
+</div>
+
+
+
 
 </div>
 
@@ -845,8 +1636,23 @@ Please wait for the next spins...
 </div>
 
 
-</div>
+
+
+
+<!-- ==========================
+     JACKPOT PARTICLE AREA
+========================== -->
+
+
+<div id="particles"></div>
+</body>
+</html>
 <script>
+
+
+// ==========================
+// SETTINGS
+// ==========================
 
 
 const TOTAL_SPINS = 100;
@@ -855,6 +1661,11 @@ const SESSION_LIMIT = 10;
 
 const HOLD_TIME = 120;
 
+
+
+// ==========================
+// GAME STATE
+// ==========================
 
 
 let totalSpins = 0;
@@ -867,12 +1678,23 @@ let holdActive = false;
 
 
 
+
+
+// ==========================
+// ELEMENTS
+// ==========================
+
+
 const machine =
+
 document.getElementById("machine");
 
 
+
 const spinBtn =
+
 document.getElementById("spinBtn");
+
 
 
 const slots = [
@@ -886,67 +1708,119 @@ document.getElementById("s3")
 ];
 
 
+
 const message =
+
 document.getElementById("message");
 
 
+
 const counter =
+
 document.getElementById("counter");
 
 
-const ice =
-document.getElementById("ice");
-
 
 const holdOverlay =
+
 document.getElementById("holdOverlay");
 
 
+
+const ice =
+
+document.getElementById("ice");
+
+
+
 const timer =
+
 document.getElementById("timer");
 
 
+
 const progressBar =
+
 document.getElementById("progressBar");
 
 
+
 const final =
+
 document.getElementById("final");
 
 
 
 
 
-const symbols = [
+
+// ==========================
+// SYMBOLS
+// ==========================
+
+
+const symbols=[
+
 
 "🍒",
+
 "🍋",
+
 "⭐",
+
 "💎",
+
 "🔔",
-"7️⃣"
+
+"7️⃣",
+
+"💰"
+
 
 ];
 
+
+
+
+
+
+// ==========================
+// MESSAGES
+// ==========================
 
 
 const messages=[
 
+
 "Almost...",
+
 
 "So close...",
 
-"One more try",
 
-"Nearly there",
+"One more try...",
 
-"Not yet",
 
-"The jackpot is waiting",
+"The jackpot is warming up...",
 
-"Try again",
 
-"Almost perfect"
+"Nearly there...",
+
+
+"Not yet...",
+
+
+"Maybe next spin...",
+
+
+"The machine feels lucky...",
+
+
+"Keep going...",
+
+
+"Almost perfect..."
+
 
 ];
 
@@ -954,82 +1828,11 @@ const messages=[
 
 
 
-// =======================
-// SOUND
-// =======================
 
 
-function playSound(freq,duration){
-
-
-let ctx =
-new AudioContext();
-
-
-let osc =
-ctx.createOscillator();
-
-
-let gain =
-ctx.createGain();
-
-
-
-osc.connect(gain);
-
-gain.connect(
-ctx.destination
-);
-
-
-
-osc.frequency.value=freq;
-
-gain.gain.value=.05;
-
-
-osc.start();
-
-
-osc.stop(
-
-ctx.currentTime+duration
-
-);
-
-
-}
-
-
-
-function freezeSound(){
-
-playSound(900,.3);
-
-setTimeout(()=>{
-
-playSound(500,.5);
-
-},300);
-
-}
-
-
-
-
-function jackpotSound(){
-
-playSound(1200,.8);
-
-}
-
-
-
-
-
-// =======================
-// SAVE
-// =======================
+// ==========================
+// SAVE SYSTEM
+// ==========================
 
 
 function saveGame(){
@@ -1037,7 +1840,7 @@ function saveGame(){
 
 localStorage.setItem(
 
-"FrozenJackpot",
+"FrozenJackpotV2",
 
 JSON.stringify({
 
@@ -1050,8 +1853,10 @@ sessionSpins
 );
 
 
-
 }
+
+
+
 
 
 
@@ -1059,25 +1864,35 @@ sessionSpins
 function loadGame(){
 
 
-let saved=
+
+let data =
 
 localStorage.getItem(
-"FrozenJackpot"
+
+"FrozenJackpotV2"
+
 );
 
 
 
-if(saved){
+if(data){
 
 
-let data=
+let game =
 
-JSON.parse(saved);
+JSON.parse(data);
 
 
-totalSpins=data.totalSpins || 0;
 
-sessionSpins=data.sessionSpins || 0;
+totalSpins =
+
+game.totalSpins || 0;
+
+
+
+sessionSpins =
+
+game.sessionSpins || 0;
 
 
 }
@@ -1086,7 +1901,12 @@ sessionSpins=data.sessionSpins || 0;
 
 updateCounter();
 
+
+
 }
+
+
+
 
 
 
@@ -1094,11 +1914,16 @@ updateCounter();
 function updateCounter(){
 
 
-counter.innerHTML=
+
+counter.innerHTML =
 
 `
+
 Spin: ${totalSpins} / ${TOTAL_SPINS}
+
 `;
+
+
 
 }
 
@@ -1106,23 +1931,33 @@ Spin: ${totalSpins} / ${TOTAL_SPINS}
 
 
 
-// =======================
-// BUTTON
-// =======================
 
 
-spinBtn.onclick=()=>{
+
+// ==========================
+// SPIN BUTTON
+// ==========================
+
+
+
+spinBtn.onclick=function(){
+
 
 
 if(spinning)
+
 return;
+
 
 
 if(holdActive)
+
 return;
 
 
+
 if(totalSpins>=TOTAL_SPINS)
+
 return;
 
 
@@ -1138,12 +1973,17 @@ spin();
 
 
 
-// =======================
-// SPIN
-// =======================
+
+// ==========================
+// SPIN FUNCTION
+// ==========================
 
 
 function spin(){
+
+
+
+// проверка за HOLD
 
 
 if(sessionSpins>=SESSION_LIMIT){
@@ -1156,6 +1996,872 @@ return;
 
 
 }
+
+
+
+
+
+spinning=true;
+
+
+
+
+totalSpins++;
+
+
+sessionSpins++;
+
+
+
+
+
+saveGame();
+
+
+updateCounter();
+
+
+
+
+
+// вибрация телефон
+
+
+if(
+
+navigator.vibrate
+
+){
+
+
+navigator.vibrate(40);
+
+
+}
+
+
+
+
+
+
+slots.forEach(slot=>{
+
+
+slot.classList.add("spin");
+
+
+});
+
+
+
+
+
+
+let rounds=0;
+
+
+
+let animation = setInterval(()=>{
+
+
+
+slots.forEach(slot=>{
+
+
+
+slot.innerHTML =
+
+symbols[
+
+Math.floor(
+
+Math.random()*symbols.length
+
+)
+
+];
+
+
+
+});
+
+
+
+
+rounds++;
+
+
+
+
+
+
+if(rounds>=25){
+
+
+
+clearInterval(animation);
+
+
+
+
+
+slots.forEach(slot=>{
+
+
+slot.classList.remove("spin");
+
+
+});
+
+
+
+
+
+finishSpin();
+
+
+
+
+spinning=false;
+
+
+
+}
+
+
+
+},100);
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================
+// RESULT
+// ==========================
+
+
+function finishSpin(){
+
+
+
+let chance =
+
+Math.random();
+
+
+
+
+
+
+// NEAR MISS
+
+
+if(chance<0.20){
+
+
+
+let near=[
+
+
+["⭐","⭐","🍋"],
+
+
+["💎","💎","⭐"],
+
+
+["7️⃣","7️⃣","🔔"],
+
+
+["🍒","🍒","💎"],
+
+
+["💰","💰","⭐"]
+
+
+];
+
+
+
+
+let combo =
+
+near[
+
+Math.floor(
+
+Math.random()*near.length
+
+)
+
+];
+
+
+
+
+
+slots[0].innerHTML=combo[0];
+
+slots[1].innerHTML=combo[1];
+
+slots[2].innerHTML=combo[2];
+
+
+
+
+message.innerHTML=
+
+"🔥 SO CLOSE";
+
+
+
+
+
+}
+
+else{
+
+
+message.innerHTML =
+
+messages[
+
+Math.floor(
+
+Math.random()*messages.length
+
+)
+
+];
+
+
+
+}
+
+
+
+
+
+
+// последен spin
+
+
+if(totalSpins>=TOTAL_SPINS){
+
+
+completeGame();
+
+
+return;
+
+
+}
+
+
+
+
+
+
+// след 10 spin
+
+
+if(sessionSpins>=SESSION_LIMIT){
+
+
+setTimeout(()=>{
+
+
+startHold();
+
+
+
+},1000);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+// ==========================
+// HOLD START
+// ==========================
+
+
+function startHold(){
+
+
+
+holdActive=true;
+
+
+
+spinBtn.disabled=true;
+
+
+
+holdOverlay.style.display="flex";
+
+
+
+ice.style.display="block";
+
+
+
+
+
+let end =
+
+Date.now()
+
++
+
+HOLD_TIME*1000;
+
+
+
+
+
+localStorage.setItem(
+
+"holdEnd",
+
+end
+
+);
+
+
+
+
+
+runTimer(end);
+
+
+
+}
+
+
+
+
+
+
+
+// ==========================
+// HOLD TIMER
+// ==========================
+
+
+function runTimer(end){
+
+
+
+let interval=setInterval(()=>{
+
+
+
+let left =
+
+Math.floor(
+
+(end-Date.now())
+
+/1000
+
+);
+
+
+
+
+
+if(left<=0){
+
+
+clearInterval(interval);
+
+
+
+endHold();
+
+
+
+return;
+
+
+}
+
+
+
+
+
+
+let min =
+
+Math.floor(left/60);
+
+
+
+let sec =
+
+left%60;
+
+
+
+
+
+
+timer.innerHTML=
+
+`
+
+${min<10?"0":""}${min}:
+
+${sec<10?"0":""}${sec}
+
+`;
+
+
+
+
+
+
+progressBar.style.width=
+
+(
+
+left/HOLD_TIME*100
+
+)
+
++"%";
+
+
+
+
+
+},1000);
+
+
+
+}
+
+
+
+
+
+
+
+
+// ==========================
+// END HOLD
+// ==========================
+
+
+
+function endHold(){
+
+
+
+holdActive=false;
+
+
+
+sessionSpins=0;
+
+
+
+spinBtn.disabled=false;
+
+
+
+holdOverlay.style.display="none";
+
+
+
+ice.style.display="none";
+
+
+
+localStorage.removeItem(
+
+"holdEnd"
+
+);
+
+
+
+saveGame();
+
+
+
+message.innerHTML=
+
+"🎰 READY";
+
+
+
+}
+
+
+
+
+
+
+
+
+// ==========================
+// RESTORE HOLD AFTER REFRESH
+// ==========================
+
+
+function restoreHold(){
+
+
+
+let saved =
+
+localStorage.getItem(
+
+"holdEnd"
+
+);
+
+
+
+
+
+if(!saved)
+
+return;
+
+
+
+
+
+let end =
+
+Number(saved);
+
+
+
+
+
+
+if(end>Date.now()){
+
+
+
+holdActive=true;
+
+
+spinBtn.disabled=true;
+
+
+
+holdOverlay.style.display="flex";
+
+
+
+ice.style.display="block";
+
+
+
+runTimer(end);
+
+
+
+}
+
+else{
+
+
+localStorage.removeItem(
+
+"holdEnd"
+
+);
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+// START GAME
+
+
+loadGame();
+
+
+restoreHold();
+
+
+
+</script>
+<script>
+
+
+// =====================================
+// SOUND ENGINE
+// =====================================
+
+
+let audioContext;
+
+
+
+function getAudio(){
+
+if(!audioContext){
+
+audioContext =
+new AudioContext();
+
+}
+
+return audioContext;
+
+}
+
+
+
+
+function tone(freq,time,type="sine"){
+
+
+let ctx=getAudio();
+
+
+let osc=
+ctx.createOscillator();
+
+
+let gain=
+ctx.createGain();
+
+
+
+osc.type=type;
+
+
+osc.frequency.value=freq;
+
+
+gain.gain.value=.08;
+
+
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+osc.stop(
+ctx.currentTime+time
+);
+
+
+
+}
+
+
+
+
+// spin sound
+
+function spinSound(){
+
+tone(180,.1,"square");
+
+
+setTimeout(()=>{
+
+tone(220,.1,"square");
+
+},100);
+
+
+}
+
+
+
+
+
+// reel stop
+
+function stopSound(){
+
+tone(600,.15,"triangle");
+
+}
+
+
+
+
+
+// freeze sound
+
+function freezeSound(){
+
+
+tone(900,.3,"sawtooth");
+
+
+setTimeout(()=>{
+
+tone(500,.5,"sine");
+
+},300);
+
+
+
+}
+
+
+
+
+
+// jackpot sound
+
+
+function jackpotSound(){
+
+
+tone(700,.2,"square");
+
+
+setTimeout(()=>{
+
+tone(1000,.3,"square");
+
+},200);
+
+
+setTimeout(()=>{
+
+tone(1400,.6,"triangle");
+
+},500);
+
+
+
+}
+
+
+
+
+
+
+// =====================================
+// SNOW SYSTEM
+// =====================================
+
+
+function createSnow(){
+
+
+
+for(let i=0;i<70;i++){
+
+
+let snow =
+document.createElement("div");
+
+
+snow.className="snowflake";
+
+
+snow.innerHTML="❄";
+
+
+
+snow.style.left =
+Math.random()*100+"vw";
+
+
+
+snow.style.fontSize =
+(10+Math.random()*25)+"px";
+
+
+
+snow.style.animationDuration =
+(4+Math.random()*7)+"s";
+
+
+
+snow.style.animationDelay =
+Math.random()*5+"s";
+
+
+
+document.body.appendChild(snow);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+function removeSnow(){
+
+
+document
+
+.querySelectorAll(".snowflake")
+
+.forEach(x=>x.remove());
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================
+// REAL REEL STOP
+// =====================================
+
+
+function realisticSpin(){
 
 
 
@@ -1175,7 +2881,19 @@ saveGame();
 
 
 
-playSound(200,.15);
+spinSound();
+
+
+
+// vibration
+
+if(navigator.vibrate){
+
+navigator.vibrate(50);
+
+}
+
+
 
 
 
@@ -1187,177 +2905,126 @@ s.classList.add("spin");
 
 
 
-let count=0;
 
 
 
-let anim=setInterval(()=>{
+let time=700;
 
 
-slots.forEach(s=>{
+
+slots.forEach((slot,index)=>{
 
 
-s.innerHTML=
+
+setTimeout(()=>{
+
+
+
+slot.classList.remove("spin");
+
+
+
+slot.innerHTML=
 
 symbols[
 
 Math.floor(
-
 Math.random()*symbols.length
-
 )
 
 ];
 
 
+
+stopSound();
+
+
+
+},time+(index*450));
+
+
+
 });
 
 
 
-count++;
 
 
 
-if(count>=25){
 
-
-clearInterval(anim);
-
-
-
-slots.forEach(s=>{
-
-s.classList.remove("spin");
-
-});
-
+setTimeout(()=>{
 
 
 finishSpin();
-
 
 
 spinning=false;
 
 
 
+},2200);
+
+
+
+
 }
 
 
 
-},100);
-
-
-
-}
 
 
 
 
+// =====================================
+// ANTICIPATION EFFECT
+// =====================================
 
 
 
-// =======================
-// RESULT
-// =======================
-
-
-function finishSpin(){
-
-
-let chance=
-
-Math.random();
+function anticipation(){
 
 
 
-if(chance<0.18){
+if(totalSpins%5!==0)
+
+return;
 
 
 
-let near=[
 
-["⭐","⭐","🍋"],
+let lastSlot=
 
-["💎","💎","⭐"],
-
-["7️⃣","7️⃣","🔔"],
-
-["🍒","🍒","💎"]
-
-];
+slots[2];
 
 
 
-let combo=
-
-near[
-
-Math.floor(
-
-Math.random()*near.length
-
-)
-
-];
+lastSlot.classList.add(
+"fireGlow"
+);
 
 
-
-slots[0].innerHTML=combo[0];
-
-slots[1].innerHTML=combo[1];
-
-slots[2].innerHTML=combo[2];
 
 
 
 message.innerHTML=
 
-"🔥 SO CLOSE";
-
-
-}
-
-else{
-
-
-message.innerHTML=
-
-messages[
-
-Math.floor(
-
-Math.random()*messages.length
-
-)
-
-];
-
-
-}
+"🔥 ONE MORE...";
 
 
 
-if(sessionSpins>=SESSION_LIMIT){
+
 
 
 setTimeout(()=>{
 
-startHold();
 
-},1000);
-
-
-}
+lastSlot.classList.remove(
+"fireGlow"
+);
 
 
 
-if(totalSpins>=TOTAL_SPINS){
-
-
-completeGame();
-
-}
+},3000);
 
 
 
@@ -1369,94 +3036,171 @@ completeGame();
 
 
 
-// =======================
-// HOLD
-// =======================
+
+// =====================================
+// NEAR MISS SHAKE
+// =====================================
 
 
-function startHold(){
+
+function nearMissEffect(){
 
 
-holdActive=true;
+
+machine.classList.add(
+"shake"
+);
 
 
-spinBtn.disabled=true;
+
+setTimeout(()=>{
 
 
-holdOverlay.style.display="flex";
+machine.classList.remove(
+"shake"
+);
 
 
-ice.style.display="block";
+
+},400);
 
 
-machine.classList.add("frozen");
+
+}
+
+
+
+
+
+
+
+
+// =====================================
+// HOLD OVERRIDE
+// =====================================
+
+
+const oldStartHold =
+startHold;
+
+
+
+startHold=function(){
+
+
+
+oldStartHold();
+
 
 
 freezeSound();
 
 
 
-let end=
-
-Date.now()
-
-+
-
-HOLD_TIME*1000;
+createSnow();
 
 
 
-localStorage.setItem(
+};
 
-"holdEnd",
 
-end
 
+
+
+
+const oldEndHold =
+endHold;
+
+
+
+endHold=function(){
+
+
+
+removeSnow();
+
+
+
+tone(300,.3);
+
+
+
+oldEndHold();
+
+
+};
+
+
+
+
+
+
+
+// =====================================
+// COMPLETE GAME EFFECT
+// =====================================
+
+
+
+const oldComplete =
+completeGame;
+
+
+
+completeGame=function(){
+
+
+
+oldComplete();
+
+
+jackpotSound();
+
+
+
+if(navigator.vibrate){
+
+navigator.vibrate(
+[100,50,200,50,300]
 );
-
-
-
-runTimer(end);
-
 
 }
 
 
 
+};
 
 
 
 
-function runTimer(end){
 
 
 
-let interval=
+// =====================================
+// REPLACE SPIN BUTTON
+// =====================================
 
-setInterval(()=>{
 
-
-
-let left=
-
-Math.floor(
-
-(end-Date.now())
-
-/1000
-
-);
+spinBtn.onclick=function(){
 
 
 
-if(left<=0){
+if(spinning)
+return;
 
 
-clearInterval(interval);
+if(holdActive)
+return;
 
 
-endHold();
+if(totalSpins>=TOTAL_SPINS)
+return;
 
+
+
+if(sessionSpins>=SESSION_LIMIT){
+
+startHold();
 
 return;
 
@@ -1464,35 +3208,153 @@ return;
 
 
 
-let min=
-
-Math.floor(left/60);
+anticipation();
 
 
-let sec=
-
-left%60;
+realisticSpin();
 
 
 
-timer.innerHTML=
-
-`
-
-${min<10?"0":""}${min}:
-
-${sec<10?"0":""}${sec}
-
-`;
+};
 
 
 
-progressBar.style.width=
 
-(left/HOLD_TIME*100)
 
-+"%";
 
+
+</script>
+<script>
+
+
+// ======================================
+// CASINO LIGHT EFFECT
+// ======================================
+
+
+function casinoLights(){
+
+
+let lights =
+document.createElement("div");
+
+
+lights.className="casinoLights";
+
+
+document.body.appendChild(lights);
+
+
+
+setTimeout(()=>{
+
+lights.remove();
+
+},5000);
+
+
+}
+
+
+
+
+
+
+
+// ======================================
+// GOLD COINS
+// ======================================
+
+
+function createCoins(){
+
+
+
+for(let i=0;i<80;i++){
+
+
+
+let coin =
+document.createElement("div");
+
+
+
+coin.className="coin";
+
+
+coin.innerHTML="🪙";
+
+
+
+coin.style.left =
+
+Math.random()*100+"vw";
+
+
+
+coin.style.animationDelay =
+
+Math.random()*2+"s";
+
+
+
+coin.style.fontSize =
+
+(15+Math.random()*30)+"px";
+
+
+
+document.body.appendChild(coin);
+
+
+
+
+setTimeout(()=>{
+
+
+coin.remove();
+
+
+},6000);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+// ======================================
+// JACKPOT FLASH
+// ======================================
+
+
+
+function jackpotFlash(){
+
+
+let flash =
+document.createElement("div");
+
+
+flash.className="jackpotFlash";
+
+
+document.body.appendChild(flash);
+
+
+
+setTimeout(()=>{
+
+
+flash.remove();
 
 
 },1000);
@@ -1506,327 +3368,279 @@ progressBar.style.width=
 
 
 
-function endHold(){
+// ======================================
+// ENHANCED FINISH
+// ======================================
 
 
-holdActive=false;
 
+const originalComplete =
+completeGame;
 
-sessionSpins=0;
 
 
-spinBtn.disabled=false;
+completeGame=function(){
 
 
-holdOverlay.style.display="none";
 
+originalComplete();
 
-ice.style.display="none";
 
 
-machine.classList.remove("frozen");
+casinoLights();
 
 
-localStorage.removeItem(
-"holdEnd"
-);
+createCoins();
 
 
+jackpotFlash();
 
-saveGame();
 
 
 
-message.innerHTML=
 
-"🎰 READY";
+final.innerHTML=`
 
+<h2>
 
-}
-
-
-
-
-
-
-// =======================
-// RESTORE AFTER REFRESH
-// =======================
-
-
-function restoreHold(){
-
-
-let saved=
-
-localStorage.getItem(
-"holdEnd"
-);
-
-
-
-if(!saved)
-return;
-
-
-
-let end=
-
-Number(saved);
-
-
-
-if(end>Date.now()){
-
-
-holdActive=true;
-
-
-spinBtn.disabled=true;
-
-
-holdOverlay.style.display="flex";
-
-
-ice.style.display="block";
-
-
-machine.classList.add("frozen");
-
-
-runTimer(end);
-
-
-
-}
-
-else{
-
-
-localStorage.removeItem(
-"holdEnd"
-);
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-// =======================
-// FINISH
-// =======================
-
-
-function completeGame(){
-
-
-spinBtn.disabled=true;
-
-
-slots[0].innerHTML="💰";
-
-slots[1].innerHTML="⭐";
-
-slots[2].innerHTML="💎";
-
-
-message.innerHTML=
-
-"🎉 JACKPOT 🎉";
-
-
-jackpotSound();
-
-
-
-createConfetti();
-
-
-
-setTimeout(()=>{
-
-
-final.classList.add("show");
-
-
-
-final.innerHTML=
-
-`
-
-<h2 style="color:gold">
-
-Why did you continue?
+🎰 YOU WON THE JACKPOT 🎰
 
 </h2>
 
 
 <br>
 
-The reward was uncertain.
+
+But the interesting part is not the reward.
+
 
 <br><br>
 
-Every spin created anticipation.
+
+The interesting part was everything before it.
+
 
 <br><br>
 
-The possibility kept you engaged.
+
+Every spin created expectation.
+
 
 <br><br>
+
+
+You were never sure when the reward would appear.
+
+
+<br><br>
+
+
+The possibility was enough to keep you engaged.
+
+
+<br><br>
+
 
 <b>
-This is variable reinforcement.
+
+This is variable ratio reinforcement.
+
 </b>
+
+
+<br><br>
+
+
+The same mechanism that makes unpredictable rewards so powerful.
 
 `;
 
 
-},2500);
+
+};
+
+
+
+
+
+
+
+
+
+// ======================================
+// MOBILE OPTIMIZATION
+// ======================================
+
+
+
+function mobileFix(){
+
+
+
+if(window.innerWidth < 600){
+
+
+
+document.body.style.height="100dvh";
+
+
+
+machine.style.padding="25px";
+
+
+
+slots.forEach(slot=>{
+
+
+slot.style.width="85px";
+
+
+slot.style.height="85px";
+
+
+slot.style.fontSize="50px";
+
+
+});
 
 
 
 }
 
 
-
-
-
-
-// =======================
-// CONFETTI
-// =======================
-
-
-function createConfetti(){
-
-
-for(let i=0;i<120;i++){
-
-
-
-let c=
-
-document.createElement("div");
-
-
-c.className="confetti";
-
-
-c.style.left=
-
-Math.random()*100+"vw";
-
-
-
-c.style.background=
-
-[
-"gold",
-"red",
-"white",
-"cyan"
-]
-
-[
-
-Math.floor(
-
-Math.random()*4
-
-)
-
-];
-
-
-
-document.body.appendChild(c);
-
-
-
-setTimeout(()=>{
-
-c.remove();
-
-},4000);
-
-
-
 }
 
 
 
-}
+mobileFix();
 
 
-
-
-
-
-// START
-
-
-loadGame();
-
-restoreHold();
+window.addEventListener(
+"resize",
+mobileFix
+);
 
 
 
 </script>
-<!-- EXTRA ICE EFFECTS -->
+
+
+
 
 
 <style>
 
 
-/* ледени кристали около екрана */
+/* ===================================
+   CASINO LIGHTS
+=================================== */
 
-#holdBox::after{
+
+.casinoLights{
 
 
-content:"❄";
+position:fixed;
 
-position:absolute;
+inset:0;
 
-top:15px;
+z-index:40;
 
-right:25px;
+pointer-events:none;
 
-font-size:50px;
 
-color:white;
+background:
 
-opacity:.8;
+repeating-linear-gradient(
+
+90deg,
+
+rgba(255,215,0,.0) 0px,
+
+rgba(255,215,0,.4) 20px,
+
+rgba(255,0,0,.4) 40px,
+
+rgba(0,255,255,.4) 60px
+
+);
+
 
 
 animation:
 
-crystalMove 2s infinite alternate;
+lightsMove 0.2s infinite;
 
 
 }
 
 
 
-@keyframes crystalMove{
+@keyframes lightsMove{
+
+
+0%{
+
+opacity:.3;
+
+}
+
+
+50%{
+
+opacity:1;
+
+}
+
+
+100%{
+
+opacity:.3;
+
+}
+
+
+}
+
+
+
+
+
+
+/* ===================================
+   COINS
+=================================== */
+
+
+.coin{
+
+
+position:fixed;
+
+top:-50px;
+
+z-index:60;
+
+
+animation:
+
+coinFall 5s linear forwards;
+
+
+}
+
+
+
+@keyframes coinFall{
 
 
 from{
 
+
 transform:
 
-rotate(-10deg)
+translateY(-100px)
 
-scale(1);
-
-opacity:.5;
+rotate(0deg);
 
 
 }
@@ -1837,108 +3651,336 @@ to{
 
 transform:
 
-rotate(10deg)
+translateY(110vh)
 
-scale(1.2);
-
-
-opacity:1;
-
-
-}
+rotate(720deg);
 
 
 }
 
 
 
-
-/* замръзнали ръбове */
-
-
-#holdOverlay::before{
+}
 
 
-content:"";
 
 
-position:absolute;
+
+
+/* ===================================
+   JACKPOT FLASH
+=================================== */
+
+
+.jackpotFlash{
+
+
+position:fixed;
 
 inset:0;
 
 
-border:
+z-index:55;
 
-25px solid rgba(180,240,255,.35);
 
+background:
+
+radial-gradient(
+
+circle,
+
+white,
+
+gold,
+
+transparent
+
+);
+
+
+
+animation:
+
+flash .8s;
+
+
+}
+
+
+
+@keyframes flash{
+
+
+from{
+
+opacity:1;
+
+}
+
+
+to{
+
+opacity:0;
+
+}
+
+
+}
+
+
+
+
+
+
+
+/* ===================================
+   FIRE EFFECT
+=================================== */
+
+
+.fireGlow{
+
+
+animation:
+
+fire 0.4s infinite alternate;
+
+
+}
+
+
+
+@keyframes fire{
+
+
+from{
 
 
 box-shadow:
 
-inset 0 0 80px cyan;
+0 0 20px red,
+
+0 0 40px orange;
 
 
+}
+
+
+
+to{
+
+
+box-shadow:
+
+0 0 50px yellow,
+
+0 0 100px red;
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+/* ===================================
+   MACHINE SHAKE
+=================================== */
+
+
+.shake{
+
+
+animation:
+
+shake .3s;
+
+
+}
+
+
+
+@keyframes shake{
+
+
+0%{
+
+transform:translateX(0);
+
+}
+
+
+25%{
+
+transform:translateX(-15px);
+
+}
+
+
+50%{
+
+transform:translateX(15px);
+
+}
+
+
+75%{
+
+transform:translateX(-10px);
+
+}
+
+
+100%{
+
+transform:translateX(0);
+
+}
+
+
+}
+
+
+
+
+
+
+
+/* ===================================
+   SNOW
+=================================== */
+
+
+.snowflake{
+
+
+position:fixed;
+
+top:-40px;
+
+z-index:30;
+
+color:white;
 
 pointer-events:none;
 
 
 animation:
 
-iceFrame 3s infinite alternate;
+snowFall linear infinite;
 
 
 }
 
 
 
-
-@keyframes iceFrame{
-
-
-from{
-
-opacity:.5;
-
-}
-
+@keyframes snowFall{
 
 
 to{
 
-opacity:1;
+
+transform:
+
+translateY(120vh)
+
+rotate(360deg);
+
 
 }
 
 
+
 }
 
 
 
 
-/* финален jackpot ефект */
 
 
-#final h2{
+/* ===================================
+   PHONE PORTRAIT
+=================================== */
 
+
+@media(max-width:600px){
+
+
+
+h1{
 
 font-size:45px;
 
+}
 
-text-shadow:
 
 
-0 0 20px gold,
+.subtitle{
 
-0 0 50px orange;
+font-size:12px;
+
+letter-spacing:4px;
+
+}
+
+
+
+button{
+
+
+font-size:22px;
+
+
+padding:
+
+18px 50px;
 
 
 }
+
+
+
+#message{
+
+
+font-size:25px;
+
+
+}
+
+
+
+#holdTitle{
+
+
+font-size:70px;
+
+
+}
+
+
+
+.progress{
+
+
+width:280px;
+
+
+}
+
+
+
+}
+
+
+
 
 
 
 </style>
-
-
-</body>
-
-</html>
+  
