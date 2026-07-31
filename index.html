@@ -12,158 +12,117 @@
 <style>
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 
 body{
 
-height:100vh;
+    height:100vh;
 
-background:
-radial-gradient(circle at center,#5a0000,#050505 75%);
+    background:
+    radial-gradient(circle,#550000,#050505 75%);
 
-display:flex;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-justify-content:center;
+    font-family:Arial,sans-serif;
 
-align-items:center;
-
-font-family:Arial,Helvetica,sans-serif;
-
-overflow:hidden;
-
-color:white;
+    overflow:hidden;
 
 }
+
 
 
 /* фон */
 
-body:before{
+body::before{
 
-content:"";
+    content:"";
 
-position:absolute;
+    position:absolute;
 
-inset:0;
+    inset:0;
 
-background-image:
-radial-gradient(gold 1px,transparent 1px);
+    background-image:
+    radial-gradient(gold 1px,transparent 1px);
 
-background-size:45px 45px;
+    background-size:50px 50px;
 
-opacity:.15;
+    opacity:.15;
 
-animation:bgmove 25s linear infinite;
-
-}
-
-
-@keyframes bgmove{
-
-from{
-transform:translateY(0);
-}
-
-to{
-transform:translateY(100px);
-}
+    animation:bgMove 20s linear infinite;
 
 }
 
 
+@keyframes bgMove{
 
-/* машината */
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(100px);
+    }
+
+}
+
+
+
+/* слот машина */
+
 
 .machine{
 
-position:relative;
+    position:relative;
 
-z-index:2;
+    z-index:2;
 
-width:95%;
+    width:95%;
 
-max-width:650px;
+    max-width:650px;
 
-padding:40px;
+    padding:40px;
 
-background:
+    background:
+    linear-gradient(#1b1b1b,#050505);
 
-linear-gradient(
-145deg,
-#181818,
-#050505
-);
+    border:5px solid gold;
 
+    border-radius:35px;
 
-border:5px solid gold;
-
-border-radius:35px;
+    text-align:center;
 
 
-box-shadow:
+    box-shadow:
 
-0 0 30px gold,
-0 0 100px rgba(255,150,0,.5);
-
-
-text-align:center;
+    0 0 40px gold,
+    0 0 100px orange;
 
 
-transition:.5s;
+    transition:.5s;
 
 }
 
 
-
-.freeze{
-
-filter:blur(1px);
-
-}
-
-
-
-/* заглавие */
 
 
 h1{
 
-font-size:65px;
+    font-size:65px;
 
-letter-spacing:8px;
-
-color:#ffd700;
+    color:#ffd700;
 
 
-text-shadow:
+    text-shadow:
 
-0 0 10px gold,
-0 0 40px orange;
+    0 0 15px gold,
+    0 0 40px orange;
 
-
-animation:shine 1.5s infinite alternate;
-
-}
-
-
-
-@keyframes shine{
-
-from{
-
-filter:brightness(1);
-
-}
-
-to{
-
-filter:brightness(1.5);
-
-}
 
 }
 
@@ -171,38 +130,30 @@ filter:brightness(1.5);
 
 .subtitle{
 
-margin-top:10px;
+    color:white;
 
-font-size:20px;
+    margin-top:10px;
 
-letter-spacing:6px;
-
-color:#fff;
+    letter-spacing:6px;
 
 }
 
 
 
-/* слот прозорец */
-
 
 .display{
 
-margin-top:40px;
 
-background:#000;
+    margin-top:35px;
 
-padding:25px;
+    padding:25px;
 
-border-radius:20px;
+    background:black;
 
-border:3px solid #555;
+    border-radius:20px;
 
+    border:3px solid #777;
 
-box-shadow:
-
-inset 0 0 30px black,
-0 0 20px gold;
 
 }
 
@@ -210,11 +161,11 @@ inset 0 0 30px black,
 
 .slots{
 
-display:flex;
+    display:flex;
 
-justify-content:center;
+    justify-content:center;
 
-gap:15px;
+    gap:15px;
 
 }
 
@@ -222,40 +173,42 @@ gap:15px;
 
 .slot{
 
-width:110px;
 
-height:110px;
+    width:110px;
 
-display:flex;
-
-align-items:center;
-
-justify-content:center;
+    height:110px;
 
 
-background:#222;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
 
-border-radius:15px;
+    background:#222;
+
+    border:3px solid gold;
+
+    border-radius:15px;
 
 
-border:3px solid gold;
+    font-size:60px;
 
 
-font-size:60px;
+    box-shadow:
 
+    inset 0 0 20px black;
 
-box-shadow:
-
-inset 0 0 20px black;
 
 }
 
 
 
+
 .spin{
 
-animation:spin .12s infinite;
+    animation:spin .12s infinite;
 
 }
 
@@ -263,65 +216,47 @@ animation:spin .12s infinite;
 
 @keyframes spin{
 
-0%{
-transform:translateY(-15px);
-}
+    50%{
 
-50%{
-transform:translateY(15px);
-}
+        transform:translateY(15px);
 
-100%{
-transform:translateY(-15px);
-}
+    }
 
 }
 
 
 
-/* бутон */
 
 
 button{
 
-margin-top:35px;
 
-padding:20px 60px;
+    margin-top:35px;
 
-font-size:28px;
+    padding:20px 60px;
 
-font-weight:bold;
+    font-size:28px;
 
-border:none;
-
-border-radius:50px;
+    font-weight:bold;
 
 
-cursor:pointer;
+    border:none;
+
+    border-radius:50px;
 
 
-background:
-
-linear-gradient(
-gold,
-#cc8800
-);
+    cursor:pointer;
 
 
-box-shadow:
+    background:
 
-0 0 30px gold;
-
-
-transition:.3s;
-
-}
+    linear-gradient(gold,#cc8800);
 
 
+    box-shadow:
 
-button:hover{
+    0 0 30px gold;
 
-transform:scale(1.08);
 
 }
 
@@ -329,29 +264,22 @@ transform:scale(1.08);
 
 button:disabled{
 
-opacity:.4;
+    opacity:.4;
 
 }
 
 
 
-/* текст */
-
 
 #message{
 
-margin-top:30px;
 
-font-size:32px;
+    margin-top:30px;
 
-min-height:45px;
+    font-size:32px;
 
-color:#ffd700;
+    color:#ffd700;
 
-
-text-shadow:
-
-0 0 15px gold;
 
 }
 
@@ -359,133 +287,131 @@ text-shadow:
 
 #counter{
 
-margin-top:15px;
 
-font-size:18px;
+    margin-top:15px;
 
-color:#aaa;
+    color:#aaa;
 
 }
 
 
 
-/* ==========================
-HOLD SCREEN
-========================== */
+
+
+/* HOLD SCREEN */
 
 
 #holdOverlay{
 
 
-position:fixed;
-
-inset:0;
+    position:fixed;
 
 
-background:
-
-rgba(0,0,0,.75);
+    inset:0;
 
 
-display:none;
+    background:
+
+    rgba(0,0,0,.8);
 
 
-align-items:center;
-
-justify-content:center;
+    display:none;
 
 
-z-index:10;
+    justify-content:center;
+
+    align-items:center;
 
 
-backdrop-filter:blur(8px);
+    z-index:20;
+
+
+    backdrop-filter:blur(8px);
 
 
 }
+
+
 
 
 
 #holdBox{
 
 
-text-align:center;
+    padding:50px;
+
+    text-align:center;
 
 
-padding:50px;
+    border:5px solid gold;
+
+    border-radius:30px;
 
 
-border-radius:30px;
+    background:#111;
 
 
-border:4px solid gold;
+    box-shadow:
 
-
-background:
-
-linear-gradient(#151515,#050505);
-
-
-box-shadow:
-
-0 0 40px gold;
+    0 0 50px gold;
 
 
 }
+
+
 
 
 
 #holdTitle{
 
 
-font-size:80px;
+    font-size:90px;
 
 
-font-weight:bold;
+    color:gold;
 
 
-color:#ffd700;
+    text-shadow:
+
+    0 0 20px gold,
+    0 0 50px orange;
 
 
-text-shadow:
-
-0 0 20px gold,
-0 0 50px orange;
-
-
-animation:freezeGlow 2s infinite alternate;
+    animation:holdGlow 2s infinite alternate;
 
 
 }
 
 
 
-@keyframes freezeGlow{
+@keyframes holdGlow{
 
 
-from{
+    from{
 
-filter:brightness(.8);
+        opacity:.7;
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+    }
+
 
 }
 
-to{
-
-filter:brightness(1.5);
-
-}
-
-}
 
 
 
 #timer{
 
 
-font-size:35px;
+    margin-top:20px;
 
-margin-top:25px;
-
-color:white;
+    font-size:40px;
 
 }
 
@@ -493,23 +419,25 @@ color:white;
 
 .progress{
 
-margin-top:30px;
 
-width:350px;
+    width:350px;
 
-height:25px;
-
-
-background:#222;
+    height:25px;
 
 
-border-radius:20px;
+    margin-top:30px;
 
 
-overflow:hidden;
+    background:#333;
 
 
-border:2px solid gold;
+    border-radius:20px;
+
+
+    overflow:hidden;
+
+
+    border:2px solid gold;
 
 
 }
@@ -519,22 +447,15 @@ border:2px solid gold;
 #progressBar{
 
 
-height:100%;
+    height:100%;
 
 
-width:100%;
+    width:100%;
 
 
-background:
+    background:
 
-linear-gradient(
-90deg,
-gold,
-orange
-);
-
-
-transition:width 1s linear;
+    linear-gradient(90deg,gold,orange);
 
 
 }
@@ -542,26 +463,27 @@ transition:width 1s linear;
 
 
 
-/* замръзнали ръбове */
-
-
 #ice{
 
-position:fixed;
 
-inset:0;
-
-pointer-events:none;
+    position:fixed;
 
 
-display:none;
+    inset:0;
 
 
-box-shadow:
+    display:none;
 
-inset 0 0 80px 40px rgba(180,230,255,.6);
 
-z-index:9;
+    pointer-events:none;
+
+
+    z-index:15;
+
+
+    box-shadow:
+
+    inset 0 0 100px 40px rgba(180,230,255,.7);
 
 
 }
@@ -573,22 +495,65 @@ z-index:9;
 
 #final{
 
-margin-top:35px;
 
-font-size:22px;
+    margin-top:30px;
 
-line-height:1.5;
+    opacity:0;
 
-opacity:0;
+    transition:2s;
 
-transition:2s;
+    color:white;
+
+    line-height:1.6;
+
+    font-size:22px;
+
 
 }
 
 
+
 .show{
 
-opacity:1!important;
+    opacity:1!important;
+
+}
+
+
+
+
+.confetti{
+
+
+    position:fixed;
+
+
+    top:-20px;
+
+
+    width:12px;
+
+    height:20px;
+
+
+    animation:fall 3s linear forwards;
+
+
+}
+
+
+
+@keyframes fall{
+
+
+    to{
+
+        transform:
+
+        translateY(110vh)
+        rotate(720deg);
+
+    }
 
 }
 
@@ -596,9 +561,7 @@ opacity:1!important;
 
 </style>
 
-
 </head>
-
 
 
 <body>
@@ -612,7 +575,9 @@ opacity:1!important;
 
 
 <h1>
+
 JACKPOT
+
 </h1>
 
 
@@ -630,19 +595,11 @@ VARIABLE REWARD
 <div class="slots">
 
 
-<div class="slot" id="slot1">
-🍒
-</div>
+<div class="slot" id="s1">🍒</div>
 
+<div class="slot" id="s2">⭐</div>
 
-<div class="slot" id="slot2">
-⭐
-</div>
-
-
-<div class="slot" id="slot3">
-💎
-</div>
+<div class="slot" id="s3">💎</div>
 
 
 </div>
@@ -652,12 +609,11 @@ VARIABLE REWARD
 
 
 
-<button id="spinButton" onclick="spin()">
+<button id="spinBtn">
 
 🎰 SPIN
 
 </button>
-
 
 
 <div id="message">
@@ -682,7 +638,6 @@ Spin: 0 / 100
 
 
 
-<!-- HOLD -->
 
 <div id="holdOverlay">
 
@@ -707,9 +662,7 @@ HOLD
 
 <div class="progress">
 
-<div id="progressBar">
-
-</div>
+<div id="progressBar"></div>
 
 </div>
 
@@ -728,23 +681,24 @@ Next spins available soon...
 </div>
 
 
-
 <script>
 
 
-// =============================
-// GAME VARIABLES
-// =============================
+// =====================
+// VARIABLES
+// =====================
+
+
+const TOTAL_SPINS = 100;
+
+const SESSION_LIMIT = 10;
+
+const HOLD_TIME = 120;
 
 
 let totalSpins = 0;
 
 let sessionSpins = 0;
-
-let totalTarget = 100;
-
-let sessionLimit = 10;
-
 
 let spinning = false;
 
@@ -771,94 +725,157 @@ const messages = [
 
 "Nearly there",
 
-"That was close",
+"You almost had it",
+
+"Just missed",
 
 "Maybe next spin",
 
-"The jackpot is waiting",
-
-"Just missed it",
-
-"You almost had it",
-
-"Try again",
-
 "The next one could be it",
 
-"Close enough to feel it"
+"Close again",
+
+"Try once more"
 
 ];
 
 
 
 
-
-const slot1=document.getElementById("slot1");
-
-const slot2=document.getElementById("slot2");
-
-const slot3=document.getElementById("slot3");
+// ELEMENTS
 
 
-const button=document.getElementById("spinButton");
+const s1=document.getElementById("s1");
+
+const s2=document.getElementById("s2");
+
+const s3=document.getElementById("s3");
+
+
+const button=document.getElementById("spinBtn");
 
 
 const message=document.getElementById("message");
-
 
 const counter=document.getElementById("counter");
 
 
 const holdOverlay=document.getElementById("holdOverlay");
 
+const progressBar=document.getElementById("progressBar");
 
-const machine=document.getElementById("machine");
-
-
-const ice=document.getElementById("ice");
+const timer=document.getElementById("timer");
 
 
+const final=document.getElementById("final");
 
 
-// =============================
-// RANDOM SYMBOL
-// =============================
 
 
-function randomSymbol(){
+// =====================
+// SOUND
+// =====================
 
-return symbols[
-Math.floor(Math.random()*symbols.length)
-];
+
+function sound(freq,duration){
+
+let ctx=new AudioContext();
+
+let osc=ctx.createOscillator();
+
+let gain=ctx.createGain();
+
+
+osc.connect(gain);
+
+gain.connect(ctx.destination);
+
+
+osc.frequency.value=freq;
+
+gain.gain.value=.05;
+
+
+osc.start();
+
+osc.stop(ctx.currentTime+duration);
 
 }
 
 
 
-// =============================
-// SPIN FUNCTION
-// =============================
 
 
-function spin(){
+// =====================
+// SAVE
+// =====================
 
 
-if(spinning){
+function save(){
+
+localStorage.setItem(
+"slotGame",
+JSON.stringify({
+
+totalSpins,
+
+sessionSpins
+
+})
+
+);
+
+}
+
+
+
+
+function load(){
+
+let data=
+localStorage.getItem("slotGame");
+
+
+if(data){
+
+let game=JSON.parse(data);
+
+
+totalSpins=game.totalSpins;
+
+sessionSpins=game.sessionSpins;
+
+
+counter.innerHTML=
+`Spin: ${totalSpins} / ${TOTAL_SPINS}`;
+
+}
+
+}
+
+
+
+
+// =====================
+// SPIN
+// =====================
+
+
+button.onclick=function(){
+
+
+if(spinning) return;
+
+
+if(totalSpins>=TOTAL_SPINS){
 
 return;
 
 }
 
 
-if(totalSpins>=100){
 
-return;
-
-}
-
-
-
-if(sessionSpins>=10){
+if(sessionSpins>=SESSION_LIMIT){
 
 startHold();
 
@@ -868,678 +885,93 @@ return;
 
 
 
-spinning=true;
-
-
-totalSpins++;
-
-sessionSpins++;
-
-
-counter.innerHTML=
-
-"Spin: " + totalSpins + " / 100";
-
-
-
-machine.classList.add("freeze");
-
-
-let slots=[slot1,slot2,slot3];
-
-
-
-slots.forEach(slot=>{
-
-slot.classList.add("spin");
-
-});
-
-
-
-let rounds=20;
-
-
-
-let current=0;
-
-
-
-let animation=setInterval(()=>{
-
-
-slots.forEach(slot=>{
-
-slot.innerHTML=randomSymbol();
-
-});
-
-
-
-current++;
-
-
-
-if(current>=rounds){
-
-
-clearInterval(animation);
-
-
-
-slots.forEach(slot=>{
-
-slot.classList.remove("spin");
-
-});
-
-
-
-finishSpin();
-
-
-
-spinning=false;
-
-
-}
-
-
-
-},100);
-
-
-
-}
-
-
-
-
-
-// =============================
-// RESULT
-// =============================
-
-
-function finishSpin(){
-
-
-let chance=Math.random();
-
-
-
-if(chance<0.15){
-
-
-
-let near=[
-
-["⭐","⭐","🍋"],
-
-["💎","💎","⭐"],
-
-["7️⃣","7️⃣","🔔"],
-
-["🍒","🍒","💎"],
-
-["🔔","🔔","🍋"]
-
-];
-
-
-
-let result=
-
-near[
-Math.floor(Math.random()*near.length)
-];
-
-
-
-slot1.innerHTML=result[0];
-
-slot2.innerHTML=result[1];
-
-slot3.innerHTML=result[2];
-
-
-
-message.innerHTML=
-
-"🔥 SO CLOSE...";
-
-
-
-}
-
-else{
-
-
-message.innerHTML=
-
-messages[
-Math.floor(Math.random()*messages.length)
-];
-
-
-}
-
-
-
-saveGame();
-
-
-
-}
-
-
-
-
-
-// =============================
-// HOLD MODE
-// =============================
-
-
-function startHold(){
-
-
-holdOverlay.style.display="flex";
-
-
-ice.style.display="block";
-
-
-button.disabled=true;
-
-
-
-message.innerHTML=
-
-"Game paused";
-
-
-
-}
-
-
-
-
-
-// =============================
-// END GAME CHECK
-// =============================
-
-
-function jackpotCheck(){
-
-
-if(totalSpins>=100){
-
-
-button.disabled=true;
-
-
-
-message.innerHTML=
-
-"🎉 JACKPOT! 🎉";
-
-
-
-finalWin();
-
-
-}
-
-
-}
-
-
-
-
-
-<script>
-
-
-// =============================
-// GAME VARIABLES
-// =============================
-
-
-let totalSpins = 0;
-
-let sessionSpins = 0;
-
-let totalTarget = 100;
-
-let sessionLimit = 10;
-
-
-let spinning = false;
-
-
-
-const symbols = [
-"🍒",
-"🍋",
-"⭐",
-"💎",
-"🔔",
-"7️⃣"
-];
-
-
-
-const messages = [
-
-"Almost...",
-
-"So close...",
-
-"One symbol away",
-
-"Nearly there",
-
-"That was close",
-
-"Maybe next spin",
-
-"The jackpot is waiting",
-
-"Just missed it",
-
-"You almost had it",
-
-"Try again",
-
-"The next one could be it",
-
-"Close enough to feel it"
-
-];
-
-
-
-
-
-const slot1=document.getElementById("slot1");
-
-const slot2=document.getElementById("slot2");
-
-const slot3=document.getElementById("slot3");
-
-
-const button=document.getElementById("spinButton");
-
-
-const message=document.getElementById("message");
-
-
-const counter=document.getElementById("counter");
-
-
-const holdOverlay=document.getElementById("holdOverlay");
-
-
-const machine=document.getElementById("machine");
-
-
-const ice=document.getElementById("ice");
-
-
-
-
-// =============================
-// RANDOM SYMBOL
-// =============================
-
-
-function randomSymbol(){
-
-return symbols[
-Math.floor(Math.random()*symbols.length)
-];
-
-}
-
-
-
-// =============================
-// SPIN FUNCTION
-// =============================
-
-
-function spin(){
-
-
-if(spinning){
-
-return;
-
-}
-
-
-if(totalSpins>=100){
-
-return;
-
-}
-
-
-
-if(sessionSpins>=10){
-
-startHold();
-
-return;
-
-}
-
-
-
-spinning=true;
-
-
-totalSpins++;
-
-sessionSpins++;
-
-
-counter.innerHTML=
-
-"Spin: " + totalSpins + " / 100";
-
-
-
-machine.classList.add("freeze");
-
-
-let slots=[slot1,slot2,slot3];
-
-
-
-slots.forEach(slot=>{
-
-slot.classList.add("spin");
-
-});
-
-
-
-let rounds=20;
-
-
-
-let current=0;
-
-
-
-let animation=setInterval(()=>{
-
-
-slots.forEach(slot=>{
-
-slot.innerHTML=randomSymbol();
-
-});
-
-
-
-current++;
-
-
-
-if(current>=rounds){
-
-
-clearInterval(animation);
-
-
-
-slots.forEach(slot=>{
-
-slot.classList.remove("spin");
-
-});
-
-
-
-finishSpin();
-
-
-
-spinning=false;
-
-
-}
-
-
-
-},100);
-
-
-
-}
-
-
-
-
-
-// =============================
-// RESULT
-// =============================
-
-
-function finishSpin(){
-
-
-let chance=Math.random();
-
-
-
-if(chance<0.15){
-
-
-
-let near=[
-
-["⭐","⭐","🍋"],
-
-["💎","💎","⭐"],
-
-["7️⃣","7️⃣","🔔"],
-
-["🍒","🍒","💎"],
-
-["🔔","🔔","🍋"]
-
-];
-
-
-
-let result=
-
-near[
-Math.floor(Math.random()*near.length)
-];
-
-
-
-slot1.innerHTML=result[0];
-
-slot2.innerHTML=result[1];
-
-slot3.innerHTML=result[2];
-
-
-
-message.innerHTML=
-
-"🔥 SO CLOSE...";
-
-
-
-}
-
-else{
-
-
-message.innerHTML=
-
-messages[
-Math.floor(Math.random()*messages.length)
-];
-
-
-}
-
-
-
-saveGame();
-
-
-
-}
-
-
-
-
-
-// =============================
-// HOLD MODE
-// =============================
-
-
-function startHold(){
-
-
-holdOverlay.style.display="flex";
-
-
-ice.style.display="block";
-
-
-button.disabled=true;
-
-
-
-message.innerHTML=
-
-"Game paused";
-
-
-
-}
-
-
-
-
-
-// =============================
-// END GAME CHECK
-// =============================
-
-
-function jackpotCheck(){
-
-
-if(totalSpins>=100){
-
-
-button.disabled=true;
-
-
-
-message.innerHTML=
-
-"🎉 JACKPOT! 🎉";
-
-
-
-finalWin();
-
-
-}
-
-
-}
-
-
-
-
-
-</script>
-
-// =============================
-// LOCAL STORAGE SAVE
-// =============================
-
-
-function saveGame(){
-
-
-let data={
-
-totalSpins:totalSpins,
-
-sessionSpins:sessionSpins,
-
-hold:false,
-
-holdEnd:null
+spin();
 
 };
 
 
-localStorage.setItem(
-"jackpotGame",
-JSON.stringify(data)
-);
-
-
-}
 
 
 
+function spin(){
 
 
-
-// =============================
-// LOAD GAME
-// =============================
+spinning=true;
 
 
-function loadGame(){
+totalSpins++;
 
-
-let saved=
-localStorage.getItem("jackpotGame");
-
-
-
-if(!saved){
-
-return;
-
-}
-
-
-
-let data=
-JSON.parse(saved);
-
-
-
-totalSpins=data.totalSpins || 0;
-
-sessionSpins=data.sessionSpins || 0;
-
+sessionSpins++;
 
 
 counter.innerHTML=
+`Spin: ${totalSpins} / ${TOTAL_SPINS}`;
 
-"Spin: " + totalSpins + " / 100";
+
+save();
+
+
+
+sound(200,.15);
+
+
+
+let slots=[s1,s2,s3];
+
+
+slots.forEach(s=>{
+
+s.classList.add("spin");
+
+});
+
+
+
+let count=0;
+
+
+let interval=setInterval(()=>{
+
+
+slots.forEach(s=>{
+
+s.innerHTML=
+symbols[
+Math.floor(Math.random()*symbols.length)
+];
+
+});
+
+
+count++;
+
+
+
+if(count>=20){
+
+
+clearInterval(interval);
+
+
+slots.forEach(s=>{
+
+s.classList.remove("spin");
+
+});
+
+
+result();
+
+
+spinning=false;
+
+
+
+}
+
+
+
+},100);
 
 
 
@@ -1550,122 +982,114 @@ counter.innerHTML=
 
 
 
-// =============================
-// HOLD TIMER
-// =============================
+// =====================
+// RESULT
+// =====================
 
 
-let holdTimer;
+function result(){
 
+
+let chance=Math.random();
+
+
+
+if(chance<0.15){
+
+
+
+let near=[
+
+["⭐","⭐","🍋"],
+
+["💎","💎","⭐"],
+
+["7️⃣","7️⃣","🔔"],
+
+["🍒","🍒","💎"]
+
+];
+
+
+let combo=
+near[
+Math.floor(Math.random()*near.length)
+];
+
+
+s1.innerHTML=combo[0];
+
+s2.innerHTML=combo[1];
+
+s3.innerHTML=combo[2];
+
+
+message.innerHTML=
+"🔥 SO CLOSE";
+
+
+sound(700,.3);
+
+
+
+}
+
+else{
+
+
+message.innerHTML=
+messages[
+Math.floor(Math.random()*messages.length)
+];
+
+
+}
+
+
+
+if(totalSpins>=TOTAL_SPINS){
+
+finish();
+
+}
+
+
+}
+
+
+
+
+
+
+// =====================
+// HOLD
+// =====================
 
 
 function startHold(){
 
 
-
 holdOverlay.style.display="flex";
-
-
-ice.style.display="block";
 
 
 button.disabled=true;
 
 
 
-let holdTime=120;
+let end=
 
-
-
-let endTime=
-
-Date.now()+holdTime*1000;
+Date.now()+HOLD_TIME*1000;
 
 
 
 localStorage.setItem(
-
 "holdEnd",
-
-endTime
-
+end
 );
 
 
 
-updateHold();
-
-
-
-holdTimer=setInterval(()=>{
-
-
-let remaining=
-
-Math.floor(
-
-(endTime-Date.now())/1000
-
-);
-
-
-
-let minutes=
-
-Math.floor(remaining/60);
-
-
-let seconds=
-
-remaining%60;
-
-
-
-document.getElementById("timer")
-
-.innerHTML=
-
-(minutes<10?"0":"")
-+minutes
-+
-":"
-+
-(seconds<10?"0":"")
-+seconds;
-
-
-
-let progress=
-
-(remaining/120)*100;
-
-
-
-document.getElementById("progressBar")
-
-.style.width=
-
-progress+"%";
-
-
-
-if(remaining<=0){
-
-
-clearInterval(holdTimer);
-
-
-
-endHold();
-
-
-
-}
-
-
-
-},1000);
-
+runTimer(end);
 
 
 }
@@ -1673,151 +1097,22 @@ endHold();
 
 
 
-
-
-// =============================
-// END HOLD
-// =============================
-
-
-function endHold(){
-
-
-holdOverlay.style.display="none";
-
-
-ice.style.display="none";
-
-
-sessionSpins=0;
-
-
-
-button.disabled=false;
-
-
-
-message.innerHTML=
-
-"🎰 READY AGAIN";
-
-
-
-localStorage.removeItem(
-"holdEnd"
-);
-
-
-
-saveGame();
-
-
-
-}
-
-
-
-
-
-
-// =============================
-// CHECK AFTER REFRESH
-// =============================
-
-
-function checkHoldAfterRefresh(){
-
-
-let holdEnd=
-
-localStorage.getItem(
-"holdEnd"
-);
-
-
-
-if(!holdEnd){
-
-return;
-
-}
-
-
-
-let remaining=
-
-Math.floor(
-(parseInt(holdEnd)-Date.now())/1000
-);
-
-
-
-if(remaining>0){
-
-
-
-holdOverlay.style.display="flex";
-
-
-ice.style.display="block";
-
-
-button.disabled=true;
-
-
-
-let fakeEnd=
-
-Date.now()+remaining*1000;
+function runTimer(end){
 
 
 
 let interval=setInterval(()=>{
 
 
-let left=
+let remaining=
 
 Math.floor(
-(fakeEnd-Date.now())/1000
+(end-Date.now())/1000
 );
 
 
 
-let minutes=
-
-Math.floor(left/60);
-
-
-
-let seconds=
-
-left%60;
-
-
-
-document.getElementById("timer")
-
-.innerHTML=
-
-(minutes<10?"0":"")
-+minutes
-+
-":"
-+
-(seconds<10?"0":"")
-+seconds;
-
-
-
-document.getElementById("progressBar")
-
-.style.width=
-
-(left/120*100)+"%";
-
-
-
-if(left<=0){
+if(remaining<=0){
 
 
 clearInterval(interval);
@@ -1826,7 +1121,30 @@ clearInterval(interval);
 endHold();
 
 
+return;
+
 }
+
+
+
+let min=
+Math.floor(remaining/60);
+
+
+let sec=
+remaining%60;
+
+
+timer.innerHTML=
+
+`${min<10?"0":""}${min}:${sec<10?"0":""}${sec}`;
+
+
+
+progressBar.style.width=
+
+(remaining/HOLD_TIME*100)+"%";
+
 
 
 },1000);
@@ -1835,13 +1153,73 @@ endHold();
 
 }
 
+
+
+
+
+function endHold(){
+
+
+holdOverlay.style.display="none";
+
+
+sessionSpins=0;
+
+
+button.disabled=false;
+
+
+localStorage.removeItem("holdEnd");
+
+
+save();
+
+
+message.innerHTML=
+"🎰 READY";
+
+
+}
+
+
+
+
+
+
+// =====================
+// RESTORE HOLD AFTER REFRESH
+// =====================
+
+
+function restoreHold(){
+
+
+let saved=
+localStorage.getItem("holdEnd");
+
+
+if(!saved) return;
+
+
+let end=parseInt(saved);
+
+
+if(end>Date.now()){
+
+
+holdOverlay.style.display="flex";
+
+button.disabled=true;
+
+
+runTimer(end);
+
+
+}
+
 else{
 
-
-localStorage.removeItem(
-"holdEnd"
-);
-
+localStorage.removeItem("holdEnd");
 
 }
 
@@ -1854,165 +1232,71 @@ localStorage.removeItem(
 
 
 
+// =====================
+// FINAL
+// =====================
 
-// =============================
-// SOUND SYSTEM
-// =============================
 
+function finish(){
 
-function playSound(type){
 
+button.disabled=true;
 
-let audio=
-new AudioContext();
 
+s1.innerHTML="💰";
 
+s2.innerHTML="⭐";
 
-let osc=
-audio.createOscillator();
+s3.innerHTML="💎";
 
 
+message.innerHTML=
+"🎉 JACKPOT 🎉";
 
-let gain=
-audio.createGain();
 
+sound(1000,.8);
 
 
-osc.connect(gain);
 
-gain.connect(
-audio.destination
-);
-
-
-
-if(type==="spin"){
-
-
-osc.frequency.value=200;
-
-gain.gain.value=.04;
-
-
-}
-
-
-
-if(type==="near"){
-
-
-osc.frequency.value=700;
-
-gain.gain.value=.08;
-
-
-}
-
-
-
-if(type==="jackpot"){
-
-
-osc.frequency.value=1000;
-
-gain.gain.value=.1;
-
-
-}
-
-
-
-osc.start();
-
-
-
-osc.stop(
-audio.currentTime+.3
-);
-
-
-
-}
-
-
-
-
-
-
-
-// =============================
-// JACKPOT FINISH
-// =============================
-
-
-function finalWin(){
-
-
-
-playSound("jackpot");
-
-
-
-slot1.innerHTML="💰";
-
-slot2.innerHTML="⭐";
-
-slot3.innerHTML="💎";
-
-
-
-createConfetti();
+confetti();
 
 
 
 setTimeout(()=>{
 
 
-story.classList.add("show");
+final.classList.add("show");
 
 
+final.innerHTML=`
 
-story.innerHTML=`
-
-<h2 style="color:#ffd700">
+<h2 style="color:gold">
 But why did you keep trying?
 </h2>
 
-
 <br>
 
-
-You didn't know when the reward would appear.
-
+You did not know when the reward would appear.
 
 <br><br>
-
 
 Every spin created a new expectation.
 
-
 <br><br>
 
-
-The uncertainty made the next attempt feel important.
-
+The uncertainty kept your attention.
 
 <br><br>
-
 
 <b>
 You were not chasing the reward.
 </b>
 
-
 <br><br>
-
 
 You were chasing the possibility of the reward.
 
-
 <br><br>
-
 
 This is variable reinforcement.
 
@@ -2020,7 +1304,7 @@ This is variable reinforcement.
 
 
 
-},3000);
+},2500);
 
 
 
@@ -2031,34 +1315,28 @@ This is variable reinforcement.
 
 
 
-
-// =============================
+// =====================
 // CONFETTI
-// =============================
+// =====================
 
 
-function createConfetti(){
+function confetti(){
 
 
-
-for(let i=0;i<150;i++){
-
+for(let i=0;i<120;i++){
 
 
-let piece=document.createElement("div");
+let c=document.createElement("div");
 
 
-piece.className="confetti";
+c.className="confetti";
 
 
-
-piece.style.left=
-
+c.style.left=
 Math.random()*100+"vw";
 
 
-
-piece.style.background=
+c.style.background=
 
 [
 "gold",
@@ -2071,44 +1349,38 @@ Math.floor(Math.random()*4)
 ];
 
 
-
-piece.style.animationDuration=
-
-(2+Math.random()*3)+"s";
-
-
-
-document.body.appendChild(piece);
+document.body.appendChild(c);
 
 
 
 setTimeout(()=>{
 
-piece.remove();
+c.remove();
 
-},5000);
-
-
-
-}
+},4000);
 
 
 
 }
 
 
+}
 
 
 
 
 
-// =============================
-// START GAME
-// =============================
+// START
+
+load();
+
+restoreHold();
 
 
-loadGame();
+
+</script>
 
 
-checkHoldAfterRefresh();
+</body>
 
+</html>
