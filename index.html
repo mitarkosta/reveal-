@@ -4594,3 +4594,507 @@ console.log(
 
 
 </script>
+<!-- =========================================
+ PART 7 / GPU PERFORMANCE OPTIMIZATION
+ MOBILE PATCH
+========================================= -->
+
+
+<style>
+
+
+/* =====================================
+   GPU OPTIMIZATION
+===================================== */
+
+
+.machine,
+.slot,
+button,
+#holdBox,
+.snowflake,
+.coin,
+.lightBeam{
+
+will-change:transform, opacity;
+
+}
+
+
+
+
+
+/* =====================================
+   LIGHTER MACHINE SHADOW
+===================================== */
+
+
+.machine{
+
+
+box-shadow:
+
+0 0 20px gold,
+0 0 45px orange;
+
+
+}
+
+
+
+
+
+/* =====================================
+   OPTIMIZED FROZEN MODE
+===================================== */
+
+
+.machine.frozen{
+
+
+filter:
+
+brightness(.55)
+saturate(.4);
+
+
+}
+
+
+
+.machine.frozen::after{
+
+
+animation:none;
+
+
+opacity:.7;
+
+
+}
+
+
+
+
+
+
+/* =====================================
+   LIGHTER SLOT EFFECT
+===================================== */
+
+
+.slot{
+
+
+box-shadow:
+
+
+0 0 12px gold,
+inset 0 0 12px black;
+
+
+}
+
+
+
+
+
+.slot.spinning{
+
+
+filter:
+
+blur(2px);
+
+
+}
+
+
+
+
+.slot.stopGlow{
+
+
+animation:
+
+slotStopGlow .5s;
+
+
+}
+
+
+
+@keyframes slotStopGlow{
+
+
+0%{
+
+
+box-shadow:
+
+0 0 10px white;
+
+
+}
+
+
+
+50%{
+
+
+box-shadow:
+
+0 0 35px gold;
+
+
+}
+
+
+
+100%{
+
+
+box-shadow:
+
+0 0 15px gold;
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+/* =====================================
+   REDUCED BACKGROUND LOAD
+===================================== */
+
+
+body::before{
+
+
+animation-duration:
+
+25s;
+
+
+opacity:.7;
+
+
+}
+
+
+
+body::after{
+
+
+opacity:.12;
+
+
+animation-duration:
+
+30s;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================
+   HOLD OPTIMIZATION
+===================================== */
+
+
+#holdOverlay{
+
+
+backdrop-filter:none;
+
+
+background:
+
+rgba(0,0,0,.9);
+
+
+}
+
+
+
+#ice{
+
+
+animation-duration:
+
+4s;
+
+
+opacity:.8;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================
+   FIRE EFFECT OPTIMIZED
+===================================== */
+
+
+.lastReelFire{
+
+
+animation:
+
+fireOptimized .5s infinite alternate;
+
+
+}
+
+
+
+@keyframes fireOptimized{
+
+
+from{
+
+
+box-shadow:
+
+0 0 20px orange;
+
+
+}
+
+
+
+to{
+
+
+box-shadow:
+
+0 0 50px red;
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================
+   MOBILE MODE
+===================================== */
+
+
+@media(max-width:600px){
+
+
+
+body::before{
+
+
+display:none;
+
+
+}
+
+
+
+body::after{
+
+
+opacity:.08;
+
+
+}
+
+
+
+
+.machine{
+
+
+box-shadow:
+
+0 0 20px gold;
+
+
+}
+
+
+
+.slot{
+
+
+box-shadow:
+
+0 0 8px gold,
+inset 0 0 10px black;
+
+
+}
+
+
+
+
+#holdBox{
+
+
+box-shadow:
+
+0 0 30px cyan,
+0 0 50px gold;
+
+
+}
+
+
+
+}
+
+
+
+</style>
+
+
+
+<script>
+
+
+// =====================================
+// PERFORMANCE MANAGER
+// =====================================
+
+
+let performanceMode =
+window.innerWidth < 600;
+
+
+
+
+
+function reduceEffects(){
+
+
+
+if(performanceMode){
+
+
+
+// по-малко снежинки
+
+
+document
+.querySelectorAll(".snowflake")
+.forEach((s,i)=>{
+
+
+if(i%2===0)
+
+s.remove();
+
+
+});
+
+
+
+
+// по-малко частици
+
+
+document
+.querySelectorAll(".iceParticle")
+.forEach((p,i)=>{
+
+
+if(i%2===0)
+
+p.remove();
+
+
+});
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+setInterval(
+
+reduceEffects,
+
+5000
+
+);
+
+
+
+
+
+
+
+// =====================================
+// FRAME RATE FRIENDLY ANIMATION
+// =====================================
+
+
+document
+.querySelectorAll(".slot")
+.forEach(slot=>{
+
+
+slot.style.transform =
+"translateZ(0)";
+
+
+});
+
+
+
+
+
+
+
+
+console.log(
+"GPU Optimization Enabled"
+);
+
+
+
+</script>
