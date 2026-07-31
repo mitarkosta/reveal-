@@ -2191,6 +2191,674 @@ restoreHold();
 
 
 </script>
+<script>
+
+
+/* =====================================
+   AUDIO ENGINE
+===================================== */
+
+
+let audioContext;
+
+
+
+function getAudio(){
+
+
+if(!audioContext){
+
+
+audioContext =
+new AudioContext();
+
+
+}
+
+
+return audioContext;
+
+
+}
+
+
+
+
+
+function tone(freq,time,type="sine"){
+
+
+
+let ctx =
+getAudio();
+
+
+
+let osc =
+ctx.createOscillator();
+
+
+
+let gain =
+ctx.createGain();
+
+
+
+
+osc.type =
+type;
+
+
+
+osc.frequency.value =
+freq;
+
+
+
+gain.gain.value =
+0.06;
+
+
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+
+osc.stop(
+
+ctx.currentTime+time
+
+);
+
+
+
+}
+
+
+
+
+
+function spinSound(){
+
+
+
+tone(
+180,
+0.1,
+"square"
+);
+
+
+
+setTimeout(()=>{
+
+
+tone(
+250,
+0.1,
+"square"
+);
+
+
+
+},100);
+
+
+
+}
+
+
+
+
+
+function reelStopSound(){
+
+
+tone(
+600,
+0.15,
+"triangle"
+);
+
+
+}
+
+
+
+
+
+function freezeSound(){
+
+
+
+tone(
+900,
+0.3,
+"sawtooth"
+);
+
+
+
+setTimeout(()=>{
+
+
+tone(
+450,
+0.5,
+"sine"
+);
+
+
+
+},300);
+
+
+
+}
+
+
+
+
+
+function jackpotSound(){
+
+
+
+tone(
+700,
+0.2,
+"square"
+);
+
+
+
+setTimeout(()=>{
+
+
+tone(
+1000,
+0.3,
+"square"
+);
+
+
+},200);
+
+
+
+setTimeout(()=>{
+
+
+tone(
+1400,
+0.7,
+"triangle"
+);
+
+
+},500);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================
+   SNOW SYSTEM DURING HOLD
+===================================== */
+
+
+function createSnow(){
+
+
+
+let container =
+document.getElementById(
+"snowContainer"
+);
+
+
+
+
+for(let i=0;i<80;i++){
+
+
+
+let snow =
+document.createElement(
+"div"
+);
+
+
+
+snow.className=
+"snowflake";
+
+
+
+snow.innerHTML="❄";
+
+
+
+snow.style.left =
+
+Math.random()*100+"vw";
+
+
+
+snow.style.fontSize =
+
+(
+10+
+Math.random()*30
+)
+
++"px";
+
+
+
+snow.style.animationDuration =
+
+(
+4+
+Math.random()*8
+)
+
++"s";
+
+
+
+snow.style.animationDelay =
+
+Math.random()*5+"s";
+
+
+
+
+container.appendChild(
+snow
+);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+function removeSnow(){
+
+
+
+document
+.querySelectorAll(
+".snowflake"
+)
+
+.forEach(
+snow=>snow.remove()
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================
+   FESTIVAL LIGHTS
+===================================== */
+
+
+function festivalLights(){
+
+
+
+let light =
+document.createElement(
+"div"
+);
+
+
+
+light.className=
+"festivalFlash";
+
+
+
+document.body.appendChild(
+light
+);
+
+
+
+setTimeout(()=>{
+
+
+light.remove();
+
+
+},4000);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================
+   GOLD COINS
+===================================== */
+
+
+function createCoins(){
+
+
+
+let container =
+document.getElementById(
+"coins"
+);
+
+
+
+for(let i=0;i<80;i++){
+
+
+
+let coin =
+document.createElement(
+"div"
+);
+
+
+
+coin.className=
+"coin";
+
+
+
+coin.innerHTML="🪙";
+
+
+
+coin.style.left=
+
+Math.random()*100+"vw";
+
+
+
+coin.style.fontSize=
+
+(
+15+
+Math.random()*30
+)
+
++"px";
+
+
+
+coin.style.animationDelay=
+
+Math.random()*2+"s";
+
+
+
+container.appendChild(
+coin
+);
+
+
+
+setTimeout(()=>{
+
+
+coin.remove();
+
+
+},6000);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================
+   JACKPOT FLASH
+===================================== */
+
+
+function jackpotFlash(){
+
+
+
+let flash =
+document.getElementById(
+"flash"
+);
+
+
+
+flash.classList.remove(
+"show"
+);
+
+
+
+void flash.offsetWidth;
+
+
+
+flash.classList.add(
+"show"
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+/* =====================================
+   OVERRIDE HOLD
+===================================== */
+
+
+const oldHold =
+startHold;
+
+
+
+startHold=function(){
+
+
+
+oldHold();
+
+
+
+freezeSound();
+
+
+
+createSnow();
+
+
+
+};
+
+
+
+
+
+
+
+
+const oldEnd =
+endHold;
+
+
+
+endHold=function(){
+
+
+
+removeSnow();
+
+
+
+tone(
+300,
+0.3
+);
+
+
+
+oldEnd();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+/* =====================================
+   ENHANCE SPIN SOUND
+===================================== */
+
+
+const oldSpin =
+spin;
+
+
+
+spin=function(){
+
+
+
+spinSound();
+
+
+
+oldSpin();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+/* =====================================
+   ENHANCE COMPLETE
+===================================== */
+
+
+const oldComplete =
+completeGame;
+
+
+
+completeGame=function(){
+
+
+
+oldComplete();
+
+
+
+jackpotSound();
+
+
+
+jackpotFlash();
+
+
+
+festivalLights();
+
+
+
+createCoins();
+
+
+
+vibrate(
+"jackpot"
+);
+
+
+
+};
+
+
+
+
+
+
+</script>
 <style>
 
 
@@ -2437,578 +3105,6 @@ rotate(360deg);
 
 
 }
-
-
-
-</style>
-<script>
-
-
-/* =====================================
-   CONFETTI SYSTEM
-===================================== */
-
-
-function createConfetti(){
-
-
-
-for(let i=0;i<150;i++){
-
-
-
-let piece =
-document.createElement(
-"div"
-);
-
-
-
-piece.className =
-"confetti";
-
-
-
-piece.style.left =
-
-Math.random()*100+"vw";
-
-
-
-piece.style.background =
-
-[
-
-"gold",
-
-"red",
-
-"cyan",
-
-"white",
-
-"orange"
-
-]
-
-[
-
-Math.floor(
-
-Math.random()*5
-
-)
-
-];
-
-
-
-piece.style.animationDelay =
-
-Math.random()*2+"s";
-
-
-
-document.body.appendChild(
-piece
-);
-
-
-
-setTimeout(()=>{
-
-
-piece.remove();
-
-
-},5000);
-
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-/* =====================================
-   GOLD PARTICLES
-===================================== */
-
-
-function createGoldParticles(){
-
-
-
-for(let i=0;i<80;i++){
-
-
-
-let p =
-document.createElement(
-"div"
-);
-
-
-
-p.className =
-"goldParticle";
-
-
-
-p.style.left =
-
-Math.random()*100+"vw";
-
-
-
-p.style.top =
-
-Math.random()*100+"vh";
-
-
-
-document.body.appendChild(
-p
-);
-
-
-
-setTimeout(()=>{
-
-
-p.remove();
-
-
-},3000);
-
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-/* =====================================
-   FINAL JACKPOT
-===================================== */
-
-
-function completeGame(){
-
-
-
-spinBtn.disabled=true;
-
-
-
-spinning=false;
-
-
-
-slots[0].innerHTML="💰";
-
-slots[1].innerHTML="⭐";
-
-slots[2].innerHTML="💎";
-
-
-
-
-
-message.innerHTML=
-
-"🎉 JACKPOT 🎉";
-
-
-
-
-
-jackpotSound();
-
-
-
-jackpotFlash();
-
-
-
-festivalLights();
-
-
-
-createCoins();
-
-
-
-createConfetti();
-
-
-
-createGoldParticles();
-
-
-
-vibrate(
-"jackpot"
-);
-
-
-
-
-
-
-setTimeout(()=>{
-
-
-
-final.classList.add(
-"show"
-);
-
-
-
-final.innerHTML=
-
-`
-
-<h2>
-
-🎰 YOU FOUND THE JACKPOT 🎰
-
-</h2>
-
-
-<br>
-
-
-The interesting part was not only the reward.
-
-
-<br><br>
-
-
-Every spin created anticipation.
-
-
-<br><br>
-
-
-You never knew exactly when the result would appear.
-
-
-<br><br>
-
-
-The possibility kept your attention.
-
-
-<br><br>
-
-
-<b>
-
-This is variable ratio reinforcement.
-
-</b>
-
-
-<br><br>
-
-
-Unpredictable rewards create powerful motivation loops.
-
-`;
-
-
-
-
-},2500);
-
-
-
-}
-
-
-
-
-
-
-
-
-/* =====================================
-   CONFETTI CSS
-===================================== */
-
-
-</script>
-
-
-<style>
-
-
-/* =====================================
-   CONFETTI
-===================================== */
-
-
-.confetti{
-
-
-position:fixed;
-
-
-top:-30px;
-
-
-width:14px;
-
-
-height:22px;
-
-
-z-index:120;
-
-
-
-animation:
-
-confettiFall 5s linear forwards;
-
-
-}
-
-
-
-@keyframes confettiFall{
-
-
-from{
-
-
-transform:
-
-translateY(-50px)
-rotate(0deg);
-
-
-}
-
-
-
-to{
-
-
-transform:
-
-translateY(120vh)
-rotate(720deg);
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-/* =====================================
-   GOLD PARTICLES
-===================================== */
-
-
-.goldParticle{
-
-
-position:fixed;
-
-
-width:12px;
-
-
-height:12px;
-
-
-border-radius:50%;
-
-
-background:
-
-radial-gradient(
-
-circle,
-
-white,
-
-gold
-
-);
-
-
-
-box-shadow:
-
-
-0 0 20px gold;
-
-
-z-index:110;
-
-
-
-animation:
-
-particleExplode 3s forwards;
-
-
-}
-
-
-
-@keyframes particleExplode{
-
-
-0%{
-
-
-transform:
-
-scale(0);
-
-
-opacity:1;
-
-
-}
-
-
-
-50%{
-
-
-transform:
-
-scale(2);
-
-
-}
-
-
-
-100%{
-
-
-transform:
-
-translateY(-200px)
-scale(0);
-
-
-opacity:0;
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-/* =====================================
-   FINAL MESSAGE
-===================================== */
-
-
-#final{
-
-
-margin-top:30px;
-
-
-font-size:22px;
-
-
-line-height:1.7;
-
-
-opacity:0;
-
-
-transition:
-
-2s;
-
-
-color:white;
-
-
-}
-
-
-
-#final.show{
-
-
-opacity:1;
-
-
-}
-
-
-
-#final h2{
-
-
-font-size:
-
-40px;
-
-
-color:
-
-gold;
-
-
-
-text-shadow:
-
-
-0 0 20px gold,
-
-0 0 60px orange;
-
-
-}
-
-
-
 
 
 
@@ -3622,3 +3718,48 @@ scale(.75);
 
 
 </style>
+FrozenJackpot.html
+
+<head>
+
+    CSS ЧАСТ 1
+
+</head>
+
+
+<body>
+
+    HTML ЧАСТ 2
+
+</body>
+
+
+<script>
+
+    JS ЧАСТ 3
+
+</script>
+
+
+<script>
+
+    EFFECTS ЧАСТ 4
+
+</script>
+
+
+<script>
+
+    JACKPOT ЧАСТ 5
+
+</script>
+
+
+<script>
+
+    MOBILE PATCH ЧАСТ 6
+
+</script>
+
+
+</html>
