@@ -4072,37 +4072,27 @@ document
 
 </script>
 <!-- =========================================
- PART 6 OPTIMIZED FINAL ENGINE
- REPLACE OLD PART 6
+ PART 6 / OPTIMIZED FINAL PATCH
+ ПОСТАВИ СЛЕД PART 5
 ========================================= -->
+
 
 <script>
 
 
-// ================================
+// =========================================
 // OPTIMIZED SPIN ENGINE
-// ================================
+// =========================================
+
+
+const optimizedOldStartSpin = startSpin;
 
 
 startSpin=function(){
 
 
-if(
-spinning ||
-holdActive
-)
+if(spinning)
 return;
-
-
-
-if(sessionSpins>=SESSION_LIMIT){
-
-startHold();
-
-return;
-
-}
-
 
 
 
@@ -4116,8 +4106,10 @@ sessionSpins++;
 
 
 
-
 updateCounter();
+
+saveGame();
+
 
 
 
@@ -4129,15 +4121,18 @@ phoneVibrate();
 
 
 
-
-// включване blur
+// =========================================
+// BLUR START
+// =========================================
 
 
 slots.forEach(slot=>{
 
+
 slot.classList.add(
 "spinning"
 );
+
 
 });
 
@@ -4145,19 +4140,56 @@ slot.classList.add(
 
 
 
+// =========================================
+// ANTICIPATION DURING SPIN
+// всяко 5-то завъртане
+// =========================================
 
-let stopped=0;
+
+if(totalSpins % 5 === 0){
+
+
+setTimeout(()=>{
+
+
+let lastSlot = slots[2];
+
+
+lastSlot.classList.add(
+"lastReelFire"
+);
+
+
+
+message.innerHTML=
+
+"🔥 JACKPOT IS CLOSE...";
+
+
+
+},700);
+
+
+
+}
 
 
 
 
+
+
+
+
+// =========================================
+// REEL STOP SEQUENCE
+// =========================================
 
 
 slots.forEach((slot,index)=>{
 
 
-setTimeout(()=>{
 
+setTimeout(()=>{
 
 
 slot.classList.remove(
@@ -4173,14 +4205,17 @@ slot.classList.add(
 
 
 
-slot.innerHTML=
+slot.innerHTML =
 
 symbols[
-Math.floor(
-Math.random()*symbols.length
-)
-];
 
+Math.floor(
+
+Math.random()*symbols.length
+
+)
+
+];
 
 
 
@@ -4189,6 +4224,8 @@ reelStopSound();
 
 
 
+
+
 setTimeout(()=>{
 
 
@@ -4197,19 +4234,51 @@ slot.classList.remove(
 );
 
 
-},500);
+
+},700);
 
 
 
 
-stopped++;
+},900+(index*550));
+
+
+
+});
 
 
 
 
 
-if(stopped===slots.length){
 
+
+
+// =========================================
+// REMOVE FIRE AFTER LAST REEL
+// =========================================
+
+
+setTimeout(()=>{
+
+
+slots[2].classList.remove(
+"lastReelFire"
+);
+
+
+
+},2600);
+
+
+
+
+
+
+
+
+// =========================================
+// FINISH
+// =========================================
 
 
 setTimeout(()=>{
@@ -4219,28 +4288,11 @@ finishSpin();
 
 
 
-saveGame();
-
-
-
 spinning=false;
 
 
 
-},300);
-
-
-
-}
-
-
-
-
-},900+(index*450));
-
-
-
-});
+},3000);
 
 
 
@@ -4252,194 +4304,14 @@ spinning=false;
 
 
 
-// ================================
-// ANTICIPATION OPTIMIZED
-// ================================
 
 
-function fiveSpinAnticipation(){
+// =========================================
+// HOLD SOUND FIX
+// =========================================
 
 
-
-if(totalSpins%5!==0)
-
-return;
-
-
-
-let reel=slots[2];
-
-
-
-reel.classList.add(
-"lastReelFire"
-);
-
-
-
-message.innerHTML=
-
-"🔥 JACKPOT IS CLOSE";
-
-
-
-
-setTimeout(()=>{
-
-
-reel.classList.remove(
-"lastReelFire"
-);
-
-
-
-},2500);
-
-
-
-}
-
-
-
-
-
-const optimizedFinish =
-finishSpin;
-
-
-
-finishSpin=function(){
-
-
-
-optimizedFinish();
-
-
-
-fiveSpinAnticipation();
-
-
-
-};
-
-
-
-
-
-
-
-// ================================
-// MOBILE AUDIO UNLOCK
-// ================================
-
-
-document.addEventListener(
-
-"touchstart",
-
-()=>{
-
-
-if(audioContext &&
-audioContext.state==="suspended"){
-
-
-audioContext.resume();
-
-
-}
-
-
-},
-
-{
-once:true
-}
-
-);
-
-
-
-
-
-
-
-
-
-// ================================
-// LIGHTER SNOW SYSTEM
-// ================================
-
-
-function createSnow(){
-
-
-
-let amount =
-window.innerWidth < 600
-?
-35
-:
-60;
-
-
-
-for(let i=0;i<amount;i++){
-
-
-
-let snow=document.createElement(
-"div"
-);
-
-
-
-snow.className="snowflake";
-
-
-snow.innerHTML="❄";
-
-
-
-snow.style.left=
-Math.random()*100+"vw";
-
-
-
-snow.style.animationDuration=
-(5+Math.random()*5)+"s";
-
-
-
-snow.style.fontSize=
-(12+Math.random()*18)+"px";
-
-
-
-document.body.appendChild(snow);
-
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ================================
-// CLEAN HOLD
-// ================================
-
-
-const optimizedHold=startHold;
+const optimizedOldHold=startHold;
 
 
 
@@ -4447,58 +4319,11 @@ startHold=function(){
 
 
 
-optimizedHold();
+optimizedOldHold();
 
 
 
-machine.classList.add(
-"frozen"
-);
-
-
-
-};
-
-
-
-
-
-
-
-
-// ================================
-// CLEAN JACKPOT
-// ================================
-
-
-const optimizedJackpot =
-completeGame;
-
-
-
-completeGame=function(){
-
-
-
-optimizedJackpot();
-
-
-
-if(
-navigator.vibrate
-){
-
-
-navigator.vibrate(
-[
-100,
-50,
-250
-]
-);
-
-
-}
+freezeSound();
 
 
 
@@ -4511,29 +4336,36 @@ navigator.vibrate(
 
 
 
-// ================================
-// MOBILE PERFORMANCE
-// ================================
+
+// =========================================
+// MOBILE OPTIMIZATION
+// =========================================
 
 
-function optimizeMobile(){
+function mobileOptimize(){
+
+
+document.body.style.width="100vw";
+
+
+document.body.style.height="100dvh";
 
 
 
-if(window.innerWidth<600){
-
-
-
-document.body.style.touchAction=
-"none";
+if(window.innerWidth < 600){
 
 
 
 slots.forEach(slot=>{
 
 
-slot.style.willChange=
-"transform, filter";
+slot.style.width="82px";
+
+
+slot.style.height="82px";
+
+
+slot.style.fontSize="46px";
 
 
 });
@@ -4545,10 +4377,6 @@ slot.style.willChange=
 
 
 }
-
-
-
-optimizeMobile();
 
 
 
@@ -4556,533 +4384,41 @@ window.addEventListener(
 
 "resize",
 
-optimizeMobile
+mobileOptimize
 
 );
 
 
 
+mobileOptimize();
 
 
 
 
-// ================================
+
+
+
+
+
+// =========================================
 // AUTO SAVE
-// ================================
+// =========================================
 
 
 window.addEventListener(
 
-"pagehide",
+"beforeunload",
 
 ()=>{
 
+
 saveGame();
 
+
 }
 
 );
 
-
-
-
-
-console.log(
-"Frozen Jackpot Optimized Build"
-);
-
-
-
-</script>
-<!-- =========================================
- PART 7 / GPU PERFORMANCE OPTIMIZATION
- MOBILE PATCH
-========================================= -->
-
-
-<style>
-
-
-/* =====================================
-   GPU OPTIMIZATION
-===================================== */
-
-
-.machine,
-.slot,
-button,
-#holdBox,
-.snowflake,
-.coin,
-.lightBeam{
-
-will-change:transform, opacity;
-
-}
-
-
-
-
-
-/* =====================================
-   LIGHTER MACHINE SHADOW
-===================================== */
-
-
-.machine{
-
-
-box-shadow:
-
-0 0 20px gold,
-0 0 45px orange;
-
-
-}
-
-
-
-
-
-/* =====================================
-   OPTIMIZED FROZEN MODE
-===================================== */
-
-
-.machine.frozen{
-
-
-filter:
-
-brightness(.55)
-saturate(.4);
-
-
-}
-
-
-
-.machine.frozen::after{
-
-
-animation:none;
-
-
-opacity:.7;
-
-
-}
-
-
-
-
-
-
-/* =====================================
-   LIGHTER SLOT EFFECT
-===================================== */
-
-
-.slot{
-
-
-box-shadow:
-
-
-0 0 12px gold,
-inset 0 0 12px black;
-
-
-}
-
-
-
-
-
-.slot.spinning{
-
-
-filter:
-
-blur(2px);
-
-
-}
-
-
-
-
-.slot.stopGlow{
-
-
-animation:
-
-slotStopGlow .5s;
-
-
-}
-
-
-
-@keyframes slotStopGlow{
-
-
-0%{
-
-
-box-shadow:
-
-0 0 10px white;
-
-
-}
-
-
-
-50%{
-
-
-box-shadow:
-
-0 0 35px gold;
-
-
-}
-
-
-
-100%{
-
-
-box-shadow:
-
-0 0 15px gold;
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-/* =====================================
-   REDUCED BACKGROUND LOAD
-===================================== */
-
-
-body::before{
-
-
-animation-duration:
-
-25s;
-
-
-opacity:.7;
-
-
-}
-
-
-
-body::after{
-
-
-opacity:.12;
-
-
-animation-duration:
-
-30s;
-
-
-}
-
-
-
-
-
-
-
-
-
-/* =====================================
-   HOLD OPTIMIZATION
-===================================== */
-
-
-#holdOverlay{
-
-
-backdrop-filter:none;
-
-
-background:
-
-rgba(0,0,0,.9);
-
-
-}
-
-
-
-#ice{
-
-
-animation-duration:
-
-4s;
-
-
-opacity:.8;
-
-
-}
-
-
-
-
-
-
-
-
-
-/* =====================================
-   FIRE EFFECT OPTIMIZED
-===================================== */
-
-
-.lastReelFire{
-
-
-animation:
-
-fireOptimized .5s infinite alternate;
-
-
-}
-
-
-
-@keyframes fireOptimized{
-
-
-from{
-
-
-box-shadow:
-
-0 0 20px orange;
-
-
-}
-
-
-
-to{
-
-
-box-shadow:
-
-0 0 50px red;
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-/* =====================================
-   MOBILE MODE
-===================================== */
-
-
-@media(max-width:600px){
-
-
-
-body::before{
-
-
-display:none;
-
-
-}
-
-
-
-body::after{
-
-
-opacity:.08;
-
-
-}
-
-
-
-
-.machine{
-
-
-box-shadow:
-
-0 0 20px gold;
-
-
-}
-
-
-
-.slot{
-
-
-box-shadow:
-
-0 0 8px gold,
-inset 0 0 10px black;
-
-
-}
-
-
-
-
-#holdBox{
-
-
-box-shadow:
-
-0 0 30px cyan,
-0 0 50px gold;
-
-
-}
-
-
-
-}
-
-
-
-</style>
-
-
-
-<script>
-
-
-// =====================================
-// PERFORMANCE MANAGER
-// =====================================
-
-
-let performanceMode =
-window.innerWidth < 600;
-
-
-
-
-
-function reduceEffects(){
-
-
-
-if(performanceMode){
-
-
-
-// по-малко снежинки
-
-
-document
-.querySelectorAll(".snowflake")
-.forEach((s,i)=>{
-
-
-if(i%2===0)
-
-s.remove();
-
-
-});
-
-
-
-
-// по-малко частици
-
-
-document
-.querySelectorAll(".iceParticle")
-.forEach((p,i)=>{
-
-
-if(i%2===0)
-
-p.remove();
-
-
-});
-
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-setInterval(
-
-reduceEffects,
-
-5000
-
-);
-
-
-
-
-
-
-
-// =====================================
-// FRAME RATE FRIENDLY ANIMATION
-// =====================================
-
-
-document
-.querySelectorAll(".slot")
-.forEach(slot=>{
-
-
-slot.style.transform =
-"translateZ(0)";
-
-
-});
 
 
 
@@ -5092,7 +4428,9 @@ slot.style.transform =
 
 
 console.log(
-"GPU Optimization Enabled"
+
+"Frozen Jackpot Optimized Build Loaded"
+
 );
 
 
