@@ -729,6 +729,748 @@ Next spins available soon...
 
 
 
+<script>
+
+
+// =============================
+// GAME VARIABLES
+// =============================
+
+
+let totalSpins = 0;
+
+let sessionSpins = 0;
+
+let totalTarget = 100;
+
+let sessionLimit = 10;
+
+
+let spinning = false;
+
+
+
+const symbols = [
+"🍒",
+"🍋",
+"⭐",
+"💎",
+"🔔",
+"7️⃣"
+];
+
+
+
+const messages = [
+
+"Almost...",
+
+"So close...",
+
+"One symbol away",
+
+"Nearly there",
+
+"That was close",
+
+"Maybe next spin",
+
+"The jackpot is waiting",
+
+"Just missed it",
+
+"You almost had it",
+
+"Try again",
+
+"The next one could be it",
+
+"Close enough to feel it"
+
+];
+
+
+
+
+
+const slot1=document.getElementById("slot1");
+
+const slot2=document.getElementById("slot2");
+
+const slot3=document.getElementById("slot3");
+
+
+const button=document.getElementById("spinButton");
+
+
+const message=document.getElementById("message");
+
+
+const counter=document.getElementById("counter");
+
+
+const holdOverlay=document.getElementById("holdOverlay");
+
+
+const machine=document.getElementById("machine");
+
+
+const ice=document.getElementById("ice");
+
+
+
+
+// =============================
+// RANDOM SYMBOL
+// =============================
+
+
+function randomSymbol(){
+
+return symbols[
+Math.floor(Math.random()*symbols.length)
+];
+
+}
+
+
+
+// =============================
+// SPIN FUNCTION
+// =============================
+
+
+function spin(){
+
+
+if(spinning){
+
+return;
+
+}
+
+
+if(totalSpins>=100){
+
+return;
+
+}
+
+
+
+if(sessionSpins>=10){
+
+startHold();
+
+return;
+
+}
+
+
+
+spinning=true;
+
+
+totalSpins++;
+
+sessionSpins++;
+
+
+counter.innerHTML=
+
+"Spin: " + totalSpins + " / 100";
+
+
+
+machine.classList.add("freeze");
+
+
+let slots=[slot1,slot2,slot3];
+
+
+
+slots.forEach(slot=>{
+
+slot.classList.add("spin");
+
+});
+
+
+
+let rounds=20;
+
+
+
+let current=0;
+
+
+
+let animation=setInterval(()=>{
+
+
+slots.forEach(slot=>{
+
+slot.innerHTML=randomSymbol();
+
+});
+
+
+
+current++;
+
+
+
+if(current>=rounds){
+
+
+clearInterval(animation);
+
+
+
+slots.forEach(slot=>{
+
+slot.classList.remove("spin");
+
+});
+
+
+
+finishSpin();
+
+
+
+spinning=false;
+
+
+}
+
+
+
+},100);
+
+
+
+}
+
+
+
+
+
+// =============================
+// RESULT
+// =============================
+
+
+function finishSpin(){
+
+
+let chance=Math.random();
+
+
+
+if(chance<0.15){
+
+
+
+let near=[
+
+["⭐","⭐","🍋"],
+
+["💎","💎","⭐"],
+
+["7️⃣","7️⃣","🔔"],
+
+["🍒","🍒","💎"],
+
+["🔔","🔔","🍋"]
+
+];
+
+
+
+let result=
+
+near[
+Math.floor(Math.random()*near.length)
+];
+
+
+
+slot1.innerHTML=result[0];
+
+slot2.innerHTML=result[1];
+
+slot3.innerHTML=result[2];
+
+
+
+message.innerHTML=
+
+"🔥 SO CLOSE...";
+
+
+
+}
+
+else{
+
+
+message.innerHTML=
+
+messages[
+Math.floor(Math.random()*messages.length)
+];
+
+
+}
+
+
+
+saveGame();
+
+
+
+}
+
+
+
+
+
+// =============================
+// HOLD MODE
+// =============================
+
+
+function startHold(){
+
+
+holdOverlay.style.display="flex";
+
+
+ice.style.display="block";
+
+
+button.disabled=true;
+
+
+
+message.innerHTML=
+
+"Game paused";
+
+
+
+}
+
+
+
+
+
+// =============================
+// END GAME CHECK
+// =============================
+
+
+function jackpotCheck(){
+
+
+if(totalSpins>=100){
+
+
+button.disabled=true;
+
+
+
+message.innerHTML=
+
+"🎉 JACKPOT! 🎉";
+
+
+
+finalWin();
+
+
+}
+
+
+}
+
+
+
+
+
+<script>
+
+
+// =============================
+// GAME VARIABLES
+// =============================
+
+
+let totalSpins = 0;
+
+let sessionSpins = 0;
+
+let totalTarget = 100;
+
+let sessionLimit = 10;
+
+
+let spinning = false;
+
+
+
+const symbols = [
+"🍒",
+"🍋",
+"⭐",
+"💎",
+"🔔",
+"7️⃣"
+];
+
+
+
+const messages = [
+
+"Almost...",
+
+"So close...",
+
+"One symbol away",
+
+"Nearly there",
+
+"That was close",
+
+"Maybe next spin",
+
+"The jackpot is waiting",
+
+"Just missed it",
+
+"You almost had it",
+
+"Try again",
+
+"The next one could be it",
+
+"Close enough to feel it"
+
+];
+
+
+
+
+
+const slot1=document.getElementById("slot1");
+
+const slot2=document.getElementById("slot2");
+
+const slot3=document.getElementById("slot3");
+
+
+const button=document.getElementById("spinButton");
+
+
+const message=document.getElementById("message");
+
+
+const counter=document.getElementById("counter");
+
+
+const holdOverlay=document.getElementById("holdOverlay");
+
+
+const machine=document.getElementById("machine");
+
+
+const ice=document.getElementById("ice");
+
+
+
+
+// =============================
+// RANDOM SYMBOL
+// =============================
+
+
+function randomSymbol(){
+
+return symbols[
+Math.floor(Math.random()*symbols.length)
+];
+
+}
+
+
+
+// =============================
+// SPIN FUNCTION
+// =============================
+
+
+function spin(){
+
+
+if(spinning){
+
+return;
+
+}
+
+
+if(totalSpins>=100){
+
+return;
+
+}
+
+
+
+if(sessionSpins>=10){
+
+startHold();
+
+return;
+
+}
+
+
+
+spinning=true;
+
+
+totalSpins++;
+
+sessionSpins++;
+
+
+counter.innerHTML=
+
+"Spin: " + totalSpins + " / 100";
+
+
+
+machine.classList.add("freeze");
+
+
+let slots=[slot1,slot2,slot3];
+
+
+
+slots.forEach(slot=>{
+
+slot.classList.add("spin");
+
+});
+
+
+
+let rounds=20;
+
+
+
+let current=0;
+
+
+
+let animation=setInterval(()=>{
+
+
+slots.forEach(slot=>{
+
+slot.innerHTML=randomSymbol();
+
+});
+
+
+
+current++;
+
+
+
+if(current>=rounds){
+
+
+clearInterval(animation);
+
+
+
+slots.forEach(slot=>{
+
+slot.classList.remove("spin");
+
+});
+
+
+
+finishSpin();
+
+
+
+spinning=false;
+
+
+}
+
+
+
+},100);
+
+
+
+}
+
+
+
+
+
+// =============================
+// RESULT
+// =============================
+
+
+function finishSpin(){
+
+
+let chance=Math.random();
+
+
+
+if(chance<0.15){
+
+
+
+let near=[
+
+["⭐","⭐","🍋"],
+
+["💎","💎","⭐"],
+
+["7️⃣","7️⃣","🔔"],
+
+["🍒","🍒","💎"],
+
+["🔔","🔔","🍋"]
+
+];
+
+
+
+let result=
+
+near[
+Math.floor(Math.random()*near.length)
+];
+
+
+
+slot1.innerHTML=result[0];
+
+slot2.innerHTML=result[1];
+
+slot3.innerHTML=result[2];
+
+
+
+message.innerHTML=
+
+"🔥 SO CLOSE...";
+
+
+
+}
+
+else{
+
+
+message.innerHTML=
+
+messages[
+Math.floor(Math.random()*messages.length)
+];
+
+
+}
+
+
+
+saveGame();
+
+
+
+}
+
+
+
+
+
+// =============================
+// HOLD MODE
+// =============================
+
+
+function startHold(){
+
+
+holdOverlay.style.display="flex";
+
+
+ice.style.display="block";
+
+
+button.disabled=true;
+
+
+
+message.innerHTML=
+
+"Game paused";
+
+
+
+}
+
+
+
+
+
+// =============================
+// END GAME CHECK
+// =============================
+
+
+function jackpotCheck(){
+
+
+if(totalSpins>=100){
+
+
+button.disabled=true;
+
+
+
+message.innerHTML=
+
+"🎉 JACKPOT! 🎉";
+
+
+
+finalWin();
+
+
+}
+
+
+}
+
+
+
+
+
+</script>
+
 // =============================
 // LOCAL STORAGE SAVE
 // =============================
