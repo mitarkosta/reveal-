@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<title>Almost...</title>
+
+<style>
+body{
+    background:#111;
+    color:white;
+    font-family:Arial, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    flex-direction:column;
+    margin:0;
+}
+
+h1{
+    font-size:70px;
+    margin-bottom:10px;
+}
+
+p{
+    font-size:22px;
+}
+
+button{
+    padding:20px 40px;
+    font-size:25px;
+    margin-top:40px;
+    cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Almost...</h1>
+
+<p>Ще разбереш накрая.</p>
+
+<button onclick="clickMe()">Reveal</button>
+
+<script>
+
+let clicks = 0;
+
+function clickMe(){
+
+    clicks++;
+
+    if(clicks === 1){
+        alert("Not yet.");
+    }
+    else if(clicks === 2){
+        alert("Still not.");
+    }
+    else if(clicks === 3){
+        alert("Almost...");
+    }
+    else if(clicks === 4){
+        alert("One more try...");
+    }
+    else{
+        alert("Come back later.");
+    }
+
+}
+
+</script>
+
+</body>
+</html>
