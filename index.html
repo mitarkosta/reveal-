@@ -11004,3 +11004,375 @@ console.log(
 </script>
 
 <script>
+
+   <script>
+
+/*
+===========================================
+FINAL 100 SPIN RESET PATCH
+RESET AFTER JACKPOT + REFRESH SAFE
+===========================================
+*/
+
+
+const OLD_TOTAL_LIMIT = 100;
+
+
+
+/*
+-------------------------------------------
+RESET EVERYTHING
+-------------------------------------------
+*/
+
+
+function fullGameReset(){
+
+
+console.log(
+"RESETTING FROZEN JACKPOT"
+);
+
+
+
+/* game variables */
+
+totalSpins = 0;
+
+sessionSpins = 0;
+
+spinning = false;
+
+holdActive = false;
+
+
+
+/* remove saves */
+
+
+localStorage.removeItem(
+"FrozenJackpotV4"
+);
+
+
+localStorage.removeItem(
+"FrozenJackpotFinal"
+);
+
+
+localStorage.removeItem(
+"FrozenHoldEnd"
+);
+
+
+
+
+
+/* counter */
+
+
+if(counter){
+
+counter.innerHTML=
+
+`
+Spin: 0 / 100
+`;
+
+}
+
+
+
+/* button */
+
+if(spinBtn){
+
+spinBtn.disabled=false;
+
+}
+
+
+
+
+
+/* message */
+
+
+if(message){
+
+message.innerHTML=
+
+"🎰 READY";
+
+}
+
+
+
+
+
+/* remove effects */
+
+
+document.body.classList.remove(
+"partyMode"
+);
+
+
+machine.classList.remove(
+"jackpotMode",
+"frozen"
+);
+
+
+
+
+/* clear final */
+
+
+if(final){
+
+final.classList.remove(
+"show"
+);
+
+
+final.innerHTML="";
+
+}
+
+
+
+
+
+}
+
+
+
+
+/*
+-------------------------------------------
+FINAL CELEBRATION
+-------------------------------------------
+*/
+
+
+function finalCycleComplete(){
+
+
+
+// jackpot visual
+
+
+if(typeof createJackpotFlash==="function")
+createJackpotFlash();
+
+
+
+if(typeof createCoins==="function")
+createCoins();
+
+
+
+if(typeof createJackpotBeam==="function")
+createJackpotBeam();
+
+
+
+
+
+message.innerHTML=
+
+"🎉 JACKPOT COMPLETE 🎉";
+
+
+
+
+
+final.innerHTML=
+
+`
+
+<h2>
+
+🎰 JACKPOT COMPLETE 🎰
+
+</h2>
+
+
+<br>
+
+
+Наградата беше в главата ти през цялото време.
+
+
+<br><br>
+
+
+Всеки спин създаваше очакване.
+
+
+<br><br>
+
+
+<b>
+VARIABLE REWARD
+</b>
+
+
+`;
+
+
+
+final.classList.add(
+"show"
+);
+
+
+
+
+
+/*
+ wait for celebration
+ then reset
+*/
+
+
+setTimeout(()=>{
+
+
+fullGameReset();
+
+
+
+},7000);
+
+
+
+
+}
+
+
+
+
+
+
+/*
+-------------------------------------------
+OVERRIDE COMPLETE GAME
+-------------------------------------------
+*/
+
+
+const oldCompleteGameReset = completeGame;
+
+
+
+completeGame=function(){
+
+
+
+// НЕ позволяваме стария save
+
+
+finalCycleComplete();
+
+
+
+};
+
+
+
+
+
+
+
+
+/*
+-------------------------------------------
+REFRESH CHECK
+-------------------------------------------
+*/
+
+
+window.addEventListener(
+"load",
+()=>{
+
+
+
+if(
+Number(totalSpins)>=100
+){
+
+
+
+fullGameReset();
+
+
+
+}
+
+
+
+});
+
+
+
+
+
+
+/*
+-------------------------------------------
+SAFE SPIN CHECK
+-------------------------------------------
+*/
+
+
+const oldFinishSpinReset =
+finishSpin;
+
+
+
+finishSpin=function(){
+
+
+
+oldFinishSpinReset();
+
+
+
+if(
+totalSpins>=100
+){
+
+
+
+setTimeout(()=>{
+
+
+finalCycleComplete();
+
+
+
+},500);
+
+
+
+}
+
+
+
+};
+
+
+
+
+
+
+console.log(
+"FINAL RESET LOOP PATCH ACTIVE"
+);
+
+
+
+</script>
