@@ -8609,3 +8609,157 @@ startSpin=function(){
 }
 
 </script>
+
+   <script>
+// =======================================
+// UPGRADE V2 - REAL REEL ENGINE
+// =======================================
+
+// моторен звук
+let motorLoop=null;
+
+function startMotor(){
+
+    let ctx=getAudio();
+
+    motorLoop=ctx.createOscillator();
+    let gain=ctx.createGain();
+
+    motorLoop.type="sawtooth";
+    motorLoop.frequency.value=70;
+
+    gain.gain.value=.025;
+
+    motorLoop.connect(gain);
+    gain.connect(ctx.destination);
+
+    motorLoop.start();
+
+}
+
+function stopMotor(){
+
+    if(!motorLoop) return;
+
+    motorLoop.stop();
+    motorLoop=null;
+
+}
+
+// --------------------------------------
+// въртене на една ролка
+// --------------------------------------
+
+function spinReel(slot,duration){
+
+    return new Promise(resolve=>{
+
+        let speed=40;
+
+        let timer=setInterval(()=>{
+
+            slot.innerHTML=
+            symbols[Math.floor(Math.random()*symbols.length)];
+
+        },speed);
+
+        slot.animate([
+
+            {
+                transform:"translateY(-20px) scaleY(1.2)",
+                filter:"blur(5px)"
+            },
+
+            {
+                transform:"translateY(20px) scaleY(.8)",
+                filter:"blur(5px)"
+            }
+
+        ],{
+
+            duration:120,
+            iterations:Infinity
+
+        });
+
+        setTimeout(()=>{
+
+            clearInterval(timer);
+
+            slot.getAnimations().forEach(a=>a.cancel());
+
+            resolve();
+
+        },duration);
+
+    });
+
+}
+
+// --------------------------------------
+// нов Spin Engine
+// --------------------------------------
+
+startSpin=async function(){
+
+    if(spinning) return;
+
+    spinning=true;
+
+    totalSpins++;
+    sessionSpins++;
+
+    updateCounter();
+    saveGame();
+
+    phoneVibrate();
+
+    startMotor();
+
+    let anticipation=
+        totalSpins%5===0;
+
+    if(anticipation){
+
+        slots[2].classList.add("lastReelFire");
+
+        message.innerHTML=
+        "🔥 JACKPOT IS CLOSE...";
+    }
+
+    await spinReel(slots[0],1400);
+
+    reelStopSound();
+
+    navigator.vibrate?.(80);
+
+    await spinReel(slots[1],1800);
+
+    reelStopSound();
+
+    navigator.vibrate?.(80);
+
+    await spinReel(
+
+        slots[2],
+
+        anticipation ? 3200 : 2200
+
+    );
+
+    slots[2].classList.remove(
+        "lastReelFire"
+    );
+
+    reelStopSound();
+
+    navigator.vibrate?.([120,40,120]);
+
+    stopMotor();
+
+    finishSpin();
+
+    spinning=false;
+
+}
+</script>
