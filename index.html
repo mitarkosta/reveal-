@@ -10119,101 +10119,50 @@ console.log(
 
 </script>
 
-   <script>
 
-/* =====================================
-   FROZEN JACKPOT BUY TIME CARD BONUS
-===================================== */
+<script>
 
-
-let cardGameActive=false;
-
-let cardAttempts=0;
-
-let selectedCards=[];
-
-let cardTimerWin=false;
+/* =================================================
+   BUY TIME + CARD GAME COMPLETE PATCH
+   PLACE AT VERY END
+================================================= */
 
 
-
-
-// ================================
-// CREATE BUY BUTTON
-// ================================
-
-
-function createBuyTimeButton(){
-
-
-let box=document.getElementById(
-"holdBox"
-);
-
-
-if(!box)
-return;
-
-
-
-let btn=document.createElement("button");
-
-
-btn.id="buyTimeBtn";
-
-
-btn.innerHTML=
-"❄ BUY TIME - CARD BONUS";
-
-
-
-btn.onclick=function(){
-
-startCardGame();
-
-};
-
-
-
-box.appendChild(btn);
-
-
-
-}
-
-      /* ===============================
-   BUY TIME CARD GAME
+/* ===============================
+   CREATE STYLE
 ================================ */
 
 
+const cardPatchStyle=document.createElement("style");
+
+cardPatchStyle.innerHTML=`
+
 #buyTimeBtn{
+
+display:none;
 
 margin-top:20px;
 
-padding:15px 35px;
+padding:16px 35px;
 
 font-size:22px;
 
 border-radius:40px;
 
-background:
-linear-gradient(
-gold,
-orange
-);
-
 border:none;
+
+background:
+linear-gradient(gold,orange);
 
 font-weight:bold;
 
 box-shadow:
-0 0 30px gold;
+0 0 40px gold;
 
 }
 
 
-
 #cardGame{
-
 
 display:none;
 
@@ -10221,16 +10170,12 @@ position:fixed;
 
 inset:0;
 
-z-index:300;
-
+z-index:500;
 
 background:
+rgba(0,0,0,.88);
 
-rgba(0,0,0,.85);
-
-
-backdrop-filter:blur(12px);
-
+backdrop-filter:blur(15px);
 
 justify-content:center;
 
@@ -10238,29 +10183,24 @@ align-items:center;
 
 flex-direction:column;
 
-
 }
-
-
 
 
 .cardTitle{
 
-font-size:35px;
+font-size:32px;
 
 color:gold;
 
-text-shadow:
-0 0 20px gold;
+margin-bottom:25px;
 
-margin-bottom:20px;
+text-shadow:
+0 0 30px gold;
 
 }
 
 
-
 #cards{
-
 
 display:grid;
 
@@ -10272,8 +10212,7 @@ gap:15px;
 }
 
 
-
-.card{
+.buyCard{
 
 
 width:90px;
@@ -10281,70 +10220,63 @@ width:90px;
 height:120px;
 
 
-background:
+border-radius:15px;
 
+
+border:3px solid gold;
+
+
+background:
 linear-gradient(
 145deg,
-#222,
+#333,
 #050505
 );
 
 
-border:
-
-3px solid gold;
-
-
-border-radius:15px;
-
-
 display:flex;
 
-justify-content:center;
-
 align-items:center;
+
+justify-content:center;
 
 
 font-size:45px;
 
 
+transition:.5s;
+
+
 cursor:pointer;
-
-
-transition:.4s;
-
 
 }
 
 
 
-.card.selected{
-
-
-filter:
-brightness(1.8);
+.buyCard.selected{
 
 
 box-shadow:
 
-0 0 40px cyan;
+0 0 50px cyan;
+
+
+filter:
+
+brightness(1.8);
 
 
 border-color:white;
+
 
 }
 
 
 
-.card.revealed{
+.buyCard.open{
 
 
-background:
-
-linear-gradient(
-white,
-#ddd
-);
+background:white;
 
 
 color:black;
@@ -10354,29 +10286,16 @@ color:black;
 
 
 
-.card.dark{
+.buyCard.dark{
 
 
 opacity:.35;
 
-
 }
 
 
 
-#cardMessage{
-
-
-margin-top:25px;
-
-font-size:25px;
-
-color:white;
-
-}
-
-
-.winCard{
+.buyCard.win{
 
 
 animation:
@@ -10387,15 +10306,14 @@ cardWin 1s infinite alternate;
 
 
 
-@keyframes cardWin{
 
+@keyframes cardWin{
 
 from{
 
 transform:scale(1);
 
-box-shadow:
-0 0 20px gold;
+box-shadow:0 0 20px gold;
 
 }
 
@@ -10404,1205 +10322,72 @@ to{
 
 transform:scale(1.15);
 
-box-shadow:
-0 0 80px gold;
+box-shadow:0 0 100px gold;
 
 }
-
-
-}
-
-
-
-
-
-// ================================
-// CARD GAME START
-// ================================
-
-
-function startCardGame(){
-
-
-
-cardGameActive=true;
-
-
-cardAttempts=0;
-
-
-selectedCards=[];
-
-
-
-let box=document.getElementById(
-"holdBox"
-);
-
-
-
-box.innerHTML=`
-
-<h2 style="color:cyan">
-
-CARD BONUS
-
-</h2>
-
-
-<p style="
-margin:20px;
-color:white;
-font-size:18px;
-">
-
-Избери 3 карти.<br>
-
-Трябва да бъдат еднаква боя.
-
-</p>
-
-
-<div id="cardCounter">
-
-Опит: 0 / 15
-
-</div>
-
-
-<div id="cardsGrid"></div>
-
-
-<div id="cardMessage"></div>
-
-
-`;
-
-
-
-createCards();
-
-
 
 }
 
 
 
 
-
-
-
-
-// ================================
-// CREATE 9 CARDS
-// ================================
-
-
-function createCards(){
-
-
-
-let grid=
-document.getElementById(
-"cardsGrid"
-);
-
-
-
-grid.style.display="grid";
-
-grid.style.gridTemplateColumns=
-"repeat(3,90px)";
-
-grid.style.gap="15px";
-
-grid.style.justifyContent="center";
-
-
-
-
-
-let suits=[
-
-"♠",
-"♥",
-"♦",
-"♣"
-
-];
-
-
-
-for(let i=0;i<9;i++){
-
-
-
-let card=document.createElement(
-"div"
-);
-
-
-
-card.className="bonusCard";
-
-
-card.dataset.suit=
-
-suits[
-Math.floor(
-Math.random()*suits.length
-)
-];
-
-
-
-card.innerHTML="❓";
-
-
-
-card.onclick=function(){
-
-
-chooseCard(card);
-
-
-
-};
-
-
-
-grid.appendChild(card);
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ================================
-// SELECT CARD
-// ================================
-
-
-function chooseCard(card){
-
-
-
-if(cardGameActive===false)
-
-return;
-
-
-
-if(
-selectedCards.includes(card)
-)
-
-return;
-
-
-
-
-selectedCards.push(card);
-
-
-
-card.style.borderColor="gold";
-
-
-
-
-if(selectedCards.length===3){
-
-
-revealCards();
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ================================
-// REVEAL
-// ================================
-
-
-function revealCards(){
-
-
-
-cardAttempts++;
-
-
-
-let counter=
-document.getElementById(
-"cardCounter"
-);
-
-
-if(counter)
-
-counter.innerHTML=
-
-`
-Опит:
-${cardAttempts}
-/15
-`;
-
-
-
-
-
-let suits=
-selectedCards.map(
-c=>c.dataset.suit
-);
-
-
-
-
-
-selectedCards.forEach(c=>{
-
-
-c.innerHTML=
-c.dataset.suit;
-
-
-
-c.style.color="red";
-
-
-});
-
-
-
-
-
-
-let win=
-
-suits[0]===suits[1]
-&&
-suits[1]===suits[2];
-
-
-
-
-
-
-
-// гарантиран успех след 15
-
-if(
-cardAttempts>=15
-)
-
-win=true;
-
-
-
-
-
-
-
-
-if(win){
-
-
-cardWin();
-
-
-}
-
-else{
-
-
-setTimeout(()=>{
-
-
-selectedCards=[];
-
-
-createCards();
-
-
-
-},1500);
-
-
-
-}
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ================================
-// WIN
-// ================================
-
-
-function cardWin(){
-
-
-
-cardGameActive=false;
-
-
-
-cardTimerWin=true;
-
-
-
-let msg=
-document.getElementById(
-"cardMessage"
-);
-
-
-
-if(msg)
-
-
-msg.innerHTML=
-
-`
-
-<h1 style="
-color:gold;
-text-shadow:0 0 40px gold;
-">
-
-🎉 WIN 🎉
-
-</h1>
-
-`;
-
-
-
-
-
-// спира HOLD
-
-
-if(typeof holdActive!="undefined")
-
-holdActive=false;
-
-
-
-
-localStorage.removeItem(
-"FrozenHoldEnd"
-);
-
-
-
-
-
-setTimeout(()=>{
-
-
-exitCardGame();
-
-
-
-},2500);
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ================================
-// RETURN TO SLOT
-// ================================
-
-
-function exitCardGame(){
-
-
-
-let overlay=
-document.getElementById(
-"holdOverlay"
-);
-
-
-
-overlay.style.display="none";
-
-
-
-let box=
-document.getElementById(
-"holdBox"
-);
-
-
-
-box.innerHTML="";
-
-
-
-if(typeof sessionSpins!="undefined")
-
-sessionSpins=0;
-
-
-
-if(typeof spinBtn!="undefined")
-
-spinBtn.disabled=false;
-
-
-
-if(typeof message!="undefined")
-
-message.innerHTML=
-"🎰 READY";
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ================================
-// PATCH HOLD START
-// ================================
-
-
-const oldHoldCard=startHold;
-
-
-
-startHold=function(){
-
-
-oldHoldCard();
-
-
-
-setTimeout(()=>{
-
-
-createBuyTimeButton();
-
-
-
-},500);
-
-
-
-};
-
-
-
-
-
-
-
-
-
-// ================================
-// STYLE
-// ================================
-
-
-let cardStyle=document.createElement(
-"style"
-);
-
-
-
-cardStyle.innerHTML=`
-
-#buyTimeBtn{
+#cardMessage{
 
 margin-top:25px;
 
-background:
-
-linear-gradient(
-gold,
-orange
-);
-
-color:#111;
-
-font-size:20px;
-
-padding:15px;
-
-border-radius:40px;
-
-}
-
-
-.bonusCard{
-
-
-height:90px;
-
-width:90px;
-
-background:
-
-linear-gradient(
-145deg,
-#333,
-#050505
-);
-
-
-border:
-
-3px solid cyan;
-
-
-border-radius:15px;
-
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-
-font-size:45px;
-
+font-size:25px;
 
 color:white;
 
-
-box-shadow:
-
-0 0 20px cyan;
-
-
-cursor:pointer;
-
-
 }
-
-
-
-.bonusCard:hover{
-
-
-box-shadow:
-
-0 0 50px gold;
-
-
-}
-
 
 `;
 
+document.head.appendChild(cardPatchStyle);
 
 
-document.head.appendChild(cardStyle);
 
 
 
-console.log(
-"Card Bonus HOLD upgrade loaded"
+/* ===============================
+ CREATE BUTTON
+================================ */
+
+
+const buyTimeButton=document.createElement("button");
+
+buyTimeButton.id="buyTimeBtn";
+
+buyTimeButton.innerHTML=
+"❄ BUY TIME";
+
+
+document
+.getElementById("holdOverlay")
+.appendChild(
+buyTimeButton
 );
 
 
 
-</script>
 
-   <script>
 
-/* =========================================
-   HOLD BUY TIME CARD GAME PATCH
-========================================= */
 
+/* ===============================
+ CREATE GAME WINDOW
+================================ */
 
-let cardGameActive=false;
-let cardAttempts=0;
-let selectedCards=[];
 
-const MAX_CARD_ATTEMPTS=15;
+const cardWindow=document.createElement("div");
 
+cardWindow.id="cardGame";
 
-/* =========================================
-   ADD BUY BUTTON
-========================================= */
 
-
-function createBuyTimeButton(){
-
-
-if(document.getElementById("buyTimeBtn"))
-return;
-
-
-let btn=document.createElement("button");
-
-btn.id="buyTimeBtn";
-
-btn.innerHTML="❄ BUY TIME";
-
-btn.style.marginTop="25px";
-btn.style.background=
-"linear-gradient(cyan,white)";
-btn.style.color="#111";
-
-
-btn.onclick=function(){
-
-startCardGame();
-
-};
-
-
-holdBox.appendChild(btn);
-
-
-}
-
-
-
-
-/* =========================================
-   CREATE CARD GAME
-========================================= */
-
-
-function startCardGame(){
-
-
-cardGameActive=true;
-
-cardAttempts=0;
-
-selectedCards=[];
-
-
-let game=document.createElement("div");
-
-game.id="cardGame";
-
-
-game.style.position="fixed";
-game.style.inset="0";
-game.style.zIndex="200";
-
-game.style.display="flex";
-game.style.flexDirection="column";
-game.style.alignItems="center";
-game.style.justifyContent="center";
-
-
-game.style.background=
-"rgba(0,0,0,.85)";
-
-
-game.innerHTML=`
-
-<div style="
-color:white;
-font-size:28px;
-text-align:center;
-margin-bottom:20px;
-">
-
-🎴 FIND 3 SAME SUITS
-
-<br>
-
-<span style="font-size:18px">
-Choose 3 cards
-</span>
-
-</div>
-
-
-<div id="cardsGrid"
-style="
-display:grid;
-grid-template-columns:repeat(3,90px);
-gap:15px;
-">
-</div>
-
-
-<div id="cardInfo"
-style="
-color:gold;
-font-size:20px;
-margin-top:25px;
-">
-Attempt 0 / 15
-</div>
-
-`;
-
-document.body.appendChild(game);
-
-
-
-generateCards();
-
-
-}
-
-
-
-
-/* =========================================
-   CARD GENERATION
-========================================= */
-
-
-function generateCards(){
-
-
-let grid=
-document.getElementById("cardsGrid");
-
-
-grid.innerHTML="";
-
-
-selectedCards=[];
-
-
-
-let suits=[
-
-"♥",
-
-"♦",
-
-"♣",
-
-"♠"
-
-];
-
-
-
-let winningSuit=
-suits[
-Math.floor(Math.random()*suits.length)
-];
-
-
-
-let cards=[];
-
-
-// 3 winning cards
-
-for(let i=0;i<3;i++){
-
-cards.push({
-
-suit:winningSuit,
-hidden:true
-
-});
-
-}
-
-
-// 6 fake cards
-
-while(cards.length<9){
-
-let s=
-suits[
-Math.floor(Math.random()*suits.length)
-];
-
-
-cards.push({
-
-suit:s,
-hidden:true
-
-});
-
-
-}
-
-
-
-// shuffle
-
-cards.sort(()=>Math.random()-0.5);
-
-
-
-cards.forEach((card,index)=>{
-
-
-let c=document.createElement("div");
-
-c.className="gameCard";
-
-
-c.style.width="90px";
-c.style.height="120px";
-
-c.style.borderRadius="15px";
-
-c.style.background=
-"linear-gradient(#222,#050505)";
-
-
-c.style.border=
-"3px solid gold";
-
-
-c.style.display="flex";
-
-c.style.alignItems="center";
-c.style.justifyContent="center";
-
-
-c.style.fontSize="45px";
-
-
-c.style.cursor="pointer";
-
-
-c.innerHTML="❓";
-
-
-c.onclick=function(){
-
-
-if(cardGameActive)
-
-selectCard(index,card,c);
-
-
-};
-
-
-
-grid.appendChild(c);
-
-
-
-});
-
-
-
-window.currentCards=cards;
-
-
-}
-
-
-
-
-
-/* =========================================
-   SELECT CARD
-========================================= */
-
-
-function selectCard(index,card,element){
-
-
-
-if(selectedCards.includes(index))
-return;
-
-
-
-selectedCards.push(index);
-
-
-element.style.border="3px solid cyan";
-
-element.innerHTML="⭐";
-
-
-
-if(selectedCards.length===3){
-
-
-checkCards();
-
-
-}
-
-
-}
-
-
-
-
-/* =========================================
-   CHECK RESULT
-========================================= */
-
-
-function checkCards(){
-
-
-cardAttempts++;
-
-
-let cards=
-window.currentCards;
-
-
-
-let chosen=selectedCards.map(
-i=>cards[i]
-);
-
-
-
-let suits=
-chosen.map(c=>c.suit);
-
-
-
-let win=
-suits[0]===suits[1]
-&&
-suits[1]===suits[2];
-
-
-
-revealCards();
-
-
-
-document.getElementById("cardInfo")
-.innerHTML=
-
-`
-Attempt ${cardAttempts} / ${MAX_CARD_ATTEMPTS}
-`;
-
-
-
-
-if(win || cardAttempts>=MAX_CARD_ATTEMPTS){
-
-
-setTimeout(()=>{
-
-
-cardWin();
-
-
-
-},1500);
-
-
-return;
-
-
-}
-
-
-
-
-setTimeout(()=>{
-
-
-generateCards();
-
-
-},1500);
-
-
-
-}
-
-
-
-
-/* =========================================
-   REVEAL
-========================================= */
-
-
-function revealCards(){
-
-
-let grid=
-document.getElementById("cardsGrid");
-
-
-let children=
-grid.children;
-
-
-window.currentCards.forEach((card,i)=>{
-
-
-children[i].innerHTML=
-card.suit;
-
-
-});
-
-
-
-}
-
-
-
-/* =========================================
-   WIN
-========================================= */
-
-
-function cardWin(){
-
-
-cardGameActive=false;
-
-
-let game=
-document.getElementById("cardGame");
-
-
-if(game)
-game.remove();
-
-
-
-holdActive=false;
-
-
-sessionSpins=0;
-
-
-
-spinBtn.disabled=false;
-
-
-holdOverlay.style.display="none";
-
-
-ice.style.display="none";
-
-
-machine.classList.remove(
-"frozen"
-);
-
-
-
-removeSnow();
-
-
-localStorage.removeItem(
-"FrozenHoldEnd"
-);
-
-
-
-message.innerHTML=
-"🎰 BONUS TIME WON";
-
-
-
-saveGame();
-
-
-
-}
-
-
-
-
-
-/* =========================================
-   PATCH HOLD
-========================================= */
-
-
-const oldStartHoldBuy=startHold;
-
-
-startHold=function(){
-
-
-oldStartHoldBuy();
-
-
-createBuyTimeButton();
-
-
-};
-
-
-
-
-</script>
-   <button id="buyTimeBtn">
-❄ BUY TIME
-</button>
-
-
-<div id="cardGame">
-
+cardWindow.innerHTML=`
 
 <div class="cardTitle">
 
-Find 3 identical suits
+Choose 3 cards with same suit
 
 </div>
 
@@ -11612,84 +10397,58 @@ Find 3 identical suits
 
 <div id="cardMessage">
 
-Choose 3 cards
+Choose your cards
 
 </div>
 
+`;
 
-</div>
-   // ======================================
-// BUY TIME CARD GAME PATCH
-// ======================================
-
-
-let cardAttempts=0;
-
-let maxHiddenAttempts=15;
-
-let selectedCards=[];
-
-let cardLocked=false;
-
-let cardSuits=[];
-
-
-
-const buyBtn=
-document.getElementById(
-"buyTimeBtn"
-);
-
-
-const cardGame=
-document.getElementById(
-"cardGame"
-);
-
-
-const cardsBox=
-document.getElementById(
-"cards"
-);
-
-
-const cardMessage=
-document.getElementById(
-"cardMessage"
-);
+document.body.appendChild(cardWindow);
 
 
 
 
 
-// показва бутон при HOLD
+
+/* ===============================
+ VARIABLES
+================================ */
 
 
-const oldStartHoldCard=startHold;
+let cardSelected=[];
+
+let cardBusy=false;
+
+let hiddenAttempts=0;
+
+const hiddenLimit=15;
+
+
+
+
+
+
+/* ===============================
+ SHOW BUY BUTTON
+================================ */
+
+
+const oldHold=startHold;
 
 
 startHold=function(){
 
 
-oldStartHold();
+oldHold();
 
 
-
-buyBtn.style.display="block";
-
-
-};
+setTimeout(()=>{
 
 
+buyTimeButton.style.display="block";
 
 
-
-
-
-buyBtn.onclick=function(){
-
-
-openCardGame();
+},300);
 
 
 };
@@ -11700,26 +10459,44 @@ openCardGame();
 
 
 
-function openCardGame(){
+
+/* ===============================
+ BUTTON CLICK
+================================ */
 
 
-cardGame.style.display="flex";
+buyTimeButton.onclick=function(){
 
 
-cardsBox.innerHTML="";
+openCards();
 
 
-selectedCards=[];
+
+};
 
 
-cardLocked=false;
 
+
+
+
+
+/* ===============================
+ OPEN CARD GAME
+================================ */
+
+
+function openCards(){
+
+
+cardWindow.style.display="flex";
+
+
+buyTimeButton.style.display="none";
 
 
 createCards();
 
 
-
 }
 
 
@@ -11728,66 +10505,32 @@ createCards();
 
 
 
+
+/* ===============================
+ CREATE 9 CARDS
+================================ */
 
 
 function createCards(){
 
 
-
-cardsBox.innerHTML="";
-
+const box=document.getElementById("cards");
 
 
-let suits=[
+box.innerHTML="";
 
-"♥",
 
-"♦",
+cardSelected=[];
 
-"♣",
-
-"♠"
-
-];
+cardBusy=false;
 
 
 
-// 9 карти
-
-cardSuits=[];
+let suits=["♥","♦","♣","♠"];
 
 
 
-// печелившите 3
-
-let winSuit=
-
-suits[
-
-Math.floor(
-Math.random()*suits.length
-)
-
-];
-
-
-
-for(let i=0;i<3;i++){
-
-
-cardSuits.push(winSuit);
-
-
-}
-
-
-
-// останалите
-
-while(cardSuits.length<9){
-
-
-let s=
+let winningSuit=
 
 suits[
 Math.floor(
@@ -11796,7 +10539,31 @@ Math.random()*suits.length
 ];
 
 
-cardSuits.push(s);
+
+let deck=[
+
+winningSuit,
+winningSuit,
+winningSuit
+
+];
+
+
+
+
+while(deck.length<9){
+
+
+deck.push(
+
+suits[
+Math.floor(
+Math.random()*suits.length
+)
+
+]
+
+);
 
 
 }
@@ -11804,10 +10571,7 @@ cardSuits.push(s);
 
 
 
-// разбъркване
-
-
-cardSuits.sort(
+deck.sort(
 ()=>Math.random()-.5
 );
 
@@ -11816,52 +10580,43 @@ cardSuits.sort(
 
 
 
-
-cardSuits.forEach(
-(suit,index)=>{
-
-
-let c=
-document.createElement(
-"div"
-);
+deck.forEach(
+(suit)=>{
 
 
-c.className="card";
+let card=document.createElement("div");
 
 
-c.dataset.suit=suit;
+card.className="buyCard";
 
 
-c.dataset.index=index;
+card.innerHTML="❓";
+
+
+card.dataset.suit=suit;
 
 
 
-c.innerHTML="❓";
+card.onclick=function(){
 
 
+chooseCard(card);
 
-c.onclick=function(){
-
-selectCard(c);
 
 };
 
 
 
-cardsBox.appendChild(c);
+box.appendChild(card);
 
 
 
 });
 
 
-
-cardMessage.innerHTML=
-
+document.getElementById("cardMessage")
+.innerHTML=
 "Choose 3 cards";
-
-
 
 }
 
@@ -11872,30 +10627,28 @@ cardMessage.innerHTML=
 
 
 
+/* ===============================
+ SELECT CARDS
+================================ */
 
-function selectCard(card){
+
+function chooseCard(card){
 
 
+if(cardBusy)
+return;
 
-if(cardLocked)
+
+if(cardSelected.includes(card))
+return;
+
+
+if(cardSelected.length>=3)
 return;
 
 
 
-if(
-selectedCards.includes(card)
-)
-return;
-
-
-
-if(selectedCards.length>=3)
-return;
-
-
-
-
-selectedCards.push(card);
+cardSelected.push(card);
 
 
 card.classList.add(
@@ -11904,10 +10657,12 @@ card.classList.add(
 
 
 
-if(selectedCards.length===3){
+
+if(cardSelected.length===3){
 
 
-checkCards();
+revealCards();
+
 
 
 }
@@ -11923,12 +10678,15 @@ checkCards();
 
 
 
+/* ===============================
+ REVEAL
+================================ */
 
-function checkCards(){
+
+function revealCards(){
 
 
-
-cardLocked=true;
+cardBusy=true;
 
 
 
@@ -11936,7 +10694,7 @@ setTimeout(()=>{
 
 
 document
-.querySelectorAll(".card")
+.querySelectorAll(".buyCard")
 .forEach(c=>{
 
 
@@ -11945,44 +10703,46 @@ c.dataset.suit;
 
 
 c.classList.add(
-"revealed"
+"open"
 );
 
 
 
 if(
-!selectedCards.includes(c)
+!cardSelected.includes(c)
 ){
 
 c.classList.add(
 "dark"
 );
 
+
 }
+
 
 
 });
 
 
 
-let suits=
+let result=
 
-
-selectedCards.map(
+cardSelected.map(
 c=>c.dataset.suit
 );
 
 
 
-
-
 if(
-suits[0]===suits[1] &&
-suits[1]===suits[2]
+
+result[0]===result[1]
+&&
+result[1]===result[2]
+
 ){
 
 
-cardWin();
+cardVictory();
 
 
 }
@@ -11990,13 +10750,12 @@ cardWin();
 else{
 
 
-cardMessage.innerHTML=
-
-"Not correct...";
+hiddenAttempts++;
 
 
-
-cardAttempts++;
+document.getElementById("cardMessage")
+.innerHTML=
+"Not this time...";
 
 
 
@@ -12006,8 +10765,7 @@ setTimeout(()=>{
 resetCards();
 
 
-
-},1500);
+},1200);
 
 
 
@@ -12028,18 +10786,21 @@ resetCards();
 
 
 
+/* ===============================
+ RESET
+================================ */
+
 
 function resetCards(){
 
 
-
 document
-.querySelectorAll(".card")
+.querySelectorAll(".buyCard")
 .forEach(c=>{
 
 
 c.classList.remove(
-"revealed",
+"open",
 "dark",
 "selected"
 );
@@ -12048,21 +10809,13 @@ c.classList.remove(
 c.innerHTML="❓";
 
 
-
 });
 
 
 
-selectedCards=[];
+cardSelected=[];
 
-
-cardLocked=false;
-
-
-
-cardMessage.innerHTML=
-
-"Choose 3 cards";
+cardBusy=false;
 
 
 }
@@ -12074,24 +10827,30 @@ cardMessage.innerHTML=
 
 
 
+/* ===============================
+ WIN
+================================ */
 
-function cardWin(){
+
+function cardVictory(){
 
 
 
-cardMessage.innerHTML=
+document.getElementById("cardMessage")
+.innerHTML=
 
-"🎉 THREE MATCHING CARDS 🎉";
+"🎉 MATCH FOUND 🎉";
+
 
 
 
 document
-.querySelectorAll(".card")
+.querySelectorAll(".buyCard")
 .forEach(c=>{
 
 
 c.classList.add(
-"winCard"
+"win"
 );
 
 
@@ -12100,15 +10859,14 @@ c.classList.add(
 
 
 
-
 setTimeout(()=>{
 
 
-cardGame.style.display="none";
+cardWindow.style.display="none";
 
 
 
-buyBtn.style.display="none";
+hiddenAttempts=0;
 
 
 
@@ -12127,4 +10885,10 @@ message.innerHTML=
 
 
 }
+
+
+
+
+
+</script>
 
