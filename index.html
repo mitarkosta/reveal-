@@ -9115,3 +9115,457 @@ nearMiss=function(){
 console.log("Upgrade V4 Loaded");
 
 </script>
+
+   <script>
+
+/* ==========================================
+   UPGRADE V5
+   REALISTIC REEL MOTION SYSTEM
+========================================== */
+
+
+let reelSpeed = 0;
+
+let reelIntervals=[];
+
+
+
+// символи за движение
+
+const reelSymbols=[
+
+"🍒",
+"🍋",
+"⭐",
+"💎",
+"🔔",
+"7️⃣",
+"💰"
+
+];
+
+
+
+
+// ==========================================
+// MOTOR SOUND
+// ==========================================
+
+
+function motorSound(){
+
+tone(
+90,
+0.08,
+"sawtooth"
+);
+
+
+setTimeout(()=>{
+
+tone(
+120,
+0.08,
+"sawtooth"
+);
+
+},100);
+
+}
+
+
+
+
+function reelTick(){
+
+tone(
+320,
+0.025,
+"square"
+);
+
+}
+
+
+
+
+// ==========================================
+// REAL REEL MOTION
+// ==========================================
+
+
+function startRealReel(slot,index,anticipation=false){
+
+
+let position=0;
+
+
+let speed=2;
+
+
+slot.classList.add(
+"spinning"
+);
+
+
+
+let interval=setInterval(()=>{
+
+
+position++;
+
+
+slot.innerHTML=
+
+reelSymbols[
+
+position % reelSymbols.length
+
+];
+
+
+
+reelTick();
+
+
+
+},60);
+
+
+
+reelIntervals[index]=interval;
+
+
+
+
+// ускорение
+
+
+slot.animate([
+
+{
+transform:"translateY(0)"
+},
+
+{
+transform:"translateY(-20px)"
+},
+
+{
+transform:"translateY(0)"
+}
+
+],
+
+{
+
+duration:120,
+
+iterations:Infinity
+
+});
+
+
+
+
+
+}
+
+
+
+// ==========================================
+// STOP WITH PHYSICS
+// ==========================================
+
+
+function stopRealReel(slot,index){
+
+
+
+clearInterval(
+reelIntervals[index]
+);
+
+
+
+slot.classList.remove(
+"spinning"
+);
+
+
+
+slot.classList.add(
+"stopGlow"
+);
+
+
+
+
+// удар при спиране
+
+
+slot.animate([
+
+{
+transform:"translateY(-30px)"
+},
+
+{
+transform:"translateY(12px)"
+},
+
+{
+transform:"translateY(-5px)"
+},
+
+{
+transform:"translateY(0)"
+}
+
+],{
+
+duration:350,
+
+easing:"cubic-bezier(.2,1.5,.5,1)"
+
+});
+
+
+
+
+
+reelStopSound();
+
+
+
+setTimeout(()=>{
+
+
+slot.classList.remove(
+"stopGlow"
+);
+
+
+},700);
+
+
+
+}
+
+
+
+
+
+
+// ==========================================
+// REPLACE SPIN VISUAL
+// ==========================================
+
+
+const oldSpinV5=startSpin;
+
+
+startSpin=function(){
+
+
+
+if(spinning)
+
+return;
+
+
+
+spinning=true;
+
+
+
+totalSpins++;
+
+sessionSpins++;
+
+
+updateCounter();
+
+saveGame();
+
+
+
+spinSound();
+
+motorSound();
+
+
+phoneVibrate();
+
+
+
+
+
+let anticipationMode=
+
+(totalSpins % 5 === 0);
+
+
+
+
+
+// старт на ролките
+
+
+slots.forEach((slot,index)=>{
+
+
+startRealReel(
+slot,
+index,
+anticipationMode
+);
+
+
+});
+
+
+
+
+
+
+
+// ако е 5-ти спин
+
+if(anticipationMode){
+
+
+
+message.innerHTML=
+
+"🔥 JACKPOT ENGINE CHARGING...";
+
+
+
+slots[2].classList.add(
+"lastReelFire"
+);
+
+
+
+}
+
+
+
+
+
+// спиране
+
+
+slots.forEach((slot,index)=>{
+
+
+let delay=
+
+
+900+(index*650);
+
+
+
+
+
+// последната ролка мисли повече
+
+
+if(
+anticipationMode &&
+index===2
+){
+
+
+delay+=1800;
+
+
+}
+
+
+
+
+setTimeout(()=>{
+
+
+stopRealReel(
+slot,
+index
+);
+
+
+
+// финален символ
+
+
+slot.innerHTML=
+
+symbols[
+
+Math.floor(
+Math.random()*symbols.length
+)
+
+];
+
+
+
+
+},delay);
+
+
+
+});
+
+
+
+
+
+
+
+let finishDelay=
+
+anticipationMode ?
+
+4200 :
+
+3200;
+
+
+
+
+
+setTimeout(()=>{
+
+
+slots[2].classList.remove(
+"lastReelFire"
+);
+
+
+
+finishSpin();
+
+
+
+spinning=false;
+
+
+
+},finishDelay);
+
+
+
+};
+
+
+
+
+
+console.log(
+"Upgrade V5 Real Reel Physics Loaded"
+);
+
+
+</script>
