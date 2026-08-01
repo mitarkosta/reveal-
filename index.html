@@ -11002,3 +11002,297 @@ console.log(
 
 
 </script>
+
+<script>
+
+/* ==========================================
+   CARD GAME 10 ATTEMPTS PATCH
+   KEEP HOLD TIMER RUNNING
+========================================== */
+
+
+/* скрит брояч */
+
+let cardSpinCounter = 0;
+
+const CARD_WIN_AFTER = 10;
+
+
+
+/* запазваме старата проверка */
+
+const oldRevealCards10 = revealCards;
+
+
+
+revealCards=function(){
+
+
+
+cardBusy=true;
+
+
+
+setTimeout(()=>{
+
+
+
+document
+.querySelectorAll(".buyCard")
+.forEach(c=>{
+
+
+c.innerHTML =
+c.dataset.suit;
+
+
+c.classList.add(
+"open"
+);
+
+
+
+if(
+!cardSelected.includes(c)
+){
+
+c.classList.add(
+"dark"
+);
+
+}
+
+
+
+});
+
+
+
+
+
+/*
+   след всеки рунд увеличаваме
+   скрития брояч
+*/
+
+
+cardSpinCounter++;
+
+
+
+
+
+
+/*
+   до 10 опита няма победа
+*/
+
+
+if(cardSpinCounter >= CARD_WIN_AFTER){
+
+
+forceCardWin();
+
+
+
+return;
+
+
+}
+
+
+
+
+
+
+/*
+   след 10 опита
+   проверяваме избора
+*/
+
+
+let result =
+
+cardSelected.map(
+c=>c.dataset.suit
+);
+
+
+
+if(
+
+result[0]===result[1]
+
+&&
+
+result[1]===result[2]
+
+){
+
+
+cardVictory();
+
+
+}
+
+else{
+
+
+document.getElementById(
+"cardMessage"
+).innerHTML=
+
+"Not this time...";
+
+
+
+setTimeout(()=>{
+
+
+resetCards();
+
+
+},1200);
+
+
+
+}
+
+
+
+},500);
+
+
+
+};
+
+
+
+
+
+
+
+
+
+/* ======================================
+   FORCED WIN AFTER 10 ROUNDS
+====================================== */
+
+
+function forceCardWin(){
+
+
+
+/*
+   правим избраните карти
+   еднаква боя визуално
+*/
+
+
+let winSuit =
+cardSelected[0].dataset.suit;
+
+
+
+cardSelected.forEach(c=>{
+
+
+c.dataset.suit=
+winSuit;
+
+
+c.innerHTML=
+winSuit;
+
+
+});
+
+
+
+
+
+cardVictory();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* ======================================
+   PATCH VICTORY
+   RESET COUNTER
+====================================== */
+
+
+const oldCardVictory10 =
+cardVictory;
+
+
+
+cardVictory=function(){
+
+
+
+oldCardVictory10();
+
+
+
+cardSpinCounter=0;
+
+
+
+};
+
+
+
+
+
+
+
+/* ======================================
+   HOLD TIMER VISIBILITY FIX
+====================================== */
+
+
+function keepHoldVisible(){
+
+
+
+if(
+holdActive
+){
+
+
+holdOverlay.style.display="flex";
+
+
+}
+
+
+
+}
+
+
+
+setInterval(
+keepHoldVisible,
+500
+);
+
+
+
+
+
+console.log(
+"CARD GAME 10 ATTEMPT PATCH ACTIVE"
+);
+
+
+</script>
