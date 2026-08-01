@@ -12224,4 +12224,473 @@ console.log(
 
 
 </script>
-   
+
+   <script>
+
+
+/* =====================================================
+   CARD SYSTEM V3
+   REVEAL ENGINE
+===================================================== */
+
+
+
+NewCardGame.revealDelay = 1800;
+
+
+
+/* =====================================================
+   SELECT 3 CARDS OVERRIDE
+===================================================== */
+
+
+selectNewCard=function(card){
+
+
+
+    if(!NewCardGame.active)
+        return;
+
+
+    if(NewCardGame.locked)
+        return;
+
+
+
+    if(
+        NewCardGame.selected.includes(card)
+    )
+        return;
+
+
+
+    if(
+        NewCardGame.selected.length >= 3
+    )
+        return;
+
+
+
+
+    NewCardGame.selected.push(card);
+
+
+
+    card.classList.add(
+        "chosen"
+    );
+
+
+
+
+
+    if(
+        NewCardGame.selected.length===3
+    ){
+
+
+        setTimeout(()=>{
+
+
+            revealCardRound();
+
+
+
+        },500);
+
+
+
+    }
+
+
+
+};
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   REVEAL ALL CARDS
+===================================================== */
+
+
+function revealCardRound(){
+
+
+
+    NewCardGame.locked=true;
+
+
+
+    NewCardGame.cards.forEach(card=>{
+
+
+
+        let chosen =
+
+        NewCardGame.selected.includes(
+            card
+        );
+
+
+
+
+
+        card.classList.add(
+            "revealed"
+        );
+
+
+
+        card.innerHTML=
+
+        card.dataset.suit;
+
+
+
+
+
+
+        if(!chosen){
+
+
+
+            card.classList.add(
+                "darkCard"
+            );
+
+
+
+        }
+
+
+
+
+
+    });
+
+
+
+
+
+    checkCardResult();
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   CHECK RESULT
+===================================================== */
+
+
+function checkCardResult(){
+
+
+
+    let chosenSuits=
+
+
+
+    NewCardGame.selected.map(
+
+        card=>
+
+        card.dataset.suit
+
+    );
+
+
+
+
+
+
+    let win =
+
+    chosenSuits[0]===chosenSuits[1]
+
+    &&
+
+    chosenSuits[1]===chosenSuits[2];
+
+
+
+
+
+
+    setTimeout(()=>{
+
+
+
+        if(win){
+
+
+            cardWin();
+
+
+        }
+
+        else{
+
+
+            resetCardRound();
+
+
+        }
+
+
+
+    },NewCardGame.revealDelay);
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+/* =====================================================
+   RESET ROUND
+===================================================== */
+
+
+function resetCardRound(){
+
+
+
+    NewCardGame.cards.forEach(card=>{
+
+
+
+        card.classList.remove(
+            "revealed",
+            "darkCard",
+            "chosen"
+        );
+
+
+
+        card.innerHTML="?";
+
+
+
+    });
+
+
+
+
+
+    NewCardGame.round++;
+
+
+
+
+    setTimeout(()=>{
+
+
+        newCardRound();
+
+
+
+    },700);
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+/* =====================================================
+   WIN
+===================================================== */
+
+
+function cardWin(){
+
+
+
+    NewCardGame.active=false;
+
+
+
+    let box=document.querySelector(
+        "#newCardGame"
+    );
+
+
+
+    if(box){
+
+
+        box.innerHTML=
+
+        `
+
+        <div class="cardTitle">
+
+        🎉 WIN 🎉
+
+        </div>
+
+
+        `;
+
+
+    }
+
+
+
+
+
+    setTimeout(()=>{
+
+
+
+        if(box)
+
+            box.remove();
+
+
+
+
+
+        sessionSpins=0;
+
+
+
+        holdActive=false;
+
+
+
+        spinBtn.disabled=false;
+
+
+
+        message.innerHTML=
+
+        "🎰 READY";
+
+
+
+    },2000);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+console.log(
+
+"CARD SYSTEM V3 REVEAL READY"
+
+);
+      <style>
+
+
+/* =====================================================
+ CARD REVEAL EFFECTS
+===================================================== */
+
+
+.newCard.revealed{
+
+
+transform:
+
+rotateY(180deg);
+
+
+background:
+
+linear-gradient(
+
+145deg,
+
+#555,
+
+#111
+
+);
+
+
+}
+
+
+
+.newCard.darkCard{
+
+
+opacity:.35;
+
+
+filter:
+
+brightness(.4);
+
+
+}
+
+
+
+.newCard.chosen{
+
+
+opacity:1!important;
+
+
+filter:
+
+brightness(1.5)
+
+drop-shadow(0 0 20px cyan);
+
+
+border-color:white;
+
+
+}
+
+
+
+
+</style>
+
+
+</script>
