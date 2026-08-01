@@ -12059,3 +12059,341 @@ console.log(
 
 
 </script>
+
+   <script>
+
+/* =====================================
+   MASTER FULL GAME RESET PATCH
+   FINAL CONTROLLER
+===================================== */
+
+
+let MASTER_RESET_LOCK = false;
+
+
+
+function MASTER_FULL_RESET(){
+
+
+    if(MASTER_RESET_LOCK)
+        return;
+
+
+    MASTER_RESET_LOCK = true;
+
+
+
+    console.log(
+        "MASTER RESET START"
+    );
+
+
+
+    /* ==========================
+       CLEAR STORAGE
+    ========================== */
+
+
+    localStorage.clear();
+
+
+
+
+    /* ==========================
+       RESET VARIABLES
+    ========================== */
+
+
+    if(typeof totalSpins !== "undefined")
+        totalSpins = 0;
+
+
+
+    if(typeof sessionSpins !== "undefined")
+        sessionSpins = 0;
+
+
+
+    if(typeof spinning !== "undefined")
+        spinning = false;
+
+
+
+    if(typeof holdActive !== "undefined")
+        holdActive = false;
+
+
+
+
+
+
+    /* ==========================
+       RESET BUTTON
+    ========================== */
+
+
+    let btn =
+    document.getElementById(
+        "spinBtn"
+    );
+
+
+    if(btn){
+
+        btn.disabled=false;
+
+    }
+
+
+
+
+
+    /* ==========================
+       RESET COUNTER
+    ========================== */
+
+
+    let count =
+    document.getElementById(
+        "counter"
+    );
+
+
+    if(count){
+
+        count.innerHTML =
+        "Spin: 0 / 100";
+
+    }
+
+
+
+
+
+    /* ==========================
+       RESET SYMBOLS
+    ========================== */
+
+
+    let a =
+    document.getElementById("s1");
+
+    let b =
+    document.getElementById("s2");
+
+    let c =
+    document.getElementById("s3");
+
+
+
+    if(a) a.innerHTML="🍒";
+    if(b) b.innerHTML="⭐";
+    if(c) c.innerHTML="💎";
+
+
+
+
+
+
+
+    /* ==========================
+       RESET TEXT
+    ========================== */
+
+
+    let msg =
+    document.getElementById(
+        "message"
+    );
+
+
+    if(msg){
+
+        msg.innerHTML =
+        "Almost...";
+
+    }
+
+
+
+    let finalBox =
+    document.getElementById(
+        "final"
+    );
+
+
+    if(finalBox){
+
+        finalBox.innerHTML="";
+        finalBox.classList.remove(
+            "show"
+        );
+
+    }
+
+
+
+
+
+
+    /* ==========================
+       REMOVE EFFECTS
+    ========================== */
+
+
+    document.body.className="";
+
+
+
+    let machine =
+    document.getElementById(
+        "machine"
+    );
+
+
+    if(machine){
+
+        machine.className="machine";
+
+    }
+
+
+
+    document
+    .querySelectorAll("*")
+    .forEach(el=>{
+
+
+        el.classList.remove(
+            "spinning",
+            "stopGlow",
+            "lastReelFire",
+            "shake",
+            "vibrate",
+            "jackpotMode",
+            "frozen"
+        );
+
+
+    });
+
+
+
+
+
+
+
+
+    /* ==========================
+       CLOSE HOLD
+    ========================== */
+
+
+    let overlay =
+    document.getElementById(
+        "holdOverlay"
+    );
+
+
+    if(overlay){
+
+        overlay.style.display="none";
+
+    }
+
+
+
+    let ice =
+    document.getElementById(
+        "ice"
+    );
+
+
+    if(ice){
+
+        ice.style.display="none";
+
+    }
+
+
+
+
+
+    document
+    .querySelectorAll(
+        ".snowflake,.coin,.iceParticle,.jackpotFlash,.festivalFlash,.lightBeam"
+    )
+    .forEach(e=>e.remove());
+
+
+
+
+
+
+
+
+    /* ==========================
+       FINISH
+    ========================== */
+
+
+    setTimeout(()=>{
+
+
+        MASTER_RESET_LOCK=false;
+
+
+        console.log(
+        "MASTER RESET COMPLETE - NEW GAME"
+        );
+
+
+    },1000);
+
+
+
+}
+
+
+
+
+
+
+
+
+/* =====================================
+   AUTO DETECT 100/100
+===================================== */
+
+
+setInterval(()=>{
+
+
+    if(
+        typeof totalSpins !== "undefined" &&
+        totalSpins >=100
+    ){
+
+
+        MASTER_FULL_RESET();
+
+
+
+    }
+
+
+
+},500);
+
+
+
+
+
+
+console.log(
+"MASTER RESET PATCH ACTIVE"
+);
+
+
+
+</script>
