@@ -12717,3 +12717,488 @@ console.log(
 
 
 </script>
+
+   <script>
+
+/* ==========================================
+   UPGRADE 13
+   REAL CASINO AUDIO LAYER
+========================================== */
+
+
+let audioSpinGain;
+
+
+
+// ==========================================
+// SLOT MOTOR LOOP
+// ==========================================
+
+
+function startSlotMotor(power=1){
+
+
+let ctx=getAudio();
+
+
+let osc=
+ctx.createOscillator();
+
+
+audioSpinGain=
+ctx.createGain();
+
+
+
+osc.type="sawtooth";
+
+
+osc.frequency.value=
+70;
+
+
+
+audioSpinGain.gain.value=
+0.015 * power;
+
+
+
+osc.connect(
+audioSpinGain
+);
+
+
+audioSpinGain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+
+let speed=
+power===2 ? 180 : 120;
+
+
+
+osc.frequency.linearRampToValueAtTime(
+
+speed,
+
+ctx.currentTime+1
+
+);
+
+
+
+window.slotMotorOsc=osc;
+
+
+
+}
+
+
+
+
+
+
+
+
+function stopSlotMotor(){
+
+
+if(!window.slotMotorOsc)
+return;
+
+
+
+let ctx=getAudio();
+
+
+
+audioSpinGain.gain.exponentialRampToValueAtTime(
+
+0.001,
+
+ctx.currentTime+.5
+
+);
+
+
+
+window.slotMotorOsc.stop(
+
+ctx.currentTime+.5
+
+);
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================================
+// REEL CLICK SOUND
+// ==========================================
+
+
+function reelClick(){
+
+
+
+let ctx=getAudio();
+
+
+
+let osc=
+ctx.createOscillator();
+
+
+let gain=
+ctx.createGain();
+
+
+
+osc.type="square";
+
+
+osc.frequency.value=
+500+Math.random()*200;
+
+
+
+gain.gain.value=.08;
+
+
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+
+osc.stop(
+
+ctx.currentTime+.06
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================================
+// LAST REEL BASS HIT
+// ==========================================
+
+
+function lastReelBass(){
+
+
+let ctx=getAudio();
+
+
+
+let osc=
+ctx.createOscillator();
+
+
+let gain=
+ctx.createGain();
+
+
+
+osc.type="sine";
+
+
+osc.frequency.value=80;
+
+
+
+gain.gain.value=.15;
+
+
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+
+osc.frequency.exponentialRampToValueAtTime(
+
+35,
+
+ctx.currentTime+.5
+
+);
+
+
+
+gain.gain.exponentialRampToValueAtTime(
+
+0.001,
+
+ctx.currentTime+.5
+
+);
+
+
+
+osc.stop(
+
+ctx.currentTime+.5
+
+);
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================================
+// PATCH SPIN START
+// ==========================================
+
+
+const upgrade13OldSpin=startSpin;
+
+
+
+startSpin=function(){
+
+
+let anticipation =
+((totalSpins+1)%5===0);
+
+
+
+if(anticipation){
+
+
+startSlotMotor(2);
+
+
+
+setTimeout(()=>{
+
+message.innerHTML=
+"🔥 JACKPOT PRESSURE...";
+
+
+},500);
+
+
+
+}
+
+else{
+
+
+startSlotMotor(1);
+
+
+}
+
+
+
+
+upgrade13OldSpin();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+// ==========================================
+// PATCH STOP
+// ==========================================
+
+
+const upgrade13OldStop=
+reelStopSound;
+
+
+
+reelStopSound=function(){
+
+
+
+reelClick();
+
+
+
+if(navigator.vibrate){
+
+navigator.vibrate(20);
+
+}
+
+
+
+upgrade13OldStop();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+// ==========================================
+// PATCH FINISH
+// ==========================================
+
+
+const upgrade13OldFinish=
+finishSpin;
+
+
+
+finishSpin=function(){
+
+
+stopSlotMotor();
+
+
+
+upgrade13OldFinish();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+console.log(
+
+"Upgrade 13 Real Casino Audio Loaded"
+
+);
+
+
+</script>
+
+<style>
+
+
+/* =================================
+   AUDIO LIGHT FEEDBACK
+================================= */
+
+
+.slot.spinning{
+
+
+box-shadow:
+
+0 0 35px gold,
+
+0 0 70px orange,
+
+inset 0 0 30px black;
+
+
+}
+
+
+
+.lastPressure{
+
+
+animation:
+
+casinoPressure .3s infinite alternate;
+
+
+}
+
+
+
+@keyframes casinoPressure{
+
+
+from{
+
+
+filter:
+
+brightness(1);
+
+
+}
+
+
+
+to{
+
+
+filter:
+
+brightness(1.8);
+
+
+}
+
+
+
+}
+
+
+</style>
