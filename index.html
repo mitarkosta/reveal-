@@ -10892,3 +10892,113 @@ message.innerHTML=
 
 </script>
 
+   <script>
+
+/* =========================================
+   NO TRIPLE SYMBOL PATCH
+   Prevents 3 identical symbols
+   Put at VERY END
+========================================= */
+
+
+function preventTripleSymbols(){
+
+
+let a=slots[0].innerHTML;
+let b=slots[1].innerHTML;
+let c=slots[2].innerHTML;
+
+
+
+// ако трите са еднакви
+
+if(
+a===b &&
+b===c
+){
+
+
+
+// сменяме само последната ролка
+
+let newSymbol;
+
+
+
+do{
+
+
+newSymbol=
+
+symbols[
+
+Math.floor(
+Math.random()*symbols.length
+)
+
+];
+
+
+}
+while(
+newSymbol===a
+);
+
+
+
+
+slots[2].innerHTML=newSymbol;
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+/* =========================================
+   PATCH FINISH SPIN
+========================================= */
+
+
+const oldFinishSpinNoTriple = finishSpin;
+
+
+
+finishSpin=function(){
+
+
+
+oldFinishSpinNoTriple();
+
+
+
+setTimeout(()=>{
+
+
+preventTripleSymbols();
+
+
+
+},50);
+
+
+
+};
+
+
+
+
+
+console.log(
+"NO TRIPLE SYMBOL PATCH ACTIVE"
+);
+
+
+</script>
