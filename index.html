@@ -8452,3 +8452,160 @@ console.log(
 
 </script>
 
+<script>
+
+/* =====================================================
+   UPGRADE PATCH V1
+===================================================== */
+
+const originalStartSpin = startSpin;
+
+/* ---------- AUDIO ---------- */
+
+function playSpinLoop(){
+
+    const ctx=getAudio();
+
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+
+    osc.type="sawtooth";
+    osc.frequency.value=120;
+
+    gain.gain.value=.025;
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+
+    osc.frequency.exponentialRampToValueAtTime(
+        420,
+        ctx.currentTime+2.2
+    );
+
+    osc.stop(ctx.currentTime+2.3);
+
+}
+
+/* ---------- MACHINE SHAKE ---------- */
+
+function stopImpact(){
+
+    machine.classList.add("shake");
+
+    if(navigator.vibrate){
+
+        navigator.vibrate(25);
+
+    }
+
+    setTimeout(()=>{
+
+        machine.classList.remove("shake");
+
+    },180);
+
+}
+
+/* ---------- ANTICIPATION ---------- */
+
+function fireAnticipation(){
+
+    slots[2].classList.add("lastReelFire");
+
+    message.innerHTML="🔥 JACKPOT IS CLOSE";
+
+    if(navigator.vibrate){
+
+        navigator.vibrate([40,40,40,40,80]);
+
+    }
+
+}
+
+/* ---------- NEW SPIN ---------- */
+
+startSpin=function(){
+
+    if(spinning)return;
+
+    spinning=true;
+
+    totalSpins++;
+    sessionSpins++;
+
+    updateCounter();
+    saveGame();
+
+    spinSound();
+
+    playSpinLoop();
+
+    slots.forEach(slot=>{
+
+        slot.classList.add("spinning");
+
+    });
+
+    const anticipationSpin=
+        totalSpins%5===0;
+
+    if(anticipationSpin){
+
+        setTimeout(()=>{
+
+            fireAnticipation();
+
+        },900);
+
+    }
+
+    slots.forEach((slot,index)=>{
+
+        let stopTime=
+            1500+
+            index*850+
+            (anticipationSpin && index===2 ? 900 : 0);
+
+        setTimeout(()=>{
+
+            slot.classList.remove("spinning");
+
+            slot.classList.add("stopGlow");
+
+            slot.innerHTML=
+                symbols[
+                    Math.floor(Math.random()*symbols.length)
+                ];
+
+            reelStopSound();
+
+            stopImpact();
+
+            setTimeout(()=>{
+
+                slot.classList.remove("stopGlow");
+
+            },500);
+
+        },stopTime);
+
+    });
+
+    let finishTime=
+        anticipationSpin ? 4800 : 3600;
+
+    setTimeout(()=>{
+
+        slots[2].classList.remove("lastReelFire");
+
+        finishSpin();
+
+        spinning=false;
+
+    },finishTime);
+
+}
+
+</script>
