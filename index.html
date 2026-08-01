@@ -12324,4 +12324,218 @@ console.log(
 
 
 </script>
+   <script>
+
+/* =====================================
+   FINAL RESET CYCLE PATCH
+   0 → 100 → CELEBRATION → RESET
+===================================== */
+
+
+const FINAL_TOTAL_SPINS = 100;
+
+
+// нова финална функция
+function finalCycleReset(){
+
+
+    console.log("FINAL CYCLE RESET");
+
+
+    // махаме запазванията
+    localStorage.removeItem(
+        "FrozenJackpotV4"
+    );
+
+
+    localStorage.removeItem(
+        "FrozenJackpotFinal"
+    );
+
+
+    localStorage.removeItem(
+        "FrozenHoldEnd"
+    );
+
+
+
+    // нулиране на механиката
+
+    totalSpins = 0;
+
+    sessionSpins = 0;
+
+    spinning = false;
+
+    holdActive = false;
+
+
+
+    // визуално обновяване
+
+    counter.innerHTML =
+    `
+    Spin: 0 / 100
+    `;
+
+
+
+    message.innerHTML =
+    "🎰 NEW ROUND";
+
+
+
+    final.innerHTML="";
+
+    final.classList.remove(
+        "show"
+    );
+
+
+
+    spinBtn.disabled=false;
+
+
+
+    // връщаме начални символи
+
+    slots[0].innerHTML="🍒";
+    slots[1].innerHTML="⭐";
+    slots[2].innerHTML="💎";
+
+
+
+    machine.classList.remove(
+        "jackpotMode",
+        "frozen",
+        "shake"
+    );
+
+
+
+    document.body.classList.remove(
+        "partyMode"
+    );
+
+
+
+}
+
+
+
+
+
+/* =====================================
+   OVERRIDE COMPLETE GAME
+===================================== */
+
+
+const oldCompleteGameFinalReset =
+completeGame;
+
+
+
+completeGame=function(){
+
+
+
+    // оригиналните ефекти
+
+    oldCompleteGameFinal();
+
+
+
+    // изчакване за splash
+
+    setTimeout(()=>{
+
+
+        finalCycleReset();
+
+
+
+    },7000);
+
+
+
+};
+
+
+
+
+
+
+
+/* =====================================
+   SAFETY CHECK
+===================================== */
+
+
+function checkFinalCounter(){
+
+
+
+    if(totalSpins >= FINAL_TOTAL_SPINS){
+
+
+        completeGame();
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   OVERRIDE FINISH SPIN CHECK
+===================================== */
+
+
+const oldFinishSpinFinalReset =
+finishSpin;
+
+
+
+finishSpin=function(){
+
+
+    oldFinishSpinFinal();
+
+
+
+    if(totalSpins >= FINAL_TOTAL_SPINS){
+
+
+        setTimeout(()=>{
+
+
+            completeGame();
+
+
+        },500);
+
+
+    }
+
+
+
+};
+
+
+
+
+
+console.log(
+"FINAL 0-100 RESET PATCH ACTIVE"
+);
+
+
+
+</script>
    
