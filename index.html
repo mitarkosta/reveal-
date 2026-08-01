@@ -12694,3 +12694,276 @@ border-color:white;
 
 
 </script>
+
+   <script>
+
+/* =====================================================
+   CARD SYSTEM V4
+   HIDDEN ATTEMPT LOGIC
+===================================================== */
+
+
+NewCardGame.hiddenAttempts = 0;
+
+
+NewCardGame.maxHiddenAttempts = 10;
+
+
+
+/* =====================================================
+   FORCE NEW SHUFFLE EVERY ROUND
+===================================================== */
+
+
+function shuffleNewRound(){
+
+
+    let oldDeck = NewCardGame.deck;
+
+
+    let newDeck;
+
+
+    do{
+
+
+        newDeck = smartShuffle(
+            createCardDeck()
+        );
+
+
+    }
+
+    while(
+
+        oldDeck &&
+
+        newDeck.some(
+
+            (card,index)=>
+
+            card.id === oldDeck[index].id
+
+        )
+
+    );
+
+
+
+    return newDeck;
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   NEW ROUND OVERRIDE
+===================================================== */
+
+
+newCardRound=function(){
+
+
+
+    NewCardGame.round++;
+
+
+
+    NewCardGame.selected=[];
+
+
+    NewCardGame.locked=false;
+
+
+
+
+    NewCardGame.hiddenAttempts++;
+
+
+
+
+
+
+    let deck;
+
+
+
+
+
+    /*
+       Играчът не вижда това.
+       След определен брой опити
+       системата подготвя победа.
+    */
+
+
+    if(
+
+        NewCardGame.hiddenAttempts >=
+
+        NewCardGame.maxHiddenAttempts
+
+    ){
+
+
+        deck=createWinningDeck();
+
+
+    }
+
+    else{
+
+
+        deck=shuffleNewRound();
+
+
+
+    }
+
+
+
+
+
+
+
+    NewCardGame.deck=
+
+    smartShuffle(deck);
+
+
+
+
+
+
+    renderNewCards();
+
+
+
+
+
+};
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   AFTER LOSS
+===================================================== */
+
+
+resetCardRound=function(){
+
+
+
+    NewCardGame.cards.forEach(card=>{
+
+
+
+        card.classList.remove(
+
+            "revealed",
+
+            "darkCard",
+
+            "chosen"
+
+        );
+
+
+
+        card.innerHTML="?";
+
+
+
+    });
+
+
+
+
+
+    setTimeout(()=>{
+
+
+
+        newCardRound();
+
+
+
+    },800);
+
+
+
+
+
+};
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   WIN RESET
+===================================================== */
+
+
+const oldCardWin = cardWin;
+
+
+
+cardWin=function(){
+
+
+
+    oldCardWin();
+
+
+
+    /*
+       След победа
+       започва нов цикъл
+    */
+
+
+
+    setTimeout(()=>{
+
+
+        NewCardGame.hiddenAttempts=0;
+
+
+
+    },2500);
+
+
+
+};
+
+
+
+
+
+
+
+
+console.log(
+
+"CARD SYSTEM V4 HIDDEN MATH READY"
+
+);
+
+
+
+</script>
