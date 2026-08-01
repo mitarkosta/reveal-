@@ -9569,3 +9569,557 @@ console.log(
 
 
 </script>
+
+   <script>
+
+/* =========================================
+   UPGRADE V6
+   3D CASINO MACHINE EFFECTS
+========================================= */
+
+
+
+// =========================================
+// 3D REEL STYLE
+// =========================================
+
+
+slots.forEach(slot=>{
+
+
+slot.style.transformStyle="preserve-3d";
+
+
+});
+
+
+
+
+
+// =========================================
+// GLASS REFLECTION
+// =========================================
+
+
+function createGlassEffect(){
+
+
+let glass=document.createElement("div");
+
+
+glass.className="glassReflection";
+
+
+document.querySelector(".display")
+.appendChild(glass);
+
+
+}
+
+
+
+createGlassEffect();
+
+
+
+
+
+
+// =========================================
+// GLASS CSS
+// =========================================
+
+
+let v6style=document.createElement("style");
+
+
+v6style.innerHTML=`
+
+.glassReflection{
+
+position:absolute;
+
+inset:0;
+
+pointer-events:none;
+
+border-radius:25px;
+
+background:
+
+linear-gradient(
+
+120deg,
+
+transparent 30%,
+
+rgba(255,255,255,.25),
+
+transparent 60%
+
+);
+
+
+animation:
+
+glassMove 4s infinite;
+
+
+}
+
+
+.display{
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+
+
+@keyframes glassMove{
+
+
+0%{
+
+transform:translateX(-120%);
+
+}
+
+
+
+100%{
+
+transform:translateX(120%);
+
+}
+
+
+}
+
+
+
+
+
+.slot{
+
+perspective:500px;
+
+}
+
+
+
+.v6Spin{
+
+animation:
+
+v6Roll .18s infinite linear;
+
+}
+
+
+
+@keyframes v6Roll{
+
+
+0%{
+
+transform:
+
+rotateX(0deg)
+translateY(0);
+
+
+}
+
+
+50%{
+
+transform:
+
+rotateX(25deg)
+translateY(-15px);
+
+
+}
+
+
+100%{
+
+transform:
+
+rotateX(0deg)
+translateY(0);
+
+
+}
+
+
+}
+
+
+
+
+
+.v6Stop{
+
+
+animation:
+
+v6Impact .35s;
+
+
+}
+
+
+
+@keyframes v6Impact{
+
+
+0%{
+
+transform:
+
+scale(1)
+rotateX(0);
+
+
+}
+
+
+40%{
+
+transform:
+
+scale(1.15)
+rotateX(-25deg);
+
+
+}
+
+
+
+100%{
+
+transform:
+
+scale(1)
+rotateX(0);
+
+
+}
+
+
+
+}
+
+
+
+`;
+
+
+document.head.appendChild(v6style);
+
+
+
+
+
+
+
+
+// =========================================
+// MOTOR AUDIO
+// =========================================
+
+
+function motorStartV6(){
+
+
+tone(
+70,
+.2,
+"sawtooth"
+);
+
+
+setTimeout(()=>{
+
+
+tone(
+110,
+.2,
+"sawtooth"
+);
+
+
+
+},200);
+
+
+
+}
+
+
+
+
+
+function motorStopV6(index){
+
+
+
+tone(
+
+500+(index*150),
+
+.12,
+
+"triangle"
+
+);
+
+
+}
+
+
+
+
+
+
+
+// =========================================
+// MACHINE SHAKE
+// =========================================
+
+
+function machineImpactV6(){
+
+
+machine.animate([
+
+
+{
+transform:"translateX(0)"
+},
+
+
+{
+transform:"translateX(-10px)"
+},
+
+
+{
+transform:"translateX(10px)"
+},
+
+
+{
+transform:"translateX(0)"
+}
+
+
+],{
+
+
+duration:300
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+
+// =========================================
+// ANTICIPATION BOOST
+// =========================================
+
+
+function anticipationV6(){
+
+
+
+let last=slots[2];
+
+
+
+last.animate([
+
+
+{
+filter:"brightness(1)"
+},
+
+
+{
+filter:
+"brightness(2)"
+},
+
+
+{
+filter:
+"brightness(1)"
+}
+
+
+],{
+
+
+duration:400,
+
+iterations:8
+
+
+});
+
+
+
+
+last.style.boxShadow=
+
+"0 0 80px red,0 0 150px orange";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =========================================
+// PATCH V5 START
+// =========================================
+
+
+const oldV6Start=startSpin;
+
+
+
+startSpin=function(){
+
+
+
+motorStartV6();
+
+
+
+// старото въртене
+
+oldV6Start();
+
+
+
+if(totalSpins % 5 === 0){
+
+
+anticipationV6();
+
+
+}
+
+
+
+};
+
+
+
+
+
+
+
+
+
+// =========================================
+// PATCH STOP EFFECT
+// =========================================
+
+
+const oldFinishV6=finishSpin;
+
+
+
+finishSpin=function(){
+
+
+
+oldFinishV6();
+
+
+
+machineImpactV6();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+// =========================================
+// TOUCH FEEDBACK
+// =========================================
+
+
+spinBtn.addEventListener(
+"touchstart",
+()=>{
+
+
+machine.animate([
+
+{
+scale:"1"
+},
+
+{
+scale:"0.97"
+},
+
+{
+scale:"1"
+}
+
+
+],{
+
+
+duration:150
+
+
+});
+
+
+}
+
+);
+
+
+
+
+
+
+console.log(
+"Upgrade V6 3D Casino Effects Loaded"
+);
+
+
+
+</script>
