@@ -8894,3 +8894,224 @@ startSpin=async function(){
     spinning=false;
 }
 </script>
+
+   <script>
+
+/* ===========================================
+   UPGRADE V4 - CINEMATIC SLOT PATCH
+=========================================== */
+
+// ---------- Machine inertia ----------
+const oldStartSpinV4 = startSpin;
+
+startSpin = function(){
+
+    machine.animate([
+        {transform:"scale(1)"},
+        {transform:"scale(.985)"},
+        {transform:"scale(1)"}
+    ],{
+        duration:180,
+        easing:"ease-out"
+    });
+
+    oldStartSpinV4();
+
+};
+
+
+// ---------- Reel impact ----------
+function reelImpact(slot){
+
+    slot.animate([
+
+        {transform:"translateY(0px)"},
+        {transform:"translateY(14px)"},
+        {transform:"translateY(-6px)"},
+        {transform:"translateY(0px)"}
+
+    ],{
+
+        duration:240,
+        easing:"ease-out"
+
+    });
+
+}
+
+
+
+// ---------- stronger vibration ----------
+function impactVibrate(index){
+
+    if(!navigator.vibrate) return;
+
+    if(index==0)
+        navigator.vibrate(30);
+
+    if(index==1)
+        navigator.vibrate([25,20,25]);
+
+    if(index==2)
+        navigator.vibrate([40,20,60]);
+
+}
+
+
+
+// ---------- reel shine ----------
+slots.forEach(slot=>{
+
+    slot.style.position="relative";
+    slot.style.overflow="hidden";
+
+    let shine=document.createElement("div");
+
+    shine.style.position="absolute";
+    shine.style.left="-120%";
+    shine.style.top="0";
+    shine.style.width="60%";
+    shine.style.height="100%";
+
+    shine.style.background=
+    "linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent)";
+
+    shine.style.transform="skewX(-25deg)";
+
+    shine.className="slotShine";
+
+    slot.appendChild(shine);
+
+});
+
+
+
+
+// ---------- animate shine ----------
+const oldSpin = startSpin;
+
+startSpin = function(){
+
+    document
+    .querySelectorAll(".slotShine")
+    .forEach(s=>{
+
+        s.animate([
+
+            {left:"-120%"},
+            {left:"160%"}
+
+        ],{
+
+            duration:650,
+            iterations:5
+
+        });
+
+    });
+
+    oldSpin();
+
+};
+
+
+
+
+// ---------- impact on stop ----------
+const oldStopSound = reelStopSound;
+
+reelStopSound=function(){
+
+    oldStopSound();
+
+    tone(260,.04,"square");
+
+};
+
+
+
+
+// ---------- monitor reel stop ----------
+let observer=setInterval(()=>{
+
+    slots.forEach((slot,index)=>{
+
+        if(slot.classList.contains("stopGlow")
+           && !slot.dataset.hit){
+
+            slot.dataset.hit="1";
+
+            reelImpact(slot);
+
+            impactVibrate(index);
+
+            tone(520+(index*120),.03,"triangle");
+
+        }
+
+        if(!slot.classList.contains("stopGlow")){
+
+            slot.dataset.hit="";
+
+        }
+
+    });
+
+},30);
+
+
+
+
+// ---------- stronger anticipation ----------
+const oldAnticipation=anticipation;
+
+anticipation=function(){
+
+    oldAnticipation();
+
+    slots[2].animate([
+
+        {transform:"scale(1) rotate(0deg)"},
+        {transform:"scale(1.08) rotate(-2deg)"},
+        {transform:"scale(1.12) rotate(2deg)"},
+        {transform:"scale(1.08) rotate(-2deg)"},
+        {transform:"scale(1)"}
+
+    ],{
+
+        duration:700,
+        iterations:6
+
+    });
+
+};
+
+
+
+
+// ---------- Near miss camera ----------
+const oldNearMiss=nearMiss;
+
+nearMiss=function(){
+
+    oldNearMiss();
+
+    document.body.animate([
+
+        {transform:"translateX(0px)"},
+        {transform:"translateX(-6px)"},
+        {transform:"translateX(6px)"},
+        {transform:"translateX(-4px)"},
+        {transform:"translateX(0px)"}
+
+    ],{
+
+        duration:350
+
+    });
+
+};
+
+console.log("Upgrade V4 Loaded");
+
+</script>
