@@ -11343,3 +11343,436 @@ resetCardRound=function(){
 </script>
 
    <script>
+
+      <script>
+
+/* =====================================================
+   CARD SYSTEM REBUILD V1
+   NEW FOUNDATION
+===================================================== */
+
+
+window.NEW_CARD_GAME = true;
+
+
+// спираме старите функции ако съществуват
+
+window.oldCardFunctionsDisabled = true;
+
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+
+const NewCardGame = {
+
+
+    active:false,
+
+
+    round:0,
+
+
+    maxRounds:10,
+
+
+    selected:[],
+
+
+    locked:false,
+
+
+    cards:[],
+
+
+    suits:[
+
+        "♥",
+        "♦",
+        "♣",
+        "♠"
+
+    ]
+
+};
+
+
+
+
+
+/* =====================================================
+   CREATE NEW CARD AREA
+===================================================== */
+
+
+function createNewCardGame(){
+
+
+    let old=document.getElementById(
+        "newCardGame"
+    );
+
+
+    if(old)
+        old.remove();
+
+
+
+    let box=document.createElement("div");
+
+
+    box.id="newCardGame";
+
+
+    box.innerHTML=`
+
+    <div class="cardTitle">
+
+        CHOOSE 3 CARDS
+
+    </div>
+
+
+    <div class="cardGrid">
+
+    </div>
+
+
+    <div class="cardMessage">
+
+    </div>
+
+
+    `;
+
+
+
+    document.body.appendChild(box);
+
+
+
+    return box;
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   CREATE 9 CARDS
+===================================================== */
+
+
+function buildNewCards(){
+
+
+
+    NewCardGame.cards=[];
+
+
+
+    let grid=document.querySelector(
+        "#newCardGame .cardGrid"
+    );
+
+
+
+    grid.innerHTML="";
+
+
+
+    for(let i=0;i<9;i++){
+
+
+
+        let card=document.createElement("div");
+
+
+        card.className="newCard";
+
+
+        card.dataset.index=i;
+
+
+        card.innerHTML="?";
+
+
+
+        card.onclick=function(){
+
+
+            selectNewCard(this);
+
+
+        };
+
+
+
+        grid.appendChild(card);
+
+
+
+        NewCardGame.cards.push(card);
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   START NEW GAME
+===================================================== */
+
+
+function startNewCardGame(){
+
+
+
+    NewCardGame.active=true;
+
+
+    NewCardGame.round=0;
+
+
+    NewCardGame.selected=[];
+
+
+
+    createNewCardGame();
+
+
+    buildNewCards();
+
+
+}
+
+
+
+
+
+/* =====================================================
+   SELECT
+===================================================== */
+
+
+function selectNewCard(card){
+
+
+
+    if(!NewCardGame.active)
+        return;
+
+
+
+    if(NewCardGame.locked)
+        return;
+
+
+
+    if(
+        NewCardGame.selected.includes(card)
+    )
+        return;
+
+
+
+
+    if(
+        NewCardGame.selected.length>=3
+    )
+        return;
+
+
+
+
+    NewCardGame.selected.push(card);
+
+
+
+    card.classList.add(
+        "chosen"
+    );
+
+
+
+}
+
+
+
+
+
+console.log(
+"NEW CARD SYSTEM V1 LOADED"
+);
+      <style>
+
+/* =====================================================
+   NEW CARD SYSTEM STYLE V1
+===================================================== */
+
+
+#newCardGame{
+
+
+position:fixed;
+
+inset:0;
+
+z-index:200;
+
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+
+background:
+
+rgba(0,0,0,.85);
+
+
+backdrop-filter:blur(10px);
+
+
+}
+
+
+
+.cardTitle{
+
+
+font-size:35px;
+
+color:white;
+
+margin-bottom:30px;
+
+text-shadow:
+
+0 0 20px cyan;
+
+
+}
+
+
+
+.cardGrid{
+
+
+display:grid;
+
+grid-template-columns:
+
+repeat(3,90px);
+
+
+gap:15px;
+
+
+}
+
+
+
+.newCard{
+
+
+width:90px;
+
+height:120px;
+
+
+background:
+
+linear-gradient(
+
+145deg,
+
+#222,
+
+#050505
+
+);
+
+
+border:
+
+3px solid gold;
+
+
+border-radius:15px;
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+font-size:45px;
+
+
+cursor:pointer;
+
+
+transition:.3s;
+
+
+}
+
+
+
+.newCard.chosen{
+
+
+box-shadow:
+
+0 0 40px white,
+
+0 0 80px cyan;
+
+
+transform:
+
+scale(1.1);
+
+
+}
+
+
+
+.cardMessage{
+
+
+margin-top:25px;
+
+color:white;
+
+font-size:20px;
+
+
+}
+
+
+
+</style>
+
+
+</script>
