@@ -11447,3 +11447,113 @@ font-size:55px;
 
 }
 
+
+   <script>
+/* ==========================================================
+   PATCH 14B
+   SEQUENTIAL REEL START
+========================================================== */
+
+(function(){
+
+// старото startSpin пазим
+const oldStartSpin = startSpin;
+
+// стартира една ролка
+function startReel(index){
+
+    const reel = slots[index].reel;
+
+    if(!reel) return;
+
+    reel.dataset.running="1";
+
+    reel.style.transition="none";
+
+    reel._offset = reel._offset || 0;
+
+    function animate(){
+
+        if(reel.dataset.running!="1") return;
+
+        reel._offset += 18;
+
+        // когато стане много дълга лентата,
+        // започва отново без да се вижда
+        if(reel._offset >= 3600){
+
+            reel._offset = 0;
+
+        }
+
+        reel.style.transform=
+        `translateY(-${reel._offset}px)`;
+
+        reel._frame=requestAnimationFrame(animate);
+
+    }
+
+    animate();
+
+}
+
+// спира ролка
+window.stopReel=function(index){
+
+    const reel = slots[index].reel;
+
+    if(!reel) return;
+
+    reel.dataset.running="0";
+
+    cancelAnimationFrame(reel._frame);
+
+};
+
+// override
+startSpin=function(){
+
+    if(spinning) return;
+
+    spinning=true;
+
+    totalSpins++;
+    sessionSpins++;
+
+    updateCounter();
+    saveGame();
+
+    spinSound();
+    phoneVibrate();
+
+    // старт последователно
+
+    startReel(0);
+
+    setTimeout(()=>{
+
+        startReel(1);
+
+    },180);
+
+    setTimeout(()=>{
+
+        startReel(2);
+
+    },360);
+
+    // останалата логика засега си остава
+    // Patch 14C ще направи реалното спиране
+
+    setTimeout(()=>{
+
+        finishSpin();
+
+        spinning=false;
+
+    },3200);
+
+};
+
+})();
+</script>
