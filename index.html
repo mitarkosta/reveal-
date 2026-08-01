@@ -11926,3 +11926,425 @@ console.log(
 
 
 </script>
+
+   <script>
+
+/* ==========================================
+   UPGRADE 11
+   REAL SLOT FEEDBACK SYSTEM
+========================================== */
+
+
+let upgrade11SpinCount = 0;
+
+
+
+// ================================
+// MOTOR SOUND
+// ================================
+
+
+function slotMotorSound(power=1){
+
+let ctx=getAudio();
+
+
+let osc=ctx.createOscillator();
+
+let gain=ctx.createGain();
+
+
+osc.type="sawtooth";
+
+
+osc.frequency.value=
+80 + (power*60);
+
+
+gain.gain.value=
+0.03 * power;
+
+
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+osc.frequency.exponentialRampToValueAtTime(
+220*power,
+ctx.currentTime+1
+);
+
+
+
+gain.gain.exponentialRampToValueAtTime(
+0.001,
+ctx.currentTime+1
+);
+
+
+
+osc.stop(
+ctx.currentTime+1
+);
+
+
+}
+
+
+
+
+
+
+// ================================
+// STOP IMPACT SOUND
+// ================================
+
+
+function heavyReelStopSound(){
+
+
+let ctx=getAudio();
+
+
+let osc=
+ctx.createOscillator();
+
+
+let gain=
+ctx.createGain();
+
+
+
+osc.type="square";
+
+
+osc.frequency.value=120;
+
+
+
+gain.gain.value=.12;
+
+
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+
+osc.frequency.exponentialRampToValueAtTime(
+40,
+ctx.currentTime+.15
+);
+
+
+
+gain.gain.exponentialRampToValueAtTime(
+0.001,
+ctx.currentTime+.2
+);
+
+
+
+osc.stop(
+ctx.currentTime+.2
+);
+
+
+}
+
+
+
+
+
+
+
+
+// ================================
+// MACHINE HIT EFFECT
+// ================================
+
+
+function reelImpact(){
+
+
+
+machine.classList.add(
+"shake"
+);
+
+
+
+if(navigator.vibrate){
+
+navigator.vibrate(
+30
+);
+
+}
+
+
+
+setTimeout(()=>{
+
+
+machine.classList.remove(
+"shake"
+);
+
+
+},250);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ================================
+// LAST REEL PRESSURE
+// ================================
+
+
+function activateLastPressure(){
+
+
+let last=slots[2];
+
+
+
+last.classList.add(
+"lastPressure"
+);
+
+
+
+message.innerHTML=
+
+"🔥 THE LAST SYMBOL IS DECIDING...";
+
+
+
+
+setTimeout(()=>{
+
+
+last.classList.remove(
+"lastPressure"
+);
+
+
+},4000);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+// ================================
+// PATCH START SPIN
+// ================================
+
+
+const oldUpgrade11Spin=startSpin;
+
+
+startSpin=function(){
+
+
+upgrade11SpinCount++;
+
+
+
+let anticipationMode=
+upgrade11SpinCount % 5 === 0;
+
+
+
+if(anticipationMode){
+
+
+slotMotorSound(2);
+
+
+
+setTimeout(()=>{
+
+
+activateLastPressure();
+
+
+},700);
+
+
+
+}
+else{
+
+
+slotMotorSound(1);
+
+
+}
+
+
+
+
+oldUpgrade11Spin();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+// ================================
+// PATCH STOP EFFECT
+// ================================
+
+
+const oldStopSound=reelStopSound;
+
+
+reelStopSound=function(){
+
+
+heavyReelStopSound();
+
+
+reelImpact();
+
+
+oldStopSound();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+console.log(
+"Upgrade 11 Real Slot Feedback Loaded"
+);
+
+
+</script>
+
+
+
+
+<style>
+
+
+/* =================================
+   LAST REEL PRESSURE EFFECT
+================================= */
+
+
+.lastPressure{
+
+
+animation:
+pressurePulse .25s infinite alternate;
+
+
+border-color:
+orange!important;
+
+
+
+}
+
+
+
+
+
+@keyframes pressurePulse{
+
+
+from{
+
+
+box-shadow:
+
+0 0 20px red,
+0 0 40px orange;
+
+
+transform:
+scale(1);
+
+
+
+}
+
+
+
+to{
+
+
+box-shadow:
+
+0 0 80px yellow,
+0 0 150px red;
+
+
+
+transform:
+scale(1.08);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+</style>
