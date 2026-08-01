@@ -11254,5 +11254,235 @@ cardSpinCounter=0;
 
 
 
+<script>
 
+/* =====================================
+ REALISTIC REEL MOVEMENT PATCH V1
+ ПОСТАВИ НАЙ-НАКРАЯ
+===================================== */
+
+
+startSpin = function(){
+
+
+if(spinning)
+return;
+
+
+spinning = true;
+
+
+
+totalSpins++;
+
+sessionSpins++;
+
+
+updateCounter();
+
+saveGame();
+
+
+
+spinSound();
+
+phoneVibrate();
+
+
+
+let spinDuration = 2200;
+
+
+
+/*
+ започване на ролките
+ една след друга
+*/
+
+
+slots.forEach((slot,index)=>{
+
+
+setTimeout(()=>{
+
+
+slot.classList.add("spinning");
+
+
+
+let rollInterval=setInterval(()=>{
+
+
+slot.innerHTML =
+
+symbols[
+
+Math.floor(
+Math.random()*symbols.length
+)
+
+];
+
+
+},80);
+
+
+
+
+
+/*
+ запазваме интервала
+*/
+
+
+slot.dataset.roll =
+rollInterval;
+
+
+
+
+},index*180);
+
+
+
+});
+
+
+
+
+
+/*
+ спиране ляво -> дясно
+*/
+
+
+slots.forEach((slot,index)=>{
+
+
+setTimeout(()=>{
+
+
+
+clearInterval(
+Number(slot.dataset.roll)
+);
+
+
+
+slot.classList.remove(
+"spinning"
+);
+
+
+
+slot.classList.add(
+"stopGlow"
+);
+
+
+
+
+
+slot.innerHTML =
+
+symbols[
+
+Math.floor(
+Math.random()*symbols.length
+
+)
+
+];
+
+
+
+
+reelStopSound();
+
+
+
+
+
+/*
+ разтрисане при стоп
+*/
+
+
+machine.classList.add(
+"shake"
+);
+
+
+
+setTimeout(()=>{
+
+
+machine.classList.remove(
+"shake"
+);
+
+
+},300);
+
+
+
+
+
+
+setTimeout(()=>{
+
+
+slot.classList.remove(
+"stopGlow"
+);
+
+
+},600);
+
+
+
+
+
+},spinDuration+(index*450));
+
+
+
+});
+
+
+
+
+
+
+
+/*
+ край на спина
+*/
+
+
+setTimeout(()=>{
+
+
+finishSpin();
+
+
+spinning=false;
+
+
+
+},4000);
+
+
+
+};
+
+
+
+console.log(
+"REALISTIC REEL PATCH ACTIVE"
+);
+
+
+
+</script>
 
