@@ -10119,3 +10119,714 @@ console.log(
 
 </script>
 
+   <script>
+
+/* =====================================
+   FROZEN JACKPOT BUY TIME CARD BONUS
+===================================== */
+
+
+let cardGameActive=false;
+
+let cardAttempts=0;
+
+let selectedCards=[];
+
+let cardTimerWin=false;
+
+
+
+
+// ================================
+// CREATE BUY BUTTON
+// ================================
+
+
+function createBuyTimeButton(){
+
+
+let box=document.getElementById(
+"holdBox"
+);
+
+
+if(!box)
+return;
+
+
+
+let btn=document.createElement("button");
+
+
+btn.id="buyTimeBtn";
+
+
+btn.innerHTML=
+"❄ BUY TIME - CARD BONUS";
+
+
+
+btn.onclick=function(){
+
+startCardGame();
+
+};
+
+
+
+box.appendChild(btn);
+
+
+
+}
+
+
+
+
+
+
+// ================================
+// CARD GAME START
+// ================================
+
+
+function startCardGame(){
+
+
+
+cardGameActive=true;
+
+
+cardAttempts=0;
+
+
+selectedCards=[];
+
+
+
+let box=document.getElementById(
+"holdBox"
+);
+
+
+
+box.innerHTML=`
+
+<h2 style="color:cyan">
+
+CARD BONUS
+
+</h2>
+
+
+<p style="
+margin:20px;
+color:white;
+font-size:18px;
+">
+
+Избери 3 карти.<br>
+
+Трябва да бъдат еднаква боя.
+
+</p>
+
+
+<div id="cardCounter">
+
+Опит: 0 / 15
+
+</div>
+
+
+<div id="cardsGrid"></div>
+
+
+<div id="cardMessage"></div>
+
+
+`;
+
+
+
+createCards();
+
+
+
+}
+
+
+
+
+
+
+
+
+// ================================
+// CREATE 9 CARDS
+// ================================
+
+
+function createCards(){
+
+
+
+let grid=
+document.getElementById(
+"cardsGrid"
+);
+
+
+
+grid.style.display="grid";
+
+grid.style.gridTemplateColumns=
+"repeat(3,90px)";
+
+grid.style.gap="15px";
+
+grid.style.justifyContent="center";
+
+
+
+
+
+let suits=[
+
+"♠",
+"♥",
+"♦",
+"♣"
+
+];
+
+
+
+for(let i=0;i<9;i++){
+
+
+
+let card=document.createElement(
+"div"
+);
+
+
+
+card.className="bonusCard";
+
+
+card.dataset.suit=
+
+suits[
+Math.floor(
+Math.random()*suits.length
+)
+];
+
+
+
+card.innerHTML="❓";
+
+
+
+card.onclick=function(){
+
+
+chooseCard(card);
+
+
+
+};
+
+
+
+grid.appendChild(card);
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ================================
+// SELECT CARD
+// ================================
+
+
+function chooseCard(card){
+
+
+
+if(cardGameActive===false)
+
+return;
+
+
+
+if(
+selectedCards.includes(card)
+)
+
+return;
+
+
+
+
+selectedCards.push(card);
+
+
+
+card.style.borderColor="gold";
+
+
+
+
+if(selectedCards.length===3){
+
+
+revealCards();
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ================================
+// REVEAL
+// ================================
+
+
+function revealCards(){
+
+
+
+cardAttempts++;
+
+
+
+let counter=
+document.getElementById(
+"cardCounter"
+);
+
+
+if(counter)
+
+counter.innerHTML=
+
+`
+Опит:
+${cardAttempts}
+/15
+`;
+
+
+
+
+
+let suits=
+selectedCards.map(
+c=>c.dataset.suit
+);
+
+
+
+
+
+selectedCards.forEach(c=>{
+
+
+c.innerHTML=
+c.dataset.suit;
+
+
+
+c.style.color="red";
+
+
+});
+
+
+
+
+
+
+let win=
+
+suits[0]===suits[1]
+&&
+suits[1]===suits[2];
+
+
+
+
+
+
+
+// гарантиран успех след 15
+
+if(
+cardAttempts>=15
+)
+
+win=true;
+
+
+
+
+
+
+
+
+if(win){
+
+
+cardWin();
+
+
+}
+
+else{
+
+
+setTimeout(()=>{
+
+
+selectedCards=[];
+
+
+createCards();
+
+
+
+},1500);
+
+
+
+}
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ================================
+// WIN
+// ================================
+
+
+function cardWin(){
+
+
+
+cardGameActive=false;
+
+
+
+cardTimerWin=true;
+
+
+
+let msg=
+document.getElementById(
+"cardMessage"
+);
+
+
+
+if(msg)
+
+
+msg.innerHTML=
+
+`
+
+<h1 style="
+color:gold;
+text-shadow:0 0 40px gold;
+">
+
+🎉 WIN 🎉
+
+</h1>
+
+`;
+
+
+
+
+
+// спира HOLD
+
+
+if(typeof holdActive!="undefined")
+
+holdActive=false;
+
+
+
+
+localStorage.removeItem(
+"FrozenHoldEnd"
+);
+
+
+
+
+
+setTimeout(()=>{
+
+
+exitCardGame();
+
+
+
+},2500);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ================================
+// RETURN TO SLOT
+// ================================
+
+
+function exitCardGame(){
+
+
+
+let overlay=
+document.getElementById(
+"holdOverlay"
+);
+
+
+
+overlay.style.display="none";
+
+
+
+let box=
+document.getElementById(
+"holdBox"
+);
+
+
+
+box.innerHTML="";
+
+
+
+if(typeof sessionSpins!="undefined")
+
+sessionSpins=0;
+
+
+
+if(typeof spinBtn!="undefined")
+
+spinBtn.disabled=false;
+
+
+
+if(typeof message!="undefined")
+
+message.innerHTML=
+"🎰 READY";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ================================
+// PATCH HOLD START
+// ================================
+
+
+const oldHoldCard=startHold;
+
+
+
+startHold=function(){
+
+
+oldHoldCard();
+
+
+
+setTimeout(()=>{
+
+
+createBuyTimeButton();
+
+
+
+},500);
+
+
+
+};
+
+
+
+
+
+
+
+
+
+// ================================
+// STYLE
+// ================================
+
+
+let cardStyle=document.createElement(
+"style"
+);
+
+
+
+cardStyle.innerHTML=`
+
+#buyTimeBtn{
+
+margin-top:25px;
+
+background:
+
+linear-gradient(
+gold,
+orange
+);
+
+color:#111;
+
+font-size:20px;
+
+padding:15px;
+
+border-radius:40px;
+
+}
+
+
+.bonusCard{
+
+
+height:90px;
+
+width:90px;
+
+background:
+
+linear-gradient(
+145deg,
+#333,
+#050505
+);
+
+
+border:
+
+3px solid cyan;
+
+
+border-radius:15px;
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+font-size:45px;
+
+
+color:white;
+
+
+box-shadow:
+
+0 0 20px cyan;
+
+
+cursor:pointer;
+
+
+}
+
+
+
+.bonusCard:hover{
+
+
+box-shadow:
+
+0 0 50px gold;
+
+
+}
+
+
+`;
+
+
+
+document.head.appendChild(cardStyle);
+
+
+
+console.log(
+"Card Bonus HOLD upgrade loaded"
+);
+
+
+
+</script>
