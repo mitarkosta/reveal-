@@ -10830,3 +10830,534 @@ console.log(
 
 
 </script>
+
+   <script>
+
+/* =========================================
+   HOLD BUY TIME CARD GAME PATCH
+========================================= */
+
+
+let cardGameActive=false;
+let cardAttempts=0;
+let selectedCards=[];
+
+const MAX_CARD_ATTEMPTS=15;
+
+
+/* =========================================
+   ADD BUY BUTTON
+========================================= */
+
+
+function createBuyTimeButton(){
+
+
+if(document.getElementById("buyTimeBtn"))
+return;
+
+
+let btn=document.createElement("button");
+
+btn.id="buyTimeBtn";
+
+btn.innerHTML="❄ BUY TIME";
+
+btn.style.marginTop="25px";
+btn.style.background=
+"linear-gradient(cyan,white)";
+btn.style.color="#111";
+
+
+btn.onclick=function(){
+
+startCardGame();
+
+};
+
+
+holdBox.appendChild(btn);
+
+
+}
+
+
+
+
+/* =========================================
+   CREATE CARD GAME
+========================================= */
+
+
+function startCardGame(){
+
+
+cardGameActive=true;
+
+cardAttempts=0;
+
+selectedCards=[];
+
+
+let game=document.createElement("div");
+
+game.id="cardGame";
+
+
+game.style.position="fixed";
+game.style.inset="0";
+game.style.zIndex="200";
+
+game.style.display="flex";
+game.style.flexDirection="column";
+game.style.alignItems="center";
+game.style.justifyContent="center";
+
+
+game.style.background=
+"rgba(0,0,0,.85)";
+
+
+game.innerHTML=`
+
+<div style="
+color:white;
+font-size:28px;
+text-align:center;
+margin-bottom:20px;
+">
+
+🎴 FIND 3 SAME SUITS
+
+<br>
+
+<span style="font-size:18px">
+Choose 3 cards
+</span>
+
+</div>
+
+
+<div id="cardsGrid"
+style="
+display:grid;
+grid-template-columns:repeat(3,90px);
+gap:15px;
+">
+</div>
+
+
+<div id="cardInfo"
+style="
+color:gold;
+font-size:20px;
+margin-top:25px;
+">
+Attempt 0 / 15
+</div>
+
+`;
+
+document.body.appendChild(game);
+
+
+
+generateCards();
+
+
+}
+
+
+
+
+/* =========================================
+   CARD GENERATION
+========================================= */
+
+
+function generateCards(){
+
+
+let grid=
+document.getElementById("cardsGrid");
+
+
+grid.innerHTML="";
+
+
+selectedCards=[];
+
+
+
+let suits=[
+
+"♥",
+
+"♦",
+
+"♣",
+
+"♠"
+
+];
+
+
+
+let winningSuit=
+suits[
+Math.floor(Math.random()*suits.length)
+];
+
+
+
+let cards=[];
+
+
+// 3 winning cards
+
+for(let i=0;i<3;i++){
+
+cards.push({
+
+suit:winningSuit,
+hidden:true
+
+});
+
+}
+
+
+// 6 fake cards
+
+while(cards.length<9){
+
+let s=
+suits[
+Math.floor(Math.random()*suits.length)
+];
+
+
+cards.push({
+
+suit:s,
+hidden:true
+
+});
+
+
+}
+
+
+
+// shuffle
+
+cards.sort(()=>Math.random()-0.5);
+
+
+
+cards.forEach((card,index)=>{
+
+
+let c=document.createElement("div");
+
+c.className="gameCard";
+
+
+c.style.width="90px";
+c.style.height="120px";
+
+c.style.borderRadius="15px";
+
+c.style.background=
+"linear-gradient(#222,#050505)";
+
+
+c.style.border=
+"3px solid gold";
+
+
+c.style.display="flex";
+
+c.style.alignItems="center";
+c.style.justifyContent="center";
+
+
+c.style.fontSize="45px";
+
+
+c.style.cursor="pointer";
+
+
+c.innerHTML="❓";
+
+
+c.onclick=function(){
+
+
+if(cardGameActive)
+
+selectCard(index,card,c);
+
+
+};
+
+
+
+grid.appendChild(c);
+
+
+
+});
+
+
+
+window.currentCards=cards;
+
+
+}
+
+
+
+
+
+/* =========================================
+   SELECT CARD
+========================================= */
+
+
+function selectCard(index,card,element){
+
+
+
+if(selectedCards.includes(index))
+return;
+
+
+
+selectedCards.push(index);
+
+
+element.style.border="3px solid cyan";
+
+element.innerHTML="⭐";
+
+
+
+if(selectedCards.length===3){
+
+
+checkCards();
+
+
+}
+
+
+}
+
+
+
+
+/* =========================================
+   CHECK RESULT
+========================================= */
+
+
+function checkCards(){
+
+
+cardAttempts++;
+
+
+let cards=
+window.currentCards;
+
+
+
+let chosen=selectedCards.map(
+i=>cards[i]
+);
+
+
+
+let suits=
+chosen.map(c=>c.suit);
+
+
+
+let win=
+suits[0]===suits[1]
+&&
+suits[1]===suits[2];
+
+
+
+revealCards();
+
+
+
+document.getElementById("cardInfo")
+.innerHTML=
+
+`
+Attempt ${cardAttempts} / ${MAX_CARD_ATTEMPTS}
+`;
+
+
+
+
+if(win || cardAttempts>=MAX_CARD_ATTEMPTS){
+
+
+setTimeout(()=>{
+
+
+cardWin();
+
+
+
+},1500);
+
+
+return;
+
+
+}
+
+
+
+
+setTimeout(()=>{
+
+
+generateCards();
+
+
+},1500);
+
+
+
+}
+
+
+
+
+/* =========================================
+   REVEAL
+========================================= */
+
+
+function revealCards(){
+
+
+let grid=
+document.getElementById("cardsGrid");
+
+
+let children=
+grid.children;
+
+
+window.currentCards.forEach((card,i)=>{
+
+
+children[i].innerHTML=
+card.suit;
+
+
+});
+
+
+
+}
+
+
+
+/* =========================================
+   WIN
+========================================= */
+
+
+function cardWin(){
+
+
+cardGameActive=false;
+
+
+let game=
+document.getElementById("cardGame");
+
+
+if(game)
+game.remove();
+
+
+
+holdActive=false;
+
+
+sessionSpins=0;
+
+
+
+spinBtn.disabled=false;
+
+
+holdOverlay.style.display="none";
+
+
+ice.style.display="none";
+
+
+machine.classList.remove(
+"frozen"
+);
+
+
+
+removeSnow();
+
+
+localStorage.removeItem(
+"FrozenHoldEnd"
+);
+
+
+
+message.innerHTML=
+"🎰 BONUS TIME WON";
+
+
+
+saveGame();
+
+
+
+}
+
+
+
+
+
+/* =========================================
+   PATCH HOLD
+========================================= */
+
+
+const oldStartHoldBuy=startHold;
+
+
+startHold=function(){
+
+
+oldStartHoldBuy();
+
+
+createBuyTimeButton();
+
+
+};
+
+
+
+
+</script>
