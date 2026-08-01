@@ -11804,4 +11804,244 @@ console.log(
 
 </script>
 
+   <script>
+
+/* =====================================
+   ANTICIPATION LAST REEL RED ALERT
+   ONLY DURING SPIN
+===================================== */
+
+
+function activateLastReelRed(){
+
+
+let lastReel =
+document.getElementById("s3");
+
+
+if(!lastReel)
+return;
+
+
+
+lastReel.classList.add(
+"anticipationRed"
+);
+
+
+
+}
+
+
+
+
+function removeLastReelRed(){
+
+
+let lastReel =
+document.getElementById("s3");
+
+
+if(!lastReel)
+return;
+
+
+
+lastReel.classList.remove(
+"anticipationRed"
+);
+
+
+
+}
+
+
+
+
+/* =====================================
+   CSS INJECT
+===================================== */
+
+
+let style =
+document.createElement("style");
+
+
+style.innerHTML = `
+
+
+.slot.anticipationRed{
+
+
+border-color:#ff0000 !important;
+
+
+box-shadow:
+
+
+0 0 25px red,
+
+0 0 60px red,
+
+inset 0 0 30px #ff0000;
+
+
+
+animation:
+
+anticipationPulse .35s infinite alternate;
+
+
+}
+
+
+
+@keyframes anticipationPulse{
+
+
+from{
+
+
+background:
+
+linear-gradient(
+
+145deg,
+
+#550000,
+
+#110000
+
+);
+
+
+
+}
+
+
+
+to{
+
+
+background:
+
+linear-gradient(
+
+145deg,
+
+#ff0000,
+
+#330000
+
+);
+
+
+
+}
+
+
+
+}
+
+
+
+`;
+
+
+
+document.head.appendChild(style);
+
+
+
+
+
+
+
+/* =====================================
+   CONNECT TO EXISTING ANTICIPATION
+===================================== */
+
+
+
+const oldAnticipation =
+window.fiveSpinAnticipation;
+
+
+
+window.fiveSpinAnticipation=function(){
+
+
+
+// старите ефекти остават
+
+if(oldAnticipation)
+
+oldAnticipation();
+
+
+
+// добавя червената ролка
+
+activateLastReelRed();
+
+
+
+
+// махане след спиране
+
+setTimeout(()=>{
+
+
+removeLastReelRed();
+
+
+},3200);
+
+
+
+};
+
+
+
+
+
+
+/* =====================================
+   SAFETY REMOVE
+   при всяко нормално спиране
+===================================== */
+
+
+document.querySelectorAll(".slot")
+.forEach(slot=>{
+
+
+slot.addEventListener(
+"animationend",
+()=>{
+
+
+if(
+slot.id==="s3"
+)
+
+removeLastReelRed();
+
+
+
+});
+
+
+});
+
+
+
+console.log(
+"Last reel anticipation red effect loaded"
+);
+
+
+
+</script>
+
 
