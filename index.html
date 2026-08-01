@@ -1,170 +1,379 @@
+<!-- =====================================
+ FROZEN JACKPOT V8 FINAL
+ PART 1
+ HTML CORE
+===================================== -->
+
+
+<div id="machine" class="fjMachine">
+
+
+    <!-- HEADER -->
+
+    <div class="fjHeader">
+
+        ❄️ FROZEN JACKPOT ❄️
+
+    </div>
+
+
+
+    <!-- COUNTER -->
+
+    <div id="counter" class="fjCounter">
+
+        0 / 100
+
+    </div>
+
+
+
+
+    <!-- SLOT MACHINE -->
+
+    <div class="fjSlots">
+
+
+        <div id="s1" class="slot">
+
+            🍒
+
+        </div>
+
+
+
+        <div id="s2" class="slot">
+
+            🍋
+
+        </div>
+
+
+
+        <div id="s3" class="slot">
+
+            ⭐
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- MESSAGE -->
+
+    <div id="message" class="fjMessage">
+
+        🎰 READY
+
+    </div>
+
+
+
+
+
+
+    <!-- BUTTON -->
+
+    <button id="spinBtn" class="fjButton">
+
+        SPIN
+
+    </button>
+
+
+
+
+</div>
+
+
+
+
+<!-- EFFECT CONTAINER -->
+
+<div id="fjEffects"></div>
+
+<style>
+
+ТУК PART 2 CSS
+
+</style>
+
+</body>
+</html>
+
+<script>
+
+/* =====================================
+ FROZEN JACKPOT V8 FINAL
+ PART 3
+ MAIN ENGINE
+===================================== */
+
+
 window.FrozenJackpot = {
 
-version:"V8",
 
-locked:false,
+    totalSpins:0,
 
-frozen:false,
+    sessionSpins:0,
 
-jackpot:false,
+    locked:false,
 
-totalSpins:0,
+    frozen:false,
 
-sessionSpins:0
+    jackpot:false
 
-};
-
-
-window.FJ_CONFIG = {
-
-TOTAL_SPINS:100,
-
-SESSION_LIMIT:5,
-
-HOLD_TIME:120
 
 };
 
 
 
-window.FJ = {
 
-machine:
-document.getElementById("machine"),
 
-slots:[
+const FJ_CONFIG = {
 
-document.getElementById("s1"),
 
-document.getElementById("s2"),
+    TOTAL_SPINS:100,
 
-document.getElementById("s3")
+    SESSION_LIMIT:5,
 
-],
+    HOLD_TIME:10000
 
-button:
-document.getElementById("spinBtn"),
-
-message:
-document.getElementById("message"),
-
-counter:
-document.getElementById("counter")
 
 };
 
 
 
-FJ.symbols=[
+
+
+
+const FJ = {
+
+
+    machine:
+    document.getElementById("machine"),
+
+
+    slots:[
+
+    document.getElementById("s1"),
+
+    document.getElementById("s2"),
+
+    document.getElementById("s3")
+
+    ],
+
+
+
+    button:
+    document.getElementById("spinBtn"),
+
+
+
+    message:
+    document.getElementById("message"),
+
+
+
+    counter:
+    document.getElementById("counter")
+
+
+};
+
+
+
+
+
+
+const symbols=[
 
 "🍒",
+
 "🍋",
+
 "⭐",
+
 "💎",
+
 "🔔",
+
 "7️⃣",
+
 "💰"
 
 ];
 
 
 
+
+
+
+
+/* ===============================
+ SAVE
+=============================== */
+
+
 function fjSave(){
+
 
 localStorage.setItem(
 
-"FJ_V8",
+"FrozenJackpotV8",
+
 
 JSON.stringify({
 
 total:
 FrozenJackpot.totalSpins,
 
+
 session:
 FrozenJackpot.sessionSpins
 
+
 })
+
 
 );
 
+
 }
+
+
+
+
+
+
 
 
 
 function fjLoad(){
 
+
 let save=
 
-localStorage.getItem("FJ_V8");
+localStorage.getItem(
+"FrozenJackpotV8"
+);
 
 
-if(!save)return;
+
+if(!save)
+
+return;
 
 
-let data=JSON.parse(save);
+
+let data=
+
+JSON.parse(save);
+
 
 
 FrozenJackpot.totalSpins=
-data.total||0;
+
+data.total || 0;
+
 
 
 FrozenJackpot.sessionSpins=
-data.session||0;
+
+data.session || 0;
+
 
 
 }
 
 
 
-function fjMessage(text){
-
-if(FJ.message)
-
-FJ.message.innerHTML=text;
-
-}
 
 
 
-function fjCounter(){
 
-if(FJ.counter)
+
+/* ===============================
+ UPDATE
+=============================== */
+
+
+function fjUpdate(){
+
+
+if(FJ.counter){
+
 
 FJ.counter.innerHTML=
 
 FrozenJackpot.totalSpins+
-"/"+
-FJ_CONFIG.TOTAL_SPINS;
+
+"/100";
+
 
 }
 
 
 
-fjLoad();
-
-fjCounter();
+}
 
 
-console.log(
-"CORE READY"
-);
+
+
+
+function fjMessage(t){
+
+
+if(FJ.message)
+
+FJ.message.innerHTML=t;
+
+
+}
+
+
+
+
+
+
+
+
+/* ===============================
+ SPIN
+=============================== */
+
+
 function fjSpin(){
 
 
+
 if(FrozenJackpot.locked)
+
 return;
+
 
 
 if(FrozenJackpot.frozen)
+
 return;
+
 
 
 if(FrozenJackpot.jackpot)
+
 return;
+
+
 
 
 
 FrozenJackpot.locked=true;
+
 
 
 FrozenJackpot.totalSpins++;
@@ -173,9 +382,12 @@ FrozenJackpot.sessionSpins++;
 
 
 
-fjCounter();
+
+
+fjUpdate();
 
 fjSave();
+
 
 
 fjMessage(
@@ -184,9 +396,12 @@ fjMessage(
 
 
 
+
+
+
+
 FJ.slots.forEach(slot=>{
 
-if(slot)
 
 slot.classList.add(
 "fjSpinning"
@@ -197,7 +412,11 @@ slot.classList.add(
 
 
 
-FJ.slots.forEach((slot,i)=>{
+
+
+
+
+FJ.slots.forEach((slot,index)=>{
 
 
 setTimeout(()=>{
@@ -211,18 +430,30 @@ slot.classList.remove(
 
 slot.innerHTML=
 
-FJ.symbols[
+symbols[
+
 Math.floor(
-Math.random()*FJ.symbols.length
+
+Math.random()
+
+*
+
+symbols.length
+
 )
+
 ];
 
 
-},1000+i*600);
+
+},1000+(index*500));
 
 
 
 });
+
+
+
 
 
 
@@ -244,13 +475,31 @@ fjCheck();
 
 
 
+
+
+
+
+
+/* ===============================
+ CHECK GAME
+=============================== */
+
+
 function fjCheck(){
 
 
-if(FrozenJackpot.totalSpins>=100){
+
+if(
+
+FrozenJackpot.totalSpins>=
+
+FJ_CONFIG.TOTAL_SPINS
+
+){
 
 
 startFinalJackpot();
+
 
 return;
 
@@ -258,16 +507,27 @@ return;
 }
 
 
-if(FrozenJackpot.sessionSpins>=5){
 
 
-fjMessage(
-"❄️ HOLD READY"
-);
+
+
+if(
+
+FrozenJackpot.sessionSpins>=
+
+FJ_CONFIG.SESSION_LIMIT
+
+){
+
+
+startHold();
+
+
+return;
 
 
 }
-else{
+
 
 
 fjMessage(
@@ -275,27 +535,23 @@ fjMessage(
 );
 
 
-}
-
-
 
 }
 
 
 
-if(FJ.button){
+
+
+
+
+
+
+/* ===============================
+ BUTTON
+=============================== */
 
 
 FJ.button.onclick=function(){
-
-
-if(FrozenJackpot.sessionSpins>=5){
-
-startHold();
-
-return;
-
-}
 
 
 fjSpin();
@@ -304,55 +560,662 @@ fjSpin();
 };
 
 
-}
+
+
+
+
+
+
+/* ===============================
+ START
+=============================== */
+
+
+fjLoad();
+
+
+fjUpdate();
+
+
+
+if(FJ.machine)
+
+FJ.machine.classList.add(
+"fjReady"
+);
+
+
 
 
 
 console.log(
-"SPIN READY"
+"❄️ FROZEN JACKPOT V8 ENGINE READY"
 );
+
+
+
+</script>
+<script>
+
+/* =====================================
+ FROZEN JACKPOT V8 FINAL
+ PART 4
+ HOLD ICE WORLD
+===================================== */
+
+
+let fjHoldTimer=null;
+
+
+
+
+
+/* ===============================
+ START HOLD
+=============================== */
+
+
 function startHold(){
+
+
+
+if(FrozenJackpot.frozen)
+
+return;
+
 
 
 FrozenJackpot.frozen=true;
 
 
+
+
+
+if(FJ.machine){
+
+
+FJ.machine.classList.add(
+"fjFrozenMachine"
+);
+
+
+}
+
+
+
+
+
+if(FJ.button){
+
+
+FJ.button.disabled=true;
+
+
+}
+
+
+
+
+
 fjMessage(
-"❄️ ICE HOLD"
+"❄️ MACHINE FROZEN ❄️"
 );
 
 
 
-setTimeout(()=>{
 
 
-FrozenJackpot.frozen=false;
 
-FrozenJackpot.sessionSpins=0;
+createIceWorld();
 
 
-fjMessage(
-"🎰 READY"
+
+
+
+
+let time=
+
+Date.now()+
+
+(FJ_CONFIG.HOLD_TIME);
+
+
+
+
+
+
+
+fjHoldTimer=setInterval(()=>{
+
+
+let left=
+
+Math.floor(
+
+(time-Date.now())/1000
+
 );
 
 
-fjSave();
+
+if(left<=0){
 
 
-},120000);
+endHold();
+
+
+}
+
+
+
+else{
+
+
+fjMessage(
+
+"❄️ FROZEN HOLD: "
+
++left+
+
+" sec"
+
+);
+
+
+}
+
+
+
+},500);
+
 
 
 
 }
 
 
-console.log(
-"HOLD READY"
+
+
+
+
+
+
+
+/* ===============================
+ CREATE ICE EFFECTS
+=============================== */
+
+
+function createIceWorld(){
+
+
+
+
+
+let overlay=document.createElement("div");
+
+
+overlay.id="fjIce";
+
+
+overlay.style.position="fixed";
+
+overlay.style.inset="0";
+
+overlay.style.zIndex="500";
+
+overlay.style.pointerEvents="none";
+
+overlay.style.background=
+
+"linear-gradient(rgba(180,240,255,.4),rgba(0,120,255,.5))";
+
+
+
+document.body.appendChild(overlay);
+
+
+
+
+
+
+
+
+
+let face=document.createElement("div");
+
+
+face.id="fjIceFace";
+
+
+face.innerHTML="❄️";
+
+
+face.style.position="fixed";
+
+face.style.top="50%";
+
+face.style.left="50%";
+
+face.style.transform=
+
+"translate(-50%,-50%)";
+
+
+face.style.fontSize="180px";
+
+
+face.style.zIndex="600";
+
+
+face.style.filter=
+
+"drop-shadow(0 0 50px cyan)";
+
+
+
+document.body.appendChild(face);
+
+
+
+
+
+
+
+
+// SNOW
+
+
+for(let i=0;i<80;i++){
+
+
+
+let snow=document.createElement("div");
+
+
+snow.className="fjSnow";
+
+
+snow.innerHTML="❄";
+
+
+
+snow.style.position="fixed";
+
+
+snow.style.top="-50px";
+
+
+snow.style.left=
+
+Math.random()*100+"vw";
+
+
+
+snow.style.fontSize=
+
+(20+Math.random()*30)+"px";
+
+
+
+snow.style.animationDuration=
+
+(4+Math.random()*6)+"s";
+
+
+
+document.body.appendChild(snow);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* ===============================
+ END HOLD
+=============================== */
+
+
+function endHold(){
+
+
+
+clearInterval(
+fjHoldTimer
 );
+
+
+
+
+
+FrozenJackpot.frozen=false;
+
+
+
+FrozenJackpot.sessionSpins=0;
+
+
+
+
+
+
+
+if(FJ.machine){
+
+
+FJ.machine.classList.remove(
+"fjFrozenMachine"
+);
+
+
+}
+
+
+
+
+
+if(FJ.button){
+
+
+FJ.button.disabled=false;
+
+
+}
+
+
+
+
+
+
+
+document.querySelectorAll(
+
+"#fjIce,"+
+
+"#fjIceFace,"+
+
+".fjSnow"
+
+)
+
+.forEach(el=>{
+
+
+el.remove();
+
+
+});
+
+
+
+
+
+
+
+fjMessage(
+
+"🎰 READY AGAIN"
+
+);
+
+
+
+
+
+fjSave();
+
+
+
+}
+
+
+
+
+
+
+
+console.log(
+"❄️ PART 4 HOLD ICE WORLD READY"
+);
+
+
+
+</script>
+<!-- =========================================
+ FROZEN JACKPOT V8
+ PART 4 / FINAL JACKPOT ENGINE
+ ПОСТАВИ СЛЕД PART 3
+========================================= -->
+
+
+<style>
+
+.fjFinalMode{
+
+animation:
+fjFinalGlow .7s infinite alternate;
+
+}
+
+
+@keyframes fjFinalGlow{
+
+from{
+
+box-shadow:
+0 0 50px gold;
+
+}
+
+
+to{
+
+box-shadow:
+0 0 250px white,
+0 0 400px gold;
+
+}
+
+}
+
+
+
+.fjJackpotText{
+
+
+position:fixed;
+
+top:35%;
+
+left:0;
+
+right:0;
+
+
+z-index:2000;
+
+
+text-align:center;
+
+
+font-size:
+
+clamp(40px,10vw,90px);
+
+
+
+font-weight:900;
+
+
+color:gold;
+
+
+text-shadow:
+
+0 0 30px white,
+0 0 120px orange;
+
+
+}
+
+
+
+.fjGoldFlash{
+
+
+position:fixed;
+
+inset:0;
+
+z-index:1500;
+
+
+background:
+
+radial-gradient(
+circle,
+white,
+gold,
+transparent
+);
+
+
+animation:
+fjFlashOut 2s forwards;
+
+
+pointer-events:none;
+
+}
+
+
+
+@keyframes fjFlashOut{
+
+
+from{
+
+opacity:1;
+
+}
+
+
+to{
+
+opacity:0;
+
+}
+
+
+
+}
+
+
+
+.fjCoin{
+
+
+position:fixed;
+
+
+top:50%;
+
+left:50%;
+
+
+z-index:3000;
+
+
+font-size:35px;
+
+
+pointer-events:none;
+
+
+animation:
+
+fjCoinFly 4s forwards;
+
+
+}
+
+
+
+@keyframes fjCoinFly{
+
+
+0%{
+
+
+transform:
+
+translate(-50%,-50%)
+scale(.2);
+
+
+opacity:1;
+
+}
+
+
+
+100%{
+
+
+transform:
+
+translate(
+calc(-50% + var(--x)),
+calc(-50% + var(--y))
+)
+
+rotate(900deg)
+
+scale(1.5);
+
+
+
+opacity:0;
+
+}
+
+
+
+}
+
+
+</style>
+
+
+
+
+
+<script>
+
+
+// =================================
+// FINAL JACKPOT
+// =================================
+
+
+
 function startFinalJackpot(){
 
 
+
 if(FrozenJackpot.jackpot)
+
 return;
 
 
@@ -360,81 +1223,1470 @@ return;
 FrozenJackpot.jackpot=true;
 
 
-FJ.slots[0].innerHTML="💰";
-FJ.slots[1].innerHTML="💰";
-FJ.slots[2].innerHTML="💰";
+FrozenJackpot.locked=true;
 
 
-fjMessage(
-"🏆 JACKPOT WON"
+
+
+// машина
+
+
+if(FJ.machine){
+
+FJ.machine.classList.add(
+"fjFinalMode"
 );
-
-
-
-if(typeof startCoins==="function")
-
-startCoins();
-
-
 
 }
 
 
 
-console.log(
-"JACKPOT READY"
+
+
+// печеливша комбинация
+
+
+if(FJ.slots[0])
+FJ.slots[0].innerHTML="💰";
+
+
+if(FJ.slots[1])
+FJ.slots[1].innerHTML="💰";
+
+
+if(FJ.slots[2])
+FJ.slots[2].innerHTML="💰";
+
+
+
+
+
+
+
+fjMessage(
+"🎰 JACKPOT WON 🎰"
 );
-function startCoins(){
 
 
-for(let i=0;i<200;i++){
 
 
-let c=document.createElement("div");
 
 
-c.innerHTML="🪙";
+
+// светкавица
 
 
-c.style.position="fixed";
-
-c.style.left="50%";
-
-c.style.top="50%";
+let flash=document.createElement(
+"div"
+);
 
 
-c.style.fontSize=
-(20+Math.random()*40)+"px";
+flash.className="fjGoldFlash";
 
 
-c.style.transform=
-
-"translate("+
-
-(Math.random()*800-400)+"px,"+
-
-(Math.random()*800-400)+"px)";
-
-
-document.body.appendChild(c);
+document.body.appendChild(
+flash
+);
 
 
 
 setTimeout(()=>{
 
-c.remove();
+flash.remove();
 
-},4000);
+},2000);
+
+
+
+
+
+
+
+
+
+// текст
+
+
+let title=document.createElement(
+"div"
+);
+
+
+
+title.className="fjJackpotText";
+
+
+
+title.innerHTML=
+
+`
+
+🏆 JACKPOT WON 🏆
+
+<br>
+
+💰 THE MACHINE PAID 💰
+
+`;
+
+
+
+document.body.appendChild(
+title
+);
+
+
+
+
+
+
+
+
+// монети
+
+
+setTimeout(()=>{
+
+
+fjCreateCoins();
+
+
+},1000);
 
 
 
 }
 
 
+
+
+
+
+
+
+
+function fjCreateCoins(){
+
+
+
+for(let i=0;i<200;i++){
+
+
+
+let coin=document.createElement(
+"div"
+);
+
+
+
+coin.className="fjCoin";
+
+
+coin.innerHTML="🪙";
+
+
+
+let angle=
+
+Math.random()*Math.PI*2;
+
+
+
+let distance=
+
+300+
+
+Math.random()*900;
+
+
+
+
+
+coin.style.setProperty(
+
+"--x",
+
+Math.cos(angle)*distance+"px"
+
+);
+
+
+
+coin.style.setProperty(
+
+"--y",
+
+Math.sin(angle)*distance+"px"
+
+);
+
+
+
+
+
+document.body.appendChild(
+coin
+);
+
+
+
+setTimeout(()=>{
+
+coin.remove();
+
+},4500);
+
+
+
 }
+
+
+
+}
+
+
+
+
+
 
 
 
 console.log(
-"EFFECTS READY"
+"❄️ FROZEN JACKPOT V8 PART 4 READY"
 );
+
+
+
+</script>
+<!-- =========================================
+ FROZEN JACKPOT V8
+ PART 5 / SOUND + FACE + EFFECTS
+ СЛЕД PART 4
+========================================= -->
+
+
+<style>
+
+
+.fjWinnerFace{
+
+
+position:fixed;
+
+
+top:30%;
+
+
+left:50%;
+
+
+transform:
+translate(-50%,-50%);
+
+
+
+width:280px;
+
+
+height:280px;
+
+
+
+border-radius:50%;
+
+
+overflow:hidden;
+
+
+
+z-index:1400;
+
+
+
+background:
+
+
+radial-gradient(
+
+circle,
+
+white,
+
+cyan,
+
+transparent
+
+);
+
+
+
+box-shadow:
+
+
+0 0 100px white,
+
+0 0 220px gold;
+
+
+
+animation:
+
+fjWinnerPulse 1s infinite alternate;
+
+
+
+}
+
+
+
+
+.fjWinnerFace img{
+
+
+width:100%;
+
+height:100%;
+
+
+object-fit:cover;
+
+
+border-radius:50%;
+
+
+}
+
+
+
+
+
+@keyframes fjWinnerPulse{
+
+
+from{
+
+transform:
+translate(-50%,-50%) scale(.9);
+
+}
+
+
+
+to{
+
+transform:
+translate(-50%,-50%) scale(1.15);
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+.fjWinnerTitle{
+
+
+position:fixed;
+
+
+top:65%;
+
+
+left:0;
+
+
+right:0;
+
+
+
+z-index:1500;
+
+
+
+text-align:center;
+
+
+font-size:
+
+clamp(35px,9vw,80px);
+
+
+
+font-weight:900;
+
+
+
+color:gold;
+
+
+
+text-shadow:
+
+
+0 0 40px white,
+
+0 0 100px orange;
+
+
+
+animation:
+
+fjWinnerText .5s infinite alternate;
+
+
+}
+
+
+
+@keyframes fjWinnerText{
+
+
+from{
+
+scale:1;
+
+}
+
+
+to{
+
+scale:1.15;
+
+}
+
+
+}
+
+
+
+</style>
+
+
+
+
+
+
+
+<script>
+
+
+// =================================
+// WINNER FACE
+// =================================
+
+
+function createWinnerFace(){
+
+
+
+let face=document.createElement(
+"div"
+);
+
+
+
+face.className="fjWinnerFace";
+
+
+
+// тук можеш да сложиш снимка
+
+
+face.innerHTML=
+
+"👤";
+
+
+// пример:
+// face.innerHTML='<img src="face.png">';
+
+
+
+
+document.body.appendChild(face);
+
+
+
+}
+
+
+
+
+
+
+
+// =================================
+// WINNER TEXT
+// =================================
+
+
+
+function createWinnerTitle(){
+
+
+
+let title=document.createElement(
+"div"
+);
+
+
+
+title.className="fjWinnerTitle";
+
+
+
+title.innerHTML=
+
+`
+
+🎰 JACKPOT 🎰
+
+<br>
+
+🏆 ПОБЕДА 🏆
+
+<br>
+
+💰 MACHINE PAID 💰
+
+`;
+
+
+
+document.body.appendChild(title);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =================================
+// AUDIO ENGINE
+// =================================
+
+
+
+let FJ_AUDIO=null;
+
+
+
+
+
+function fjInitAudio(){
+
+
+
+if(!FJ_AUDIO){
+
+
+FJ_AUDIO=
+
+new AudioContext();
+
+
+}
+
+
+
+if(FJ_AUDIO.state==="suspended"){
+
+
+FJ_AUDIO.resume();
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function fjTone(freq,time,type){
+
+
+
+fjInitAudio();
+
+
+
+let osc=
+
+FJ_AUDIO.createOscillator();
+
+
+
+let gain=
+
+FJ_AUDIO.createGain();
+
+
+
+osc.type=type;
+
+
+
+osc.frequency.value=freq;
+
+
+
+gain.gain.value=.05;
+
+
+
+osc.connect(gain);
+
+
+gain.connect(
+FJ_AUDIO.destination
+);
+
+
+
+osc.start();
+
+
+
+osc.stop(
+
+FJ_AUDIO.currentTime+time
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function fjJackpotSound(){
+
+
+
+fjTone(
+500,
+0.2,
+"square"
+);
+
+
+
+setTimeout(()=>{
+
+
+fjTone(
+900,
+0.25,
+"square"
+);
+
+
+
+},200);
+
+
+
+
+
+setTimeout(()=>{
+
+
+fjTone(
+1400,
+0.5,
+"triangle"
+);
+
+
+
+},500);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =================================
+// CONNECT FINAL
+// =================================
+
+
+
+const oldFinalV5 =
+startFinalJackpot;
+
+
+
+startFinalJackpot=function(){
+
+
+
+oldFinalV5();
+
+
+
+setTimeout(()=>{
+
+
+createWinnerFace();
+
+
+createWinnerTitle();
+
+
+fjJackpotSound();
+
+
+
+},500);
+
+
+
+};
+
+
+
+
+
+
+
+
+
+// =================================
+// VIBRATION
+// =================================
+
+
+
+function fjVibrate(){
+
+
+
+if(navigator.vibrate){
+
+
+navigator.vibrate(
+
+[100,50,200,50,400]
+
+);
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+const oldFinalVibration =
+startFinalJackpot;
+
+
+
+startFinalJackpot=function(){
+
+
+
+fjVibrate();
+
+
+
+oldFinalVibration();
+
+
+
+};
+
+
+
+
+
+
+
+console.log(
+
+"❄️ FROZEN JACKPOT V8 PART 5 SOUND + FACE READY"
+
+);
+
+
+
+</script>
+<!-- =========================================
+ FROZEN JACKPOT V8
+ PART 6 / STABILITY + CLEAN SYSTEM
+ СЛЕД PART 5
+========================================= -->
+
+
+<script>
+
+
+// =================================
+// CLEAN OLD EFFECTS
+// =================================
+
+
+function fjCleanEffects(){
+
+
+
+document.querySelectorAll(
+
+".fjWinnerFace,"+
+
+".fjWinnerTitle,"+
+
+".fjFinalText,"+
+
+".fjCoin,"+
+
+".fjGoldFlash"
+
+)
+
+.forEach(el=>{
+
+
+el.remove();
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+// =================================
+// JACKPOT LOCK SYSTEM
+// =================================
+
+
+window.FJ_FINAL_LOCK=false;
+
+
+
+
+
+
+function fjFinalGuard(){
+
+
+
+if(FJ_FINAL_LOCK)
+
+return false;
+
+
+
+if(!FrozenJackpot)
+
+return false;
+
+
+
+if(FrozenJackpot.jackpot)
+
+return false;
+
+
+
+FJ_FINAL_LOCK=true;
+
+
+
+return true;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =================================
+// PROTECT FINAL START
+// =================================
+
+
+
+if(typeof startFinalJackpot==="function"){
+
+
+
+const oldStartFinalV6 =
+
+startFinalJackpot;
+
+
+
+
+
+startFinalJackpot=function(){
+
+
+
+if(!fjFinalGuard())
+
+return;
+
+
+
+fjCleanEffects();
+
+
+
+oldStartFinalV6();
+
+
+
+};
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =================================
+// SAFE SAVE
+// =================================
+
+
+function fjSafeSave(){
+
+
+
+try{
+
+
+if(typeof fjSave==="function"){
+
+
+fjSave();
+
+
+}
+
+
+
+}
+
+catch(e){
+
+
+console.log(
+"Save protection active"
+);
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =================================
+// AUTO SAVE
+// =================================
+
+
+setInterval(()=>{
+
+
+fjSafeSave();
+
+
+},10000);
+
+
+
+
+
+
+
+
+
+// =================================
+// ERROR PROTECTION
+// =================================
+
+
+
+window.addEventListener(
+
+"error",
+
+function(e){
+
+
+console.log(
+
+"Frozen Jackpot protected:",
+
+e.message
+
+);
+
+
+}
+
+);
+
+
+
+
+
+
+
+
+
+// =================================
+// MOBILE PERFORMANCE
+// =================================
+
+
+
+if(window.innerWidth < 600){
+
+
+
+document.body.classList.add(
+
+"fjMobileMode"
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+console.log(
+
+"❄️ FROZEN JACKPOT V8 PART 6 STABILITY READY"
+
+);
+
+
+
+</script>
+<!-- =========================================
+ FROZEN JACKPOT V8
+ PART 7 / FINAL SPIN WARNING + FINISH
+ СЛЕД PART 6
+========================================= -->
+
+
+<style>
+
+
+.fjFinalWarning{
+
+
+position:fixed;
+
+
+top:35%;
+
+
+left:0;
+
+
+right:0;
+
+
+
+z-index:2000;
+
+
+
+text-align:center;
+
+
+font-size:
+
+clamp(35px,9vw,80px);
+
+
+
+font-weight:900;
+
+
+
+color:white;
+
+
+
+text-shadow:
+
+
+0 0 30px cyan,
+
+0 0 100px blue;
+
+
+
+animation:
+
+fjWarningPulse .5s infinite alternate;
+
+
+}
+
+
+
+
+
+@keyframes fjWarningPulse{
+
+
+from{
+
+transform:scale(1);
+
+}
+
+
+
+to{
+
+transform:scale(1.15);
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+.fjIceFlash{
+
+
+position:fixed;
+
+
+inset:0;
+
+
+
+z-index:1900;
+
+
+
+pointer-events:none;
+
+
+
+background:
+
+
+radial-gradient(
+
+circle,
+
+white,
+
+cyan,
+
+transparent
+
+);
+
+
+
+animation:
+
+fjIceFlashOut 3s forwards;
+
+
+}
+
+
+
+@keyframes fjIceFlashOut{
+
+
+from{
+
+opacity:1;
+
+}
+
+
+
+to{
+
+opacity:0;
+
+}
+
+
+
+}
+
+
+
+</style>
+
+
+
+
+
+
+
+
+<script>
+
+
+
+// =================================
+// LAST SPIN WARNING
+// =================================
+
+
+function fjLastSpinWarning(){
+
+
+
+let flash=document.createElement(
+"div"
+);
+
+
+
+flash.className="fjIceFlash";
+
+
+
+document.body.appendChild(flash);
+
+
+
+
+
+
+let text=document.createElement(
+"div"
+);
+
+
+
+text.className="fjFinalWarning";
+
+
+
+text.innerHTML=
+
+`
+
+❄️ FINAL SPIN ❄️
+
+<br>
+
+🎰 JACKPOT READY 🎰
+
+`;
+
+
+
+document.body.appendChild(text);
+
+
+
+
+
+
+
+setTimeout(()=>{
+
+
+flash.remove();
+
+text.remove();
+
+
+
+},3000);
+
+
+
+}
+
+
+
+
+
+
+
+
+// =================================
+// CONNECT LAST SPIN
+// =================================
+
+
+const oldSpinV7 = fjSpin;
+
+
+
+fjSpin=function(){
+
+
+
+let nextSpin =
+
+FrozenJackpot.totalSpins + 1;
+
+
+
+
+
+if(
+
+nextSpin === FJ_CONFIG.TOTAL_SPINS
+
+){
+
+
+fjLastSpinWarning();
+
+
+
+}
+
+
+
+
+
+
+oldSpinV7();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+// =================================
+// FINAL SAVE
+// =================================
+
+
+window.addEventListener(
+
+"beforeunload",
+
+()=>{
+
+
+if(typeof fjSave==="function"){
+
+
+fjSave();
+
+
+}
+
+
+
+});
+
+
+
+
+
+
+
+
+console.log(
+
+"❄️ FROZEN JACKPOT V8 PART 7 COMPLETE"
+
+);
+
+
+
+</script>
