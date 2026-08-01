@@ -2008,6 +2008,34 @@ LAST REEL FIRE ANTICIPATION
 .lastReelFire{
 
 
+    position:relative;
+
+    animation:firePulse .25s infinite alternate;
+
+}
+
+.lastReelFire::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-8px;
+
+    border-radius:18px;
+
+    background:
+
+    radial-gradient(circle,
+    rgba(255,255,0,.8),
+    rgba(255,80,0,.6),
+    transparent);
+
+    filter:blur(12px);
+
+    animation:fireGlow .3s infinite alternate;
+
+    z-index:-1;
 border-color:
 
 #ff5500!important;
@@ -2016,7 +2044,10 @@ border-color:
 
 animation:
 
-firePulse .35s infinite alternate;
+    firePulse .2s infinite,
+
+        reelShake .08s infinite;
+
 
 
 }
