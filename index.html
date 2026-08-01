@@ -11803,3 +11803,2605 @@ console.log(
 
 
 </script>
+   <script>
+
+/* ==========================================
+   UPGRADE V10
+   ULTIMATE SLOT PRESENTATION
+========================================== */
+
+
+
+// ==========================================
+// V10 STYLE ENGINE
+// ==========================================
+
+
+let v10style=document.createElement("style");
+
+
+v10style.innerHTML=`
+
+.machine{
+
+overflow:visible;
+
+}
+
+
+
+.machine::after{
+
+
+content:"";
+
+
+position:absolute;
+
+
+inset:-15px;
+
+
+border-radius:45px;
+
+
+border:4px solid transparent;
+
+
+background:
+
+linear-gradient(
+
+90deg,
+
+gold,
+
+orange,
+
+red,
+
+yellow,
+
+gold
+
+)
+
+border-box;
+
+
+
+mask:
+
+linear-gradient(#000 0 0)
+
+padding-box,
+
+linear-gradient(#000 0 0);
+
+
+
+animation:
+
+ledRing 3s linear infinite;
+
+
+}
+
+
+
+@keyframes ledRing{
+
+
+0%{
+
+filter:hue-rotate(0deg);
+
+}
+
+
+100%{
+
+filter:hue-rotate(360deg);
+
+}
+
+
+}
+
+
+
+
+
+
+
+.v10Awake{
+
+
+animation:
+
+machineAwake 1.2s;
+
+
+}
+
+
+
+@keyframes machineAwake{
+
+
+0%{
+
+transform:
+
+scale(.85);
+
+opacity:.2;
+
+}
+
+
+
+50%{
+
+transform:
+
+scale(1.05);
+
+opacity:1;
+
+
+}
+
+
+
+100%{
+
+transform:
+
+scale(1);
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+.v10Hot{
+
+
+animation:
+
+ultimateHeat .5s infinite alternate;
+
+
+}
+
+
+
+
+@keyframes ultimateHeat{
+
+
+from{
+
+
+filter:
+
+brightness(1);
+
+
+}
+
+
+
+to{
+
+
+filter:
+
+brightness(1.7);
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+.glassV10{
+
+
+position:absolute;
+
+
+inset:0;
+
+
+pointer-events:none;
+
+
+background:
+
+linear-gradient(
+
+120deg,
+
+transparent,
+
+rgba(255,255,255,.3),
+
+transparent
+
+);
+
+
+
+animation:
+
+glassSweep 5s infinite;
+
+
+}
+
+
+
+
+
+@keyframes glassSweep{
+
+
+0%{
+
+transform:
+
+translateX(-120%);
+
+
+}
+
+
+
+100%{
+
+transform:
+
+translateX(120%);
+
+
+}
+
+
+
+}
+
+
+
+`;
+
+
+document.head.appendChild(v10style);
+
+
+
+
+
+
+
+
+// ==========================================
+// STARTUP ANIMATION
+// ==========================================
+
+
+function machineStartup(){
+
+
+
+machine.classList.add(
+"v10Awake"
+);
+
+
+
+tone(
+150,
+.2,
+"sine"
+);
+
+
+
+setTimeout(()=>{
+
+
+tone(
+300,
+.2,
+"triangle"
+);
+
+
+
+},300);
+
+
+
+setTimeout(()=>{
+
+
+machine.classList.remove(
+"v10Awake"
+);
+
+
+},1200);
+
+
+
+}
+
+
+
+
+
+
+machineStartup();
+
+
+
+
+
+
+
+
+
+// ==========================================
+// GLASS LAYER
+// ==========================================
+
+
+function createGlassV10(){
+
+
+
+if(
+document.querySelector(".glassV10")
+)
+
+return;
+
+
+
+let glass=document.createElement("div");
+
+
+glass.className="glassV10";
+
+
+
+document
+.querySelector(".display")
+.appendChild(glass);
+
+
+
+}
+
+
+
+createGlassV10();
+
+
+
+
+
+
+
+
+
+// ==========================================
+// HOT JACKPOT MODE
+// ==========================================
+
+
+function activateUltimateHot(){
+
+
+
+document.body.classList.add(
+"partyMode"
+);
+
+
+
+machine.classList.add(
+"v10Hot"
+);
+
+
+
+setTimeout(()=>{
+
+
+machine.classList.remove(
+"v10Hot"
+);
+
+
+
+},6000);
+
+
+
+}
+
+
+
+
+
+
+
+
+// ==========================================
+// BUILD UP SOUND
+// ==========================================
+
+
+function ultimateBuildSound(){
+
+
+let notes=[
+
+250,
+
+350,
+
+500,
+
+700,
+
+900
+
+];
+
+
+
+notes.forEach((n,i)=>{
+
+
+setTimeout(()=>{
+
+
+tone(
+n,
+.15,
+"sawtooth"
+);
+
+
+
+},i*120);
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================================
+// PATCH SPIN
+// ==========================================
+
+
+const oldSpinV10=startSpin;
+
+
+
+startSpin=function(){
+
+
+
+let ultimateSpin=
+
+(totalSpins+1)%5===0;
+
+
+
+
+machineStartup();
+
+
+
+
+
+if(ultimateSpin){
+
+
+
+ultimateBuildSound();
+
+
+
+activateUltimateHot();
+
+
+
+message.innerHTML=
+
+"🔥 JACKPOT MODE ACTIVATED 🔥";
+
+
+
+}
+
+
+
+
+oldSpinV10();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+// ==========================================
+// JACKPOT REVEAL
+// ==========================================
+
+
+function ultimateJackpot(){
+
+
+
+let flash=document.createElement("div");
+
+
+
+flash.style.position="fixed";
+
+flash.style.inset="0";
+
+flash.style.zIndex="999";
+
+flash.style.pointerEvents="none";
+
+flash.style.background=
+
+"radial-gradient(circle,white,gold,transparent)";
+
+
+
+document.body.appendChild(flash);
+
+
+
+
+
+flash.animate([
+
+
+{
+opacity:1
+},
+
+
+{
+opacity:0
+}
+
+
+],{
+
+
+duration:1200
+
+
+});
+
+
+
+
+
+setTimeout(()=>{
+
+
+flash.remove();
+
+
+},1300);
+
+
+
+
+
+machine.animate([
+
+
+{
+transform:"scale(1)"
+},
+
+
+{
+transform:"scale(1.15)"
+},
+
+
+{
+transform:"scale(1)"
+}
+
+
+],{
+
+
+duration:800
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+// ==========================================
+// COMPLETE PATCH
+// ==========================================
+
+
+const oldCompleteV10=completeGame;
+
+
+
+completeGame=function(){
+
+
+
+oldCompleteV10();
+
+
+
+ultimateJackpot();
+
+
+
+activateUltimateHot();
+
+
+
+};
+
+
+
+
+
+
+
+
+console.log(
+"Upgrade V10 Ultimate Slot Presentation Loaded"
+);
+
+
+
+</script>
+   <script>
+
+/* ==========================================
+   UPGRADE 11
+   REAL SLOT FEEDBACK SYSTEM
+========================================== */
+
+
+let upgrade11SpinCount = 0;
+
+
+
+// ================================
+// MOTOR SOUND
+// ================================
+
+
+function slotMotorSound(power=1){
+
+let ctx=getAudio();
+
+
+let osc=ctx.createOscillator();
+
+let gain=ctx.createGain();
+
+
+osc.type="sawtooth";
+
+
+osc.frequency.value=
+80 + (power*60);
+
+
+gain.gain.value=
+0.03 * power;
+
+
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+osc.frequency.exponentialRampToValueAtTime(
+220*power,
+ctx.currentTime+1
+);
+
+
+
+gain.gain.exponentialRampToValueAtTime(
+0.001,
+ctx.currentTime+1
+);
+
+
+
+osc.stop(
+ctx.currentTime+1
+);
+
+
+}
+
+
+
+
+
+
+// ================================
+// STOP IMPACT SOUND
+// ================================
+
+
+function heavyReelStopSound(){
+
+
+let ctx=getAudio();
+
+
+let osc=
+ctx.createOscillator();
+
+
+let gain=
+ctx.createGain();
+
+
+
+osc.type="square";
+
+
+osc.frequency.value=120;
+
+
+
+gain.gain.value=.12;
+
+
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+
+osc.frequency.exponentialRampToValueAtTime(
+40,
+ctx.currentTime+.15
+);
+
+
+
+gain.gain.exponentialRampToValueAtTime(
+0.001,
+ctx.currentTime+.2
+);
+
+
+
+osc.stop(
+ctx.currentTime+.2
+);
+
+
+}
+
+
+
+
+
+
+
+
+// ================================
+// MACHINE HIT EFFECT
+// ================================
+
+
+function reelImpact(){
+
+
+
+machine.classList.add(
+"shake"
+);
+
+
+
+if(navigator.vibrate){
+
+navigator.vibrate(
+30
+);
+
+}
+
+
+
+setTimeout(()=>{
+
+
+machine.classList.remove(
+"shake"
+);
+
+
+},250);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ================================
+// LAST REEL PRESSURE
+// ================================
+
+
+function activateLastPressure(){
+
+
+let last=slots[2];
+
+
+
+last.classList.add(
+"lastPressure"
+);
+
+
+
+message.innerHTML=
+
+"🔥 THE LAST SYMBOL IS DECIDING...";
+
+
+
+
+setTimeout(()=>{
+
+
+last.classList.remove(
+"lastPressure"
+);
+
+
+},4000);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+// ================================
+// PATCH START SPIN
+// ================================
+
+
+const oldUpgrade11Spin=startSpin;
+
+
+startSpin=function(){
+
+
+upgrade11SpinCount++;
+
+
+
+let anticipationMode=
+upgrade11SpinCount % 5 === 0;
+
+
+
+if(anticipationMode){
+
+
+slotMotorSound(2);
+
+
+
+setTimeout(()=>{
+
+
+activateLastPressure();
+
+
+},700);
+
+
+
+}
+else{
+
+
+slotMotorSound(1);
+
+
+}
+
+
+
+
+oldUpgrade11Spin();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+// ================================
+// PATCH STOP EFFECT
+// ================================
+
+
+const oldStopSound=reelStopSound;
+
+
+reelStopSound=function(){
+
+
+heavyReelStopSound();
+
+
+reelImpact();
+
+
+oldStopSound();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+console.log(
+"Upgrade 11 Real Slot Feedback Loaded"
+);
+
+
+</script>
+
+
+
+
+<style>
+
+
+/* =================================
+   LAST REEL PRESSURE EFFECT
+================================= */
+
+
+.lastPressure{
+
+
+animation:
+pressurePulse .25s infinite alternate;
+
+
+border-color:
+orange!important;
+
+
+
+}
+
+
+
+
+
+@keyframes pressurePulse{
+
+
+from{
+
+
+box-shadow:
+
+0 0 20px red,
+0 0 40px orange;
+
+
+transform:
+scale(1);
+
+
+
+}
+
+
+
+to{
+
+
+box-shadow:
+
+0 0 80px yellow,
+0 0 150px red;
+
+
+
+transform:
+scale(1.08);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+</style>
+   <script>
+
+/* ==========================================
+   UPGRADE 12
+   TRUE REEL PHYSICS
+========================================== */
+
+
+let physicsSpinCounter = 0;
+
+
+
+// ==========================================
+// PHYSICS SETTINGS
+// ==========================================
+
+
+const reelPhysics = {
+
+
+normalSpin:2600,
+
+anticipationSpin:4200,
+
+
+acceleration:0.08,
+
+deceleration:0.96
+
+
+};
+
+
+
+
+
+
+// ==========================================
+// REEL MOTION ENGINE
+// ==========================================
+
+
+function physicsReelStart(slot,index,lastReel=false){
+
+
+let speed=20;
+
+let position=0;
+
+
+let running=true;
+
+
+let anticipation =
+(lastReel && physicsSpinCounter%5===0);
+
+
+
+let duration =
+anticipation ?
+reelPhysics.anticipationSpin :
+reelPhysics.normalSpin;
+
+
+
+
+slot.classList.add(
+"physicsSpin"
+);
+
+
+
+
+let startTime=
+Date.now();
+
+
+
+
+
+function move(){
+
+
+
+if(!running)
+return;
+
+
+
+let elapsed=
+Date.now()-startTime;
+
+
+
+if(elapsed < duration*.25){
+
+
+speed +=
+reelPhysics.acceleration;
+
+
+
+}
+
+
+
+
+else if(elapsed > duration*.7){
+
+
+
+speed *=
+reelPhysics.deceleration;
+
+
+
+}
+
+
+
+
+position+=speed;
+
+
+
+slot.style.transform=
+
+`
+translateY(${position}px)
+`;
+
+
+
+
+
+if(elapsed < duration){
+
+
+requestAnimationFrame(move);
+
+
+
+}
+
+else{
+
+
+running=false;
+
+
+
+physicsReelStop(
+slot
+);
+
+
+
+}
+
+
+
+}
+
+
+
+move();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================================
+// REAL STOP
+// ==========================================
+
+
+function physicsReelStop(slot){
+
+
+
+slot.classList.remove(
+"physicsSpin"
+);
+
+
+
+slot.style.transform=
+"translateY(0)";
+
+
+
+
+
+// bounce
+
+
+slot.animate(
+
+[
+
+{
+transform:
+"translateY(0)"
+},
+
+
+{
+transform:
+"translateY(12px)"
+},
+
+
+{
+transform:
+"translateY(-5px)"
+},
+
+
+{
+transform:
+"translateY(0)"
+}
+
+
+],
+
+{
+
+duration:350,
+
+easing:
+"cubic-bezier(.2,1.5,.5,1)"
+
+}
+
+);
+
+
+
+
+
+
+reelImpact();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================================
+// VISUAL CSS
+// ==========================================
+
+
+</script>
+
+
+<style>
+
+
+.physicsSpin{
+
+
+filter:
+
+blur(3px);
+
+
+
+}
+
+
+
+</style>
+
+
+
+
+
+
+
+
+
+<script>
+
+
+// ==========================================
+// PATCH EXISTING START SPIN
+// ==========================================
+
+
+
+const physicsOldStart =
+startSpin;
+
+
+
+startSpin=function(){
+
+
+
+physicsSpinCounter++;
+
+
+
+
+physicsOldStart();
+
+
+
+setTimeout(()=>{
+
+
+
+slots.forEach((slot,index)=>{
+
+
+physicsReelStart(
+
+slot,
+
+index,
+
+index===2
+
+);
+
+
+});
+
+
+
+},150);
+
+
+
+};
+
+
+
+
+
+
+
+console.log(
+
+"Upgrade 12 True Reel Physics Loaded"
+
+);
+
+
+
+</script>
+   <script>
+
+/* ==========================================
+   UPGRADE 13
+   REAL CASINO AUDIO LAYER
+========================================== */
+
+
+let audioSpinGain;
+
+
+
+// ==========================================
+// SLOT MOTOR LOOP
+// ==========================================
+
+
+function startSlotMotor(power=1){
+
+
+let ctx=getAudio();
+
+
+let osc=
+ctx.createOscillator();
+
+
+audioSpinGain=
+ctx.createGain();
+
+
+
+osc.type="sawtooth";
+
+
+osc.frequency.value=
+70;
+
+
+
+audioSpinGain.gain.value=
+0.015 * power;
+
+
+
+osc.connect(
+audioSpinGain
+);
+
+
+audioSpinGain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+
+let speed=
+power===2 ? 180 : 120;
+
+
+
+osc.frequency.linearRampToValueAtTime(
+
+speed,
+
+ctx.currentTime+1
+
+);
+
+
+
+window.slotMotorOsc=osc;
+
+
+
+}
+
+
+
+
+
+
+
+
+function stopSlotMotor(){
+
+
+if(!window.slotMotorOsc)
+return;
+
+
+
+let ctx=getAudio();
+
+
+
+audioSpinGain.gain.exponentialRampToValueAtTime(
+
+0.001,
+
+ctx.currentTime+.5
+
+);
+
+
+
+window.slotMotorOsc.stop(
+
+ctx.currentTime+.5
+
+);
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================================
+// REEL CLICK SOUND
+// ==========================================
+
+
+function reelClick(){
+
+
+
+let ctx=getAudio();
+
+
+
+let osc=
+ctx.createOscillator();
+
+
+let gain=
+ctx.createGain();
+
+
+
+osc.type="square";
+
+
+osc.frequency.value=
+500+Math.random()*200;
+
+
+
+gain.gain.value=.08;
+
+
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+
+osc.stop(
+
+ctx.currentTime+.06
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================================
+// LAST REEL BASS HIT
+// ==========================================
+
+
+function lastReelBass(){
+
+
+let ctx=getAudio();
+
+
+
+let osc=
+ctx.createOscillator();
+
+
+let gain=
+ctx.createGain();
+
+
+
+osc.type="sine";
+
+
+osc.frequency.value=80;
+
+
+
+gain.gain.value=.15;
+
+
+
+osc.connect(gain);
+
+gain.connect(
+ctx.destination
+);
+
+
+
+osc.start();
+
+
+
+osc.frequency.exponentialRampToValueAtTime(
+
+35,
+
+ctx.currentTime+.5
+
+);
+
+
+
+gain.gain.exponentialRampToValueAtTime(
+
+0.001,
+
+ctx.currentTime+.5
+
+);
+
+
+
+osc.stop(
+
+ctx.currentTime+.5
+
+);
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================================
+// PATCH SPIN START
+// ==========================================
+
+
+const upgrade13OldSpin=startSpin;
+
+
+
+startSpin=function(){
+
+
+let anticipation =
+((totalSpins+1)%5===0);
+
+
+
+if(anticipation){
+
+
+startSlotMotor(2);
+
+
+
+setTimeout(()=>{
+
+message.innerHTML=
+"🔥 JACKPOT PRESSURE...";
+
+
+},500);
+
+
+
+}
+
+else{
+
+
+startSlotMotor(1);
+
+
+}
+
+
+
+
+upgrade13OldSpin();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+// ==========================================
+// PATCH STOP
+// ==========================================
+
+
+const upgrade13OldStop=
+reelStopSound;
+
+
+
+reelStopSound=function(){
+
+
+
+reelClick();
+
+
+
+if(navigator.vibrate){
+
+navigator.vibrate(20);
+
+}
+
+
+
+upgrade13OldStop();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+// ==========================================
+// PATCH FINISH
+// ==========================================
+
+
+const upgrade13OldFinish=
+finishSpin;
+
+
+
+finishSpin=function(){
+
+
+stopSlotMotor();
+
+
+
+upgrade13OldFinish();
+
+
+
+};
+
+
+
+
+
+
+
+
+
+console.log(
+
+"Upgrade 13 Real Casino Audio Loaded"
+
+);
+
+
+</script>
+
+<style>
+
+
+/* =================================
+   AUDIO LIGHT FEEDBACK
+================================= */
+
+
+.slot.spinning{
+
+
+box-shadow:
+
+0 0 35px gold,
+
+0 0 70px orange,
+
+inset 0 0 30px black;
+
+
+}
+
+
+
+.lastPressure{
+
+
+animation:
+
+casinoPressure .3s infinite alternate;
+
+
+}
+
+
+
+@keyframes casinoPressure{
+
+
+from{
+
+
+filter:
+
+brightness(1);
+
+
+}
+
+
+
+to{
+
+
+filter:
+
+brightness(1.8);
+
+
+}
+
+
+
+}
+
+
+</style>
+   <!-- =========================================
+FINAL CLEAN PATCH V14
+PUT AFTER ALL PREVIOUS SCRIPTS
+========================================= -->
+
+<script>
+
+console.log("Frozen Jackpot FINAL CLEAN PATCH loaded");
+
+
+// ================================
+// GLOBAL ERROR PROTECTION
+// ================================
+
+
+window.addEventListener(
+"error",
+function(e){
+
+console.warn(
+"Recovered error:",
+e.message
+);
+
+});
+
+
+
+
+// ================================
+// REMOVE DUPLICATE EFFECTS
+// ================================
+
+
+function clearEffects(){
+
+
+document
+.querySelectorAll(
+".coin,.snowflake,.iceParticle,.jackpotFlash,.festivalFlash,.lightBeam,.jackpotBeam"
+)
+.forEach(e=>{
+
+e.remove();
+
+});
+
+
+}
+
+
+
+// ================================
+// SAFE AUDIO
+// ================================
+
+
+if(typeof audioContext !== "undefined"){
+
+
+try{
+
+
+audioContext.close();
+
+
+}catch(e){}
+
+
+
+audioContext=null;
+
+
+}
+
+
+
+
+// ================================
+// REBUILD AUDIO ENGINE
+// ================================
+
+
+function safeTone(
+freq,
+time,
+type="sine"
+){
+
+
+try{
+
+
+if(!audioContext)
+
+audioContext=new AudioContext();
+
+
+
+let osc =
+audioContext.createOscillator();
+
+
+
+let gain =
+audioContext.createGain();
+
+
+
+osc.type=type;
+
+
+osc.frequency.value=freq;
+
+
+gain.gain.value=.05;
+
+
+
+osc.connect(gain);
+
+gain.connect(
+audioContext.destination
+);
+
+
+
+osc.start();
+
+
+
+osc.stop(
+audioContext.currentTime+time
+);
+
+
+
+}catch(e){}
+
+
+
+}
+
+
+
+
+
+function safeSpinSound(){
+
+
+safeTone(
+180,
+0.08,
+"square"
+);
+
+
+
+setTimeout(()=>{
+
+
+safeTone(
+260,
+0.08,
+"square"
+);
+
+
+},100);
+
+
+
+}
+
+
+
+
+function safeStopSound(){
+
+
+safeTone(
+700,
+0.12,
+"triangle"
+);
+
+
+}
+
+
+
+
+// ================================
+// FINAL SPIN CONTROLLER
+// ================================
+
+
+let FINAL_LOCK=false;
+
+
+
+window.startSpin=function(){
+
+
+
+if(FINAL_LOCK)
+
+return;
+
+
+
+if(typeof spinning!="undefined" && spinning)
+
+return;
+
+
+
+FINAL_LOCK=true;
+
+
+
+try{
+
+
+if(typeof totalSpins!="undefined")
+
+totalSpins++;
+
+
+if(typeof sessionSpins!="undefined")
+
+sessionSpins++;
+
+
+
+if(typeof updateCounter==="function")
+
+updateCounter();
+
+
+
+if(typeof saveGame==="function")
+
+saveGame();
+
+
+
+safeSpinSound();
+
+
+
+if(navigator.vibrate)
+
+navigator.vibrate(
+30
+);
+
+
+
+
+
+let slotsFixed=[
+
+document.getElementById("s1"),
+document.getElementById("s2"),
+document.getElementById("s3")
+
+];
+
+
+
+
+
+slotsFixed.forEach((slot,index)=>{
+
+
+if(!slot)
+
+return;
+
+
+
+slot.classList.add(
+"spinning"
+);
+
+
+
+
+
+setTimeout(()=>{
+
+
+slot.classList.remove(
+"spinning"
+);
+
+
+
+slot.classList.add(
+"stopGlow"
+);
+
+
+
+
+slot.style.transform=
+"translateX(-8px)";
+
+
+
+setTimeout(()=>{
+
+
+slot.style.transform=
+"translateX(8px)";
+
+},80);
+
+
+
+setTimeout(()=>{
+
+
+slot.style.transform=
+"translateX(0)";
+
+
+
+},160);
+
+
+
+
+
+let symbolsSafe=[
+
+"🍒",
+"🍋",
+"⭐",
+"💎",
+"🔔",
+"7️⃣",
+"💰"
+
+];
+
+
+
+slot.innerHTML=
+
+symbolsSafe[
+Math.floor(
+Math.random()*symbolsSafe.length
+)
+];
+
+
+
+safeStopSound();
+
+
+
+setTimeout(()=>{
+
+
+slot.classList.remove(
+"stopGlow"
+);
+
+
+
+},600);
+
+
+
+
+
+},900+(index*600));
+
+
+
+});
+
+
+
+
+
+
+setTimeout(()=>{
+
+
+if(typeof finishSpin==="function")
+
+finishSpin();
+
+
+
+FINAL_LOCK=false;
+
+
+
+},3000);
+
+
+
+
+}catch(e){
+
+
+
+console.log(
+"Spin recovered",
+e
+);
+
+
+
+FINAL_LOCK=false;
+
+
+}
+
+
+
+};
+
+
+
+
+
+
+
+// ================================
+// FINAL HOLD FIX
+// ================================
+
+
+window.startHold=function(){
+
+
+
+try{
+
+
+
+let overlay=
+document.getElementById(
+"holdOverlay"
+);
+
+
+
+if(overlay)
+
+overlay.style.display="flex";
+
+
+
+if(typeof holdActive!="undefined")
+
+holdActive=true;
+
+
+
+if(typeof spinBtn!="undefined")
+
+spinBtn.disabled=true;
+
+
+
+}catch(e){}
+
+
+
+};
+
+
+
+
+
+
+// ================================
+// BUTTON RECONNECT
+// ================================
+
+
+let finalButton=
+document.getElementById(
+"spinBtn"
+);
+
+
+
+if(finalButton){
+
+
+
+finalButton.onclick=function(){
+
+
+
+startSpin();
+
+
+
+};
+
+
+
+}
+
+
+
+
+
+
+
+// ================================
+// MEMORY CLEANER
+// ================================
+
+
+setInterval(()=>{
+
+
+let effects=document.querySelectorAll(
+".coin,.snowflake,.iceParticle"
+);
+
+
+
+if(effects.length>200){
+
+
+clearEffects();
+
+
+}
+
+
+
+},10000);
+
+
+
+
+
+
+// ================================
+// MOBILE FIX
+// ================================
+
+
+function finalMobileFix(){
+
+
+document.body.style.width="100%";
+
+document.body.style.height="100dvh";
+
+
+
+let machineFix=
+document.getElementById(
+"machine"
+);
+
+
+
+if(machineFix){
+
+
+machineFix.style.willChange=
+"transform";
+
+
+}
+
+
+
+}
+
+
+
+window.addEventListener(
+"resize",
+finalMobileFix
+);
+
+
+
+finalMobileFix();
+
+
+
+
+
+
+// ================================
+// READY
+// ================================
+
+
+console.log(
+"Frozen Jackpot V14 stable"
+);
+
+
+
+</script>
