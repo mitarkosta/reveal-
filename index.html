@@ -11256,3 +11256,89 @@ cardSpinCounter=0;
 
 <script>
 
+   <script>
+/* =====================================================
+   PATCH - FULL DERANGEMENT SHUFFLE
+   Нито една карта не остава на старата си позиция
+===================================================== */
+
+(function(){
+
+if(typeof cardDeck==="undefined") return;
+
+let previousDeck=[];
+
+// запомняме първоначалното разположение
+previousDeck=cardDeck.slice();
+
+function derangementShuffle(){
+
+    let shuffled;
+
+    do{
+
+        shuffled=previousDeck.slice();
+
+        // Fisher-Yates
+        for(let i=shuffled.length-1;i>0;i--){
+
+            const j=Math.floor(Math.random()*(i+1));
+
+            [shuffled[i],shuffled[j]]=
+            [shuffled[j],shuffled[i]];
+
+        }
+
+    }
+
+    // повтаря докато няма нито една карта
+    // останала на старото място
+    while(
+
+        shuffled.some((card,index)=>
+
+            card===previousDeck[index]
+
+        )
+
+    );
+
+    previousDeck=shuffled.slice();
+
+    cardDeck=shuffled;
+
+}
+
+
+
+const oldResetRound=resetCardRound;
+
+resetCardRound=function(){
+
+    derangementShuffle();
+
+    const cards=document.querySelectorAll(".card");
+
+    cards.forEach((card,index)=>{
+
+        card.classList.remove(
+            "selected",
+            "revealed",
+            "winner",
+            "dimmed"
+        );
+
+        card.innerHTML="?";
+
+        card.dataset.suit=
+        cardDeck[index];
+
+    });
+
+    oldResetRound();
+
+};
+
+})();
+</script>
+
