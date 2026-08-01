@@ -12348,3 +12348,372 @@ scale(1.08);
 
 
 </style>
+
+   <script>
+
+/* ==========================================
+   UPGRADE 12
+   TRUE REEL PHYSICS
+========================================== */
+
+
+let physicsSpinCounter = 0;
+
+
+
+// ==========================================
+// PHYSICS SETTINGS
+// ==========================================
+
+
+const reelPhysics = {
+
+
+normalSpin:2600,
+
+anticipationSpin:4200,
+
+
+acceleration:0.08,
+
+deceleration:0.96
+
+
+};
+
+
+
+
+
+
+// ==========================================
+// REEL MOTION ENGINE
+// ==========================================
+
+
+function physicsReelStart(slot,index,lastReel=false){
+
+
+let speed=20;
+
+let position=0;
+
+
+let running=true;
+
+
+let anticipation =
+(lastReel && physicsSpinCounter%5===0);
+
+
+
+let duration =
+anticipation ?
+reelPhysics.anticipationSpin :
+reelPhysics.normalSpin;
+
+
+
+
+slot.classList.add(
+"physicsSpin"
+);
+
+
+
+
+let startTime=
+Date.now();
+
+
+
+
+
+function move(){
+
+
+
+if(!running)
+return;
+
+
+
+let elapsed=
+Date.now()-startTime;
+
+
+
+if(elapsed < duration*.25){
+
+
+speed +=
+reelPhysics.acceleration;
+
+
+
+}
+
+
+
+
+else if(elapsed > duration*.7){
+
+
+
+speed *=
+reelPhysics.deceleration;
+
+
+
+}
+
+
+
+
+position+=speed;
+
+
+
+slot.style.transform=
+
+`
+translateY(${position}px)
+`;
+
+
+
+
+
+if(elapsed < duration){
+
+
+requestAnimationFrame(move);
+
+
+
+}
+
+else{
+
+
+running=false;
+
+
+
+physicsReelStop(
+slot
+);
+
+
+
+}
+
+
+
+}
+
+
+
+move();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================================
+// REAL STOP
+// ==========================================
+
+
+function physicsReelStop(slot){
+
+
+
+slot.classList.remove(
+"physicsSpin"
+);
+
+
+
+slot.style.transform=
+"translateY(0)";
+
+
+
+
+
+// bounce
+
+
+slot.animate(
+
+[
+
+{
+transform:
+"translateY(0)"
+},
+
+
+{
+transform:
+"translateY(12px)"
+},
+
+
+{
+transform:
+"translateY(-5px)"
+},
+
+
+{
+transform:
+"translateY(0)"
+}
+
+
+],
+
+{
+
+duration:350,
+
+easing:
+"cubic-bezier(.2,1.5,.5,1)"
+
+}
+
+);
+
+
+
+
+
+
+reelImpact();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================================
+// VISUAL CSS
+// ==========================================
+
+
+</script>
+
+
+<style>
+
+
+.physicsSpin{
+
+
+filter:
+
+blur(3px);
+
+
+
+}
+
+
+
+</style>
+
+
+
+
+
+
+
+
+
+<script>
+
+
+// ==========================================
+// PATCH EXISTING START SPIN
+// ==========================================
+
+
+
+const physicsOldStart =
+startSpin;
+
+
+
+startSpin=function(){
+
+
+
+physicsSpinCounter++;
+
+
+
+
+physicsOldStart();
+
+
+
+setTimeout(()=>{
+
+
+
+slots.forEach((slot,index)=>{
+
+
+physicsReelStart(
+
+slot,
+
+index,
+
+index===2
+
+);
+
+
+});
+
+
+
+},150);
+
+
+
+};
+
+
+
+
+
+
+
+console.log(
+
+"Upgrade 12 True Reel Physics Loaded"
+
+);
+
+
+
+</script>
