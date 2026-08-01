@@ -12059,4 +12059,269 @@ console.log(
 
 
 </script>
+
+   <script>
+
+/* ==========================================
+ FINAL RESET PATCH
+ Frozen Jackpot V4
+ ========================================== */
+
+
+function finalResetGame(){
+
+
+    // спира всички състояния
+
+    spinning=false;
+
+    holdActive=false;
+
+
+    spinBtn.disabled=false;
+
+
+
+    // нулиране
+
+    totalSpins=0;
+
+    sessionSpins=0;
+
+
+
+    updateCounter();
+
+
+
+    // чистим историята
+
+    localStorage.removeItem(
+        "FrozenJackpotV4"
+    );
+
+    localStorage.removeItem(
+        "FrozenJackpotFinal"
+    );
+
+    localStorage.removeItem(
+        "FrozenHoldEnd"
+    );
+
+
+
+    // връщаме нормален слот
+
+
+    slots[0].innerHTML="🍒";
+    slots[1].innerHTML="⭐";
+    slots[2].innerHTML="💎";
+
+
+
+    message.innerHTML=
+    "🎰 READY";
+
+
+
+    final.classList.remove(
+        "show"
+    );
+
+
+    final.innerHTML="";
+
+
+
+    machine.classList.remove(
+        "jackpotMode",
+        "shake",
+        "vibrate",
+        "frozen"
+    );
+
+
+
+    document.body.classList.remove(
+        "partyMode"
+    );
+
+
+
+}
+
+
+
+
+
+/* ==========================================
+ FINAL CELEBRATION
+ ========================================== */
+
+
+function finalCelebration(){
+
+
+
+    createJackpotFlash();
+
+    createCoins();
+
+    createJackpotBeam();
+
+
+
+    document.body.classList.add(
+        "partyMode"
+    );
+
+
+
+    slots[0].innerHTML="💰";
+    slots[1].innerHTML="⭐";
+    slots[2].innerHTML="💎";
+
+
+
+    message.innerHTML=
+    "🎉 JACKPOT COMPLETE 🎉";
+
+
+
+    final.innerHTML=`
+
+    <h2>
+    🎰 JACKPOT COMPLETE 🎰
+    </h2>
+
+    <br>
+
+    Наградата беше пред очите ти през цялото време.
+
+    <br><br>
+
+    Всеки спин създаде очакване.
+
+    <br><br>
+
+    Възможността беше част от играта.
+
+    `;
+
+
+
+    final.classList.add(
+        "show"
+    );
+
+
+
+
+
+    if(navigator.vibrate){
+
+        navigator.vibrate(
+            [
+            100,
+            50,
+            200,
+            50,
+            400
+            ]
+        );
+
+    }
+
+
+
+}
+
+
+
+
+
+/* ==========================================
+ OVERRIDE COMPLETE GAME
+ ========================================== */
+
+
+completeGame=function(){
+
+
+
+    spinBtn.disabled=true;
+
+
+
+    finalCelebration();
+
+
+
+    setTimeout(()=>{
+
+
+        finalResetGame();
+
+
+
+    },7000);
+
+
+
+};
+
+
+
+
+
+/* ==========================================
+ SAFETY BUTTON FIX
+ ========================================== */
+
+
+spinBtn.onclick=function(){
+
+
+
+    if(spinning)
+    return;
+
+
+
+    if(holdActive)
+    return;
+
+
+
+    if(totalSpins>=100)
+    return;
+
+
+
+    if(sessionSpins>=10){
+
+        startHold();
+
+        return;
+
+    }
+
+
+
+    startSpin();
+
+
+
+};
+
+
+
+
+
+console.log(
+"FINAL RESET PATCH ACTIVE"
+);
+
+
+</script>
    
