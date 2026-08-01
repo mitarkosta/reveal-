@@ -11486,3 +11486,358 @@ console.log(
 
 </script>
 
+   <script>
+
+/* =========================================
+ CARD GAME SHUFFLE PATCH V1
+ Постави най-накрая
+========================================= */
+
+
+/*
+ вътрешна памет за картите
+*/
+
+
+let cardRound = 0;
+
+let hiddenWinRound =
+10;
+
+
+
+/*
+ разбъркване на масив
+*/
+
+
+function shuffleCards(array){
+
+return array.sort(
+()=>Math.random()-0.5
+);
+
+}
+
+
+
+
+
+/*
+ ново разпределение
+*/
+
+
+function reshuffleCardPositions(){
+
+
+let cards =
+document.querySelectorAll(".card");
+
+
+if(!cards.length)
+return;
+
+
+
+let values=[];
+
+
+cards.forEach(card=>{
+
+
+values.push(
+card.innerHTML
+);
+
+
+});
+
+
+
+values =
+shuffleCards(values);
+
+
+
+
+cards.forEach((card,index)=>{
+
+
+card.innerHTML =
+values[index];
+
+
+
+card.classList.remove(
+"selected"
+);
+
+
+
+card.classList.add(
+"hiddenCard"
+);
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+/*
+ ако има функция за показване
+на резултатите от картите
+я прихващаме
+*/
+
+
+if(typeof revealCards === "function"){
+
+
+const oldRevealCards =
+revealCards;
+
+
+
+revealCards=function(){
+
+
+oldRevealCards();
+
+
+
+setTimeout(()=>{
+
+
+reshuffleCardPositions();
+
+
+
+},1500);
+
+
+
+};
+
+
+}
+
+
+
+
+
+
+
+/*
+ нова логика за опитите
+*/
+
+
+function cardAttemptFinished(){
+
+
+
+cardRound++;
+
+
+
+
+/*
+ скрита математика
+
+играчът не вижда това
+
+*/
+
+
+if(cardRound >= hiddenWinRound){
+
+
+
+forceCardWin();
+
+
+
+return;
+
+
+}
+
+
+
+
+/*
+ след неуспешен опит
+ново разбъркване
+
+*/
+
+
+setTimeout(()=>{
+
+
+reshuffleCardPositions();
+
+
+
+},1200);
+
+
+
+}
+
+
+
+
+
+
+
+
+/*
+ гарантирана победа
+след 10-ти опит
+
+*/
+
+
+function forceCardWin(){
+
+
+
+let cards =
+document.querySelectorAll(".card");
+
+
+
+if(cards.length>=9){
+
+
+
+cards[0].innerHTML="♥";
+
+cards[1].innerHTML="♥";
+
+cards[2].innerHTML="♥";
+
+
+
+cards.forEach(card=>{
+
+
+card.classList.remove(
+"hiddenCard"
+);
+
+
+
+});
+
+
+
+}
+
+
+
+
+setTimeout(()=>{
+
+
+if(typeof cardWin==="function"){
+
+
+cardWin();
+
+
+}
+
+
+
+},1200);
+
+
+
+}
+
+
+
+
+
+
+
+/*
+ прихващане на избора
+*/
+
+
+document.addEventListener(
+"click",
+function(e){
+
+
+
+let card =
+e.target.closest(".card");
+
+
+
+if(!card)
+return;
+
+
+
+card.classList.add(
+"selected"
+);
+
+
+
+let selected =
+document.querySelectorAll(
+".card.selected"
+);
+
+
+
+if(selected.length===3){
+
+
+
+setTimeout(()=>{
+
+
+cardAttemptFinished();
+
+
+
+},800);
+
+
+
+}
+
+
+
+});
+
+
+
+
+
+console.log(
+"CARD SHUFFLE + 10 TRY PATCH ACTIVE"
+);
+
+
+
+</script>
+
