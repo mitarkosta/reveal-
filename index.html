@@ -11850,4 +11850,213 @@ console.log(
 
 
 </script>
+
+   <script>
+
+/* =====================================
+   LOOP RESET PATCH
+   AFTER 100 SPINS RESTART GAME
+===================================== */
+
+
+const oldCompleteGameLoop = completeGame;
+
+
+completeGame=function(){
+
+
+spinning=false;
+
+
+spinBtn.disabled=true;
+
+
+
+// финален ефект
+
+finalCelebration();
+
+
+
+message.innerHTML=
+"🎉 JACKPOT COMPLETE 🎉";
+
+
+
+final.innerHTML=`
+
+<h2>
+🎰 JACKPOT COMPLETE 🎰
+</h2>
+
+<br>
+
+Наградата беше пред очите ти през цялото време.
+
+<br><br>
+
+Нов цикъл започва...
+
+`;
+
+
+
+final.classList.add("show");
+
+
+
+
+
+// заключване за празнуване
+
+setTimeout(()=>{
+
+
+resetGameCycle();
+
+
+},6000);
+
+
+
+
+
+};
+
+
+
+
+
+
+
+
+// =====================================
+// RESET EVERYTHING
+// =====================================
+
+
+function resetGameCycle(){
+
+
+
+// махаме ефектите
+
+
+document.body.classList.remove(
+"partyMode"
+);
+
+
+
+machine.classList.remove(
+"jackpotMode"
+);
+
+
+
+
+
+slots.forEach((slot,index)=>{
+
+
+slot.classList.remove(
+"spinning",
+"stopGlow",
+"lastReelFire",
+"shake"
+);
+
+
+
+});
+
+
+
+
+// връщаме начални символи
+
+
+slots[0].innerHTML="🍒";
+
+slots[1].innerHTML="⭐";
+
+slots[2].innerHTML="💎";
+
+
+
+
+
+
+// нулиране броячи
+
+
+totalSpins=0;
+
+sessionSpins=0;
+
+
+
+spinning=false;
+
+holdActive=false;
+
+
+
+
+saveGame();
+
+
+updateCounter();
+
+
+
+
+
+
+// чистим финала
+
+
+final.classList.remove(
+"show"
+);
+
+
+
+final.innerHTML="";
+
+
+
+
+
+message.innerHTML=
+"Almost...";
+
+
+
+
+
+// връщаме бутона
+
+
+spinBtn.disabled=false;
+
+
+
+
+// нов старт
+
+
+console.log(
+"NEW JACKPOT CYCLE STARTED"
+);
+
+
+
+}
+
+
+
+
+
+</script>
    
