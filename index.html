@@ -6742,3 +6742,368 @@ localStorage.setItem(
 
 
 </script>
+<script>
+
+(function(){
+
+
+console.log(
+"FINAL RESTART PATCH ACTIVE"
+);
+
+
+
+function restartGameFromZero(){
+
+
+
+console.log(
+"GAME RESET"
+);
+
+
+
+
+/* reset variables */
+
+if(typeof totalSpins !== "undefined")
+{
+totalSpins = 0;
+}
+
+
+
+if(typeof sessionSpins !== "undefined")
+{
+sessionSpins = 0;
+}
+
+
+
+if(typeof spinning !== "undefined")
+{
+spinning = false;
+}
+
+
+
+if(typeof holdActive !== "undefined")
+{
+holdActive = false;
+}
+
+
+
+
+
+
+/* clear saved progress */
+
+
+localStorage.removeItem(
+"FrozenJackpotV4"
+);
+
+
+localStorage.removeItem(
+"FrozenJackpotFinal"
+);
+
+
+localStorage.removeItem(
+"FrozenHoldEnd"
+);
+
+
+
+
+
+
+/* update counter */
+
+
+let c=document.getElementById(
+"counter"
+);
+
+
+if(c)
+{
+
+c.innerHTML=
+"Spin: 0 / 100";
+
+}
+
+
+
+
+
+
+/* message */
+
+
+let m=document.getElementById(
+"message"
+);
+
+
+if(m)
+{
+
+m.innerHTML=
+"🎰 READY";
+
+}
+
+
+
+
+
+
+
+/* enable button */
+
+
+let b=document.getElementById(
+"spinBtn"
+);
+
+
+if(b)
+{
+
+b.disabled=false;
+
+}
+
+
+
+
+
+
+/* remove effects */
+
+
+let machine=document.getElementById(
+"machine"
+);
+
+
+if(machine)
+{
+
+machine.classList.remove(
+"frozen",
+"jackpotMode",
+"shake",
+"vibrate"
+);
+
+
+}
+
+
+
+
+
+let final=document.getElementById(
+"final"
+);
+
+
+if(final)
+{
+
+final.classList.remove(
+"show"
+);
+
+
+final.innerHTML="";
+
+}
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function checkGameEnd(){
+
+
+
+if(
+typeof totalSpins === "undefined"
+)
+return;
+
+
+
+
+if(totalSpins >= 100)
+{
+
+
+
+console.log(
+"100/100 REACHED"
+);
+
+
+
+
+
+/* final message */
+
+
+let final=document.getElementById(
+"final"
+);
+
+
+
+if(final)
+{
+
+
+final.innerHTML=
+
+`
+
+<h2>
+🎰 JACKPOT COMPLETE 🎰
+</h2>
+
+<br>
+
+Наградата беше в главата ти през цялото време.
+
+<br><br>
+
+Всеки спин създаваше очакване.
+
+`;
+
+
+
+final.classList.add(
+"show"
+);
+
+
+}
+
+
+
+
+
+
+setTimeout(function(){
+
+
+restartGameFromZero();
+
+
+
+},6000);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+/*
+HOOK FINISH SPIN
+*/
+
+
+if(typeof finishSpin === "function")
+{
+
+
+let oldFinishSpin =
+finishSpin;
+
+
+
+finishSpin=function(){
+
+
+oldFinishSpin();
+
+
+
+setTimeout(function(){
+
+
+checkGameEnd();
+
+
+},100);
+
+
+
+};
+
+
+}
+
+
+
+
+
+
+/*
+REFRESH FIX
+*/
+
+
+window.addEventListener(
+"load",
+function(){
+
+
+
+if(
+typeof totalSpins !== "undefined"
+&&
+totalSpins>=100
+)
+{
+
+
+restartGameFromZero();
+
+
+}
+
+
+
+});
+
+
+
+
+
+})();
+
+
+</script>
