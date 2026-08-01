@@ -11776,3 +11776,452 @@ font-size:20px;
 
 
 </script>
+
+   <script>
+
+
+/* =====================================================
+   CARD SYSTEM V2
+   SHUFFLE + HIDDEN LOGIC
+===================================================== */
+
+
+
+/* =====================================================
+   SAVE LAST POSITIONS
+===================================================== */
+
+
+NewCardGame.lastPositions=[];
+
+
+
+
+
+
+/* =====================================================
+   CREATE CARD DATA
+===================================================== */
+
+
+function createCardDeck(){
+
+
+
+    let deck=[];
+
+
+
+    let suits=[
+
+        "♥",
+        "♦",
+        "♣",
+        "♠"
+
+    ];
+
+
+
+    for(let i=0;i<9;i++){
+
+
+
+        deck.push({
+
+            id:i,
+
+            suit:
+
+            suits[
+                Math.floor(
+                    Math.random()*suits.length
+                )
+            ],
+
+
+            value:
+
+            Math.floor(
+                Math.random()*13
+            )+1
+
+
+        });
+
+
+
+    }
+
+
+
+    return deck;
+
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   SMART SHUFFLE
+   никоя карта да не е на старото място
+===================================================== */
+
+
+function smartShuffle(array){
+
+
+
+    let result=[];
+
+
+    let attempts=0;
+
+
+
+    do{
+
+
+        result=[...array];
+
+
+        for(
+            let i=result.length-1;
+            i>0;
+            i--
+        ){
+
+
+            let j=Math.floor(
+                Math.random()*(i+1)
+            );
+
+
+            [
+                result[i],
+                result[j]
+
+            ]=
+
+            [
+                result[j],
+                result[i]
+            ];
+
+
+
+        }
+
+
+
+        attempts++;
+
+
+
+    }
+
+    while(
+
+        result.some(
+
+            (card,index)=>
+
+            card.id === index
+
+        )
+
+        &&
+
+        attempts<100
+
+    );
+
+
+
+    return result;
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   FORCE WIN CONDITION
+   3 еднакви бои
+===================================================== */
+
+
+function createWinningDeck(){
+
+
+
+    let deck=createCardDeck();
+
+
+
+    let winSuit=
+
+
+        NewCardGame.suits[
+
+            Math.floor(
+
+                Math.random() *
+
+                NewCardGame.suits.length
+
+            )
+
+        ];
+
+
+
+
+
+    let positions=[
+
+        0,
+        4,
+        8
+
+    ];
+
+
+
+
+
+    positions.forEach(pos=>{
+
+
+        deck[pos].suit=winSuit;
+
+
+    });
+
+
+
+    return deck;
+
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   NEW ROUND
+===================================================== */
+
+
+function newCardRound(){
+
+
+
+    NewCardGame.round++;
+
+
+
+    NewCardGame.selected=[];
+
+
+
+    NewCardGame.locked=false;
+
+
+
+
+    let deck;
+
+
+
+    if(
+        NewCardGame.round>=10
+    ){
+
+
+        deck=createWinningDeck();
+
+
+    }
+
+    else{
+
+
+        deck=createCardDeck();
+
+
+    }
+
+
+
+
+
+
+    deck=
+
+    smartShuffle(deck);
+
+
+
+
+    NewCardGame.deck=deck;
+
+
+
+    renderNewCards();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   RENDER CARDS
+===================================================== */
+
+
+function renderNewCards(){
+
+
+
+    let grid=
+
+    document.querySelector(
+        "#newCardGame .cardGrid"
+    );
+
+
+
+    grid.innerHTML="";
+
+
+
+
+    NewCardGame.cards=[];
+
+
+
+    NewCardGame.deck.forEach(
+
+        (data,index)=>{
+
+
+        let card=document.createElement(
+            "div"
+        );
+
+
+
+        card.className="newCard";
+
+
+
+        card.dataset.position=index;
+
+
+
+        card.dataset.suit=data.suit;
+
+
+
+        card.innerHTML="?";
+
+
+
+        card.onclick=function(){
+
+
+            selectNewCard(this);
+
+
+        };
+
+
+
+        grid.appendChild(card);
+
+
+
+        NewCardGame.cards.push(card);
+
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+
+/* =====================================================
+   OVERRIDE START
+===================================================== */
+
+
+const oldStartNewCardGame=
+
+startNewCardGame;
+
+
+
+startNewCardGame=function(){
+
+
+
+    NewCardGame.active=true;
+
+
+    NewCardGame.round=0;
+
+
+    createNewCardGame();
+
+
+    newCardRound();
+
+
+
+};
+
+
+
+
+
+
+
+
+console.log(
+
+"CARD SYSTEM V2 SHUFFLE READY"
+
+);
+
+
+
+</script>
+   
