@@ -1,1 +1,533 @@
 
+```css
+/* =====================================
+   FROZEN JACKPOT PRO
+   REELS SYSTEM
+===================================== */
+
+
+
+/* =========================
+   REEL WINDOW
+========================= */
+
+
+.reel-window {
+
+
+    height:130px;
+
+
+    overflow:hidden;
+
+
+    border-radius:
+
+    var(--radius-medium);
+
+
+
+    border:
+
+    4px solid var(--gold);
+
+
+
+    background:
+
+    #111;
+
+
+
+    box-shadow:
+
+
+    0 0 30px rgba(255,215,0,.5);
+
+
+
+    position:relative;
+
+
+
+}
+
+
+
+
+
+/* =========================
+   REELS CONTAINER
+========================= */
+
+
+.reels {
+
+
+    display:flex;
+
+
+
+    justify-content:center;
+
+
+
+    align-items:center;
+
+
+
+    gap:20px;
+
+
+
+    height:100%;
+
+
+
+}
+
+
+
+
+
+
+/* =========================
+   SINGLE REEL
+========================= */
+
+
+.reel {
+
+
+    width:120px;
+
+
+
+    height:100%;
+
+
+
+    display:flex;
+
+
+
+    justify-content:center;
+
+
+
+    align-items:center;
+
+
+
+    overflow:hidden;
+
+
+
+    background:#111;
+
+
+
+    border-radius:
+
+    15px;
+
+
+
+}
+
+
+
+
+
+
+/* =========================
+   SYMBOL
+========================= */
+
+
+.symbol {
+
+
+    width:120px;
+
+
+    height:130px;
+
+
+
+    display:flex;
+
+
+
+    justify-content:center;
+
+
+
+    align-items:center;
+
+
+
+    flex-shrink:0;
+
+
+
+    font-size:
+
+    75px;
+
+
+
+    background:
+
+
+    linear-gradient(
+
+        145deg,
+
+        #333,
+
+        #111
+
+    );
+
+
+
+    border-bottom:
+
+    2px solid #444;
+
+
+
+    text-shadow:
+
+
+    0 0 20px white;
+
+
+
+}
+
+
+
+
+
+
+
+/* =========================
+   SPINNING STATE
+========================= */
+
+
+.reel.spinning {
+
+
+    animation:
+
+    reelSpin
+    .12s
+    linear
+    infinite;
+
+
+
+}
+
+
+
+
+
+
+@keyframes reelSpin {
+
+
+
+0% {
+
+
+    transform:
+
+    translateY(-25px);
+
+
+}
+
+
+
+50% {
+
+
+    transform:
+
+    translateY(25px);
+
+
+}
+
+
+
+100% {
+
+
+    transform:
+
+    translateY(-25px);
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+/* =========================
+   WIN SYMBOL
+========================= */
+
+
+.symbol.win {
+
+
+    animation:
+
+
+    symbolWin
+    1s
+    infinite
+    alternate;
+
+
+
+}
+
+
+
+
+
+
+@keyframes symbolWin {
+
+
+
+from {
+
+
+    filter:
+
+    brightness(1);
+
+
+
+    transform:
+
+    scale(1);
+
+
+
+}
+
+
+
+to {
+
+
+    filter:
+
+    brightness(2);
+
+
+
+    transform:
+
+    scale(1.15);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+/* =========================
+   NEAR MISS EFFECT
+========================= */
+
+
+.symbol.near {
+
+
+    animation:
+
+
+    nearMiss
+    .5s
+    infinite
+    alternate;
+
+
+
+}
+
+
+
+
+@keyframes nearMiss {
+
+
+
+from {
+
+
+    color:white;
+
+
+
+}
+
+
+
+to {
+
+
+    color:
+
+    var(--gold);
+
+
+
+    text-shadow:
+
+
+    0 0 40px var(--gold);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+/* =========================
+   SMALL SCREENS
+========================= */
+
+
+@media(max-width:700px){
+
+
+.reel-window {
+
+
+    height:
+
+    90px;
+
+
+}
+
+
+
+
+.reel {
+
+
+    width:
+
+    85px;
+
+
+}
+
+
+
+
+.symbol {
+
+
+    width:
+
+    85px;
+
+
+
+    height:
+
+    90px;
+
+
+
+    font-size:
+
+    55px;
+
+
+}
+
+
+
+
+.reels {
+
+
+    gap:
+
+    8px;
+
+
+}
+
+
+
+}
+
+
+
+
+
+@media(max-width:420px){
+
+
+.reel,
+.symbol {
+
+
+    width:
+
+    70px;
+
+
+}
+
+
+
+
+.symbol {
+
+
+    font-size:
+
+    45px;
+
+
+}
+
+
+
+}
+```
