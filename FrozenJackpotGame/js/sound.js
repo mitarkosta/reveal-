@@ -1,4 +1,4 @@
-// sound effects (WebAudio)
+// sound.js — kept existing implementation
 export default class Sound{
   constructor(){ this.ctx = null; this.masterGain = null; }
   _init(){ if(this.ctx) return; try{ this.ctx = new (window.AudioContext||window.webkitAudioContext)(); this.masterGain = this.ctx.createGain(); this.masterGain.gain.value = 0.12; this.masterGain.connect(this.ctx.destination);}catch(e){ this.ctx = null; }}

@@ -1,0 +1,4 @@
+/* effects.css — particle and minor visual effects */
+.particle{position:absolute;width:8px;height:8px;border-radius:50%;opacity:0.9}
+.reel.spin{transform:translateY(-6px) scale(1.03);transition:transform 300ms}
+.win-scale{transform:scale(1.12);transition:transform 220ms}

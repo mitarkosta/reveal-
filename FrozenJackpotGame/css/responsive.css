@@ -1,0 +1,5 @@
+/* responsive.css */
+@media (max-width:900px){
+  .reel{width:86px;height:86px}
+  .controls{flex-direction:column}
+}

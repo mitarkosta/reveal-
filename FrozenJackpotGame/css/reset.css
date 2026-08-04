@@ -1,0 +1,6 @@
+/* reset.css — opinionated reset for the game */
+:root{box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit}
+html,body,div,span,p,a,ul,ol,li,header,main,section,aside,footer,button,input{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}
+button{background:none}
+img{max-width:100%;height:auto;display:block}

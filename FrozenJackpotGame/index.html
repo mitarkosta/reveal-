@@ -3,33 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Frozen Jackpot</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>Frozen Jackpot — v2</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
   <main id="app" class="app">
-    <header class="header">
-      <h1>Frozen Jackpot</h1>
-      <div class="header-right">
-        <div class="balance" id="balance">Balance: $0</div>
-        <button id="soundToggle" class="btn sound">🔊</button>
-      </div>
-    </header>
+    <!-- Machine skeleton -->
+    <section class="machine" id="machine">
+      <!-- reels container -->
+      <div id="reels" class="reels" aria-live="polite"></div>
 
-    <section class="machine">
-      <div class="reels" id="reels">
-        <div class="reel" data-index="0">
-          <img class="symbol-img" src="assets/symbols/cherry.svg" alt="symbol">
-        </div>
-        <div class="reel" data-index="1">
-          <img class="symbol-img" src="assets/symbols/lemon.svg" alt="symbol">
-        </div>
-        <div class="reel" data-index="2">
-          <img class="symbol-img" src="assets/symbols/star.svg" alt="symbol">
-        </div>
-      </div>
-
-      <div class="controls">
+      <!-- controls -->
+      <div class="controls" id="controls">
         <button id="spinButton" class="btn primary">SPIN</button>
         <div class="bet">
           <label for="betInput">Bet</label>
@@ -37,31 +23,15 @@
         </div>
       </div>
 
-      <div class="holds" id="holds">
-        <button class="hold" data-index="0">HOLD</button>
-        <button class="hold" data-index="1">HOLD</button>
-        <button class="hold" data-index="2">HOLD</button>
-      </div>
+      <!-- HOLD overlay (managed per reel) -->
+      <div id="holdOverlay" class="hold-overlay" aria-hidden="true"></div>
 
-      <div class="info">
-        <div id="message" class="message">Good luck!</div>
-      </div>
-
-      <div class="footer-controls">
-        <button id="resetButton" class="btn">Reset</button>
-        <button id="openLeaderboard" class="btn">Leaderboard</button>
-      </div>
+      <!-- final screen (won / game over / results) -->
+      <div id="finalScreen" class="final-screen" aria-hidden="true"></div>
     </section>
 
-    <aside id="sidebar" class="sidebar">
-      <div class="leaderboard" id="leaderboard"></div>
-    </aside>
+    <aside id="sidebar" class="sidebar" aria-hidden="true"></aside>
 
-    <div id="particles" class="particles" aria-hidden="true"></div>
-
-    <footer class="footer">
-      <small>Saved locally. Works on mobile. Built with Vite.</small>
-    </footer>
   </main>
 
   <script type="module" src="js/main.js"></script>
