@@ -1,6 +1,11 @@
-// effects.js — small helpers (particles, animations)
+/* effects.js stub — kept for compatibility. */
 export function burstParticles(container, count=8){
-  for(let i=0;i<count;i++){
-    const p = document.createElement('div'); p.className='particle'; p.style.left = (50 + (Math.random()-0.5)*20) + '%'; p.style.top = (50 + (Math.random()-0.5)*8) + '%'; container.appendChild(p); setTimeout(()=>p.remove(),900);
-  }
+  // no-op stub (visual effects handled elsewhere)
+  return;
+}
+
+export function animateGlow(el, duration=600){
+  if(!el) return;
+  el.classList.add('win-scale');
+  setTimeout(()=> el.classList.remove('win-scale'), duration);
 }
