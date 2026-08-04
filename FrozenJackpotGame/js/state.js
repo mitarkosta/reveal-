@@ -1,15 +1,15 @@
 // js/state.js
-import { CONFIG } from './config.js';
-
-export const State = {
-  spins: 0,
-  session: 0,
+// centralized game state container
+export const GameState = {
+  totalSpins: 0,      // persisted across sessions
+  sessionSpins: 0,    // resets per page load if desired
   isSpinning: false,
   jackpot: false,
   lastOutcome: null
 };
 
-export function incSpin(){ State.spins += 1; }
-export function resetSpins(){ State.spins = 0; }
-export function setSpinning(v){ State.isSpinning = !!v; }
-export function setLastOutcome(o){ State.lastOutcome = o; }
+export function incTotal(){ GameState.totalSpins += 1; GameState.sessionSpins += 1; }
+export function resetSession(){ GameState.sessionSpins = 0; }
+export function setSpinning(v){ GameState.isSpinning = !!v; }
+export function setLastOutcome(o){ GameState.lastOutcome = o; }
+export function setJackpot(v){ GameState.jackpot = !!v; }

@@ -1,18 +1,19 @@
-// js/main.js — bootstraps Game and UI wiring
+// js/main.js — bootstrap and wiring
 import Game from './game.js';
-import { State } from './state.js';
-import { CONFIG } from './config.js';
+import { GameState } from './state.js';
 
 const game = new Game();
 
 function init(){
   const spinBtn = document.getElementById('spin');
   spinBtn.addEventListener('click', async ()=>{
-    if(State.isSpinning) return;
+    // resume audio context on first user gesture if needed
+    try{ if(game.sound && game.sound.ctx && game.sound.ctx.state === 'suspended') await game.sound.ctx.resume(); }catch(e){}
     await game.spin();
+    game.updateProgress();
   });
 
-  // initial render of reels handled by Game/ReelsController when spinning
+  // initial UI updates
   game.updateProgress();
 }
 

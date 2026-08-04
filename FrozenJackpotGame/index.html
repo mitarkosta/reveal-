@@ -15,9 +15,10 @@
       </header>
 
       <div class="slot-window" id="slotWindow" aria-hidden="false">
-        <div class="reel" id="reel1" data-index="0">🍒</div>
-        <div class="reel" id="reel2" data-index="1">⭐</div>
-        <div class="reel" id="reel3" data-index="2">💎</div>
+        <!-- reels are populated by JS: each .reel will contain a .track of symbols -->
+        <div class="reel" id="reel1" data-index="0"></div>
+        <div class="reel" id="reel2" data-index="1"></div>
+        <div class="reel" id="reel3" data-index="2"></div>
       </div>
 
       <div class="controls-row">
@@ -46,6 +47,18 @@
       <div class="machine-footer">
         <div id="message" class="message">Good luck!</div>
       </div>
+
+      <!-- jackpot overlay -->
+      <div id="jackpotOverlay" class="jackpot-overlay" aria-hidden="true">
+        <div class="jackpot-content">
+          <div class="jackpot-symbols">💰 ⭐ 💎</div>
+          <h2>JACKPOT</h2>
+          <p class="jackpot-note">Why did you continue?
+            <br/>The reward was uncertain.
+            <br/>This is variable reinforcement.</p>
+        </div>
+      </div>
+
     </section>
   </main>
 
