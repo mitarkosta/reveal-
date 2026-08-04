@@ -1,60 +1,370 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Frozen Jackpot</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <main id="app" class="app">
-    <header class="header">
-      <h1>Frozen Jackpot</h1>
-      <div class="balance" id="balance">Balance: $0</div>
-    </header>
 
-    <section class="machine">
-      <div class="reels" id="reels">
-        <div class="reel" data-index="0">
-          <div class="symbol">🍒</div>
-        </div>
-        <div class="reel" data-index="1">
-          <div class="symbol">🍋</div>
-        </div>
-        <div class="reel" data-index="2">
-          <div class="symbol">⭐</div>
-        </div>
-      </div>
 
-      <div class="controls">
-        <button id="spinButton" class="btn primary">SPIN</button>
-        <div class="bet">
-          <label for="betInput">Bet</label>
-          <input id="betInput" type="number" min="1" value="1">
-        </div>
-      </div>
 
-      <div class="holds" id="holds">
-        <button class="hold" data-index="0">HOLD</button>
-        <button class="hold" data-index="1">HOLD</button>
-        <button class="hold" data-index="2">HOLD</button>
-      </div>
+})();
 
-      <div class="info">
-        <div id="message" class="message">Good luck!</div>
-      </div>
 
-      <div class="footer-controls">
-        <button id="resetButton" class="btn">Reset</button>
-        <button id="soundToggle" class="btn">🔊</button>
-      </div>
-    </section>
+</script>
+<script>
 
-    <footer class="footer">
-      <small>Saved locally. Works on mobile.</small>
-    </footer>
-  </main>
+(function(){
 
-  <script type="module" src="js/main.js"></script>
-</body>
-</html>
+
+console.log(
+"FINAL RESTART PATCH ACTIVE"
+);
+
+
+
+function restartGameFromZero(){
+
+
+
+console.log(
+"GAME RESET"
+);
+
+
+
+
+/* reset variables */
+
+if(typeof totalSpins !== "undefined")
+{
+totalSpins = 0;
+}
+
+
+
+if(typeof sessionSpins !== "undefined")
+{
+sessionSpins = 0;
+}
+
+
+
+if(typeof spinning !== "undefined")
+{
+spinning = false;
+}
+
+
+
+if(typeof holdActive !== "undefined")
+{
+holdActive = false;
+}
+
+
+
+
+
+
+/* clear saved progress */
+
+
+localStorage.removeItem(
+"FrozenJackpotV4"
+);
+
+
+localStorage.removeItem(
+"FrozenJackpotFinal"
+);
+
+
+localStorage.removeItem(
+"FrozenHoldEnd"
+);
+
+
+
+
+
+
+/* update counter */
+
+
+let c=document.getElementById(
+"counter"
+);
+
+
+if(c)
+{
+
+c.innerHTML=
+"Spin: 0 / 100";
+
+}
+
+
+
+
+
+
+/* message */
+
+
+let m=document.getElementById(
+"message"
+);
+
+
+if(m)
+{
+
+m.innerHTML=
+"🎰 READY";
+
+}
+
+
+
+
+
+
+
+/* enable button */
+
+
+let b=document.getElementById(
+"spinBtn"
+);
+
+
+if(b)
+{
+
+b.disabled=false;
+
+}
+
+
+
+
+
+
+/* remove effects */
+
+
+let machine=document.getElementById(
+"machine"
+);
+
+
+if(machine)
+{
+
+machine.classList.remove(
+"frozen",
+"jackpotMode",
+"shake",
+"vibrate"
+);
+
+
+}
+
+
+
+
+
+let final=document.getElementById(
+"final"
+);
+
+
+if(final)
+{
+
+final.classList.remove(
+"show"
+);
+
+
+final.innerHTML="";
+
+}
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function checkGameEnd(){
+
+
+
+if(
+typeof totalSpins === "undefined"
+)
+return;
+
+
+
+
+if(totalSpins >= 100)
+{
+
+
+
+console.log(
+"100/100 REACHED"
+);
+
+
+
+
+
+/* final message */
+
+
+let final=document.getElementById(
+"final"
+);
+
+
+
+if(final)
+{
+
+
+final.innerHTML=
+
+`
+
+<h2>
+🎰 JACKPOT COMPLETE 🎰
+</h2>
+
+<br>
+
+Наградата беше в главата ти през цялото време.
+
+<br><br>
+
+Всеки спин създаваше очакване.
+
+`;
+
+
+
+final.classList.add(
+"show"
+);
+
+
+}
+
+
+
+
+
+
+setTimeout(function(){
+
+
+restartGameFromZero();
+
+
+
+},6000);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+/*
+HOOK FINISH SPIN
+*/
+
+
+if(typeof finishSpin === "function")
+{
+
+
+let oldFinishSpin =
+finishSpin;
+
+
+
+finishSpin=function(){
+
+
+oldFinishSpin();
+
+
+
+setTimeout(function(){
+
+
+checkGameEnd();
+
+
+},100);
+
+
+
+};
+
+
+}
+
+
+
+
+
+
+/*
+REFRESH FIX
+*/
+
+
+window.addEventListener(
+"load",
+function(){
+
+
+
+if(
+typeof totalSpins !== "undefined"
+&&
+totalSpins>=100
+)
+{
+
+
+restartGameFromZero();
+
+
+}
+
+
+
+});
+
+
+
+
+
+})();
+
