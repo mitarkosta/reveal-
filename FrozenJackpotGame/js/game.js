@@ -2,7 +2,7 @@ import Reel from './reel.js';
 import Storage from './storage.js';
 import Sound from './sound.js';
 
-// Symbols used on the reels. Emojis make the game portable (no asset files).
+// Symbols used on the reels (kept as emoji keys to preserve earlier logic).
 const SYMBOLS = ['🍒','🍋','🔔','⭐','💎','7️⃣','🍊'];
 
 export default class Game{
@@ -48,11 +48,11 @@ export default class Game{
   }
 
   async spin(bet){
-    if(bet <=0) return;
+    if(bet <=0) return null;
     if(this.balance < bet){
       this.message = 'Not enough balance';
       this._notify();
-      return;
+      return null;
     }
 
     this.bet = bet;
@@ -90,11 +90,12 @@ export default class Game{
       this.message = 'No win — try again.';
     }
 
-    // after spin, clear holds (frozen HOLD mechanic: holds persist until user toggles; but common slot behavior is to clear on spin — We'll keep holds persistent across spins to match 'frozen HOLD mechanic')
-    // (Implementation note: holds remain across spins unless user toggles them)
+    // include last win in state for UI effects
+    const outcome = {results: this.current.slice(), payout};
 
     this._notify();
     this.save();
+    return outcome;
   }
 
   _evaluate(results){
