@@ -11803,3 +11803,747 @@ console.log(
 
 
 </script>
+
+
+   <!-- =========================================
+ FROZEN JACKPOT V6
+ PART 1 / CORE ENGINE
+========================================= -->
+
+
+<style>
+
+/* ===============================
+   V6 PERFORMANCE BASE
+================================ */
+
+
+.fj-v6-gpu{
+
+transform:translateZ(0);
+
+backface-visibility:hidden;
+
+will-change:transform,opacity;
+
+}
+
+
+
+
+/* ===============================
+   MACHINE STATES
+================================ */
+
+
+.fj-frozen{
+
+filter:
+brightness(.7)
+saturate(.6)
+hue-rotate(150deg);
+
+
+}
+
+
+
+.fj-jackpot-mode{
+
+
+animation:
+fjMachineGlow 1s infinite alternate;
+
+
+}
+
+
+
+
+@keyframes fjMachineGlow{
+
+
+from{
+
+box-shadow:
+0 0 30px gold;
+
+}
+
+
+
+to{
+
+box-shadow:
+0 0 150px gold,
+0 0 250px orange;
+
+}
+
+
+
+}
+
+
+
+</style>
+
+
+
+<script>
+
+
+// =====================================
+// FROZEN JACKPOT V6 CORE
+// =====================================
+
+
+window.FrozenJackpotV6 = {
+
+
+version:"6.0",
+
+
+
+// ------------------------------
+// GLOBAL STATE
+// ------------------------------
+
+
+state:{
+
+
+locked:false,
+
+
+spinning:false,
+
+
+freeze:false,
+
+
+jackpot:false,
+
+
+totalSpins:0,
+
+
+sessionSpins:0
+
+
+},
+
+
+
+
+
+
+// ------------------------------
+// SETTINGS
+// ------------------------------
+
+
+config:{
+
+
+maxSpins:100,
+
+
+holdTime:120,
+
+
+jackpotSpin:50,
+
+
+reels:3
+
+
+},
+
+
+
+
+
+
+
+// ------------------------------
+// ELEMENT CACHE
+// ------------------------------
+
+
+elements:{},
+
+
+
+
+
+
+
+// ------------------------------
+// SYMBOLS
+// ------------------------------
+
+
+symbols:[
+
+
+"🍒",
+
+"🍋",
+
+"⭐",
+
+"💎",
+
+"🔔",
+
+"7️⃣",
+
+"💰"
+
+
+]
+
+
+
+};
+
+
+
+
+
+
+
+// =====================================
+// CACHE ELEMENTS SAFELY
+// =====================================
+
+
+FrozenJackpotV6.init=function(){
+
+
+
+const V6=this;
+
+
+
+V6.elements.machine=
+
+document.getElementById("machine");
+
+
+
+V6.elements.button=
+
+document.getElementById("spinBtn");
+
+
+
+V6.elements.message=
+
+document.getElementById("message");
+
+
+
+V6.elements.counter=
+
+document.getElementById("counter");
+
+
+
+
+V6.elements.slots=[
+
+document.getElementById("s1"),
+
+document.getElementById("s2"),
+
+document.getElementById("s3")
+
+];
+
+
+
+
+
+
+
+// GPU OPTIMIZATION
+
+
+
+document
+.querySelectorAll(
+".slot,.machine"
+)
+.forEach(el=>{
+
+
+el.classList.add(
+"fj-v6-gpu"
+);
+
+
+});
+
+
+
+
+
+
+
+console.log(
+"❄️ Frozen Jackpot V6 Core Ready"
+);
+
+
+
+};
+
+
+
+
+
+
+
+
+
+// =====================================
+// SAFE MESSAGE
+// =====================================
+
+
+FrozenJackpotV6.message=function(text){
+
+
+
+let box=this.elements.message;
+
+
+
+if(box)
+
+box.innerHTML=text;
+
+
+
+};
+
+
+
+
+
+
+
+
+// =====================================
+// SAFE RANDOM SYMBOL
+// =====================================
+
+
+FrozenJackpotV6.randomSymbol=function(){
+
+
+let list=this.symbols;
+
+
+return list[
+
+Math.floor(
+
+Math.random()*list.length
+
+)
+
+];
+
+
+};
+
+
+
+
+
+
+
+
+// =====================================
+// RESET PROTECTION
+// =====================================
+
+
+FrozenJackpotV6.reset=function(){
+
+
+
+this.state.locked=false;
+
+this.state.spinning=false;
+
+
+this.state.freeze=false;
+
+
+};
+
+
+
+
+
+
+
+
+
+// =====================================
+// DEVICE OPTIMIZATION
+// =====================================
+
+
+FrozenJackpotV6.optimize=function(){
+
+
+
+if(
+
+window.innerWidth<600
+
+){
+
+
+
+document.documentElement.style.touchAction=
+
+"manipulation";
+
+
+
+
+document
+.querySelectorAll(".slot")
+.forEach(s=>{
+
+
+s.style.willChange=
+
+"transform";
+
+
+});
+
+
+
+}
+
+
+
+
+
+};
+
+
+
+
+
+
+
+
+
+// =====================================
+// START SYSTEM
+// =====================================
+
+
+window.addEventListener(
+
+"load",
+
+()=>{
+
+
+FrozenJackpotV6.init();
+
+
+FrozenJackpotV6.optimize();
+
+
+}
+
+);
+
+
+
+
+
+
+console.log(
+"FROZEN JACKPOT V6 PART 1 LOADED"
+);
+
+
+
+</script>
+
+
+   <!-- =========================================
+ FROZEN JACKPOT V6
+ PART 1 / CORE ENGINE
+========================================= -->
+
+<style>
+
+.slot,
+.machine,
+.fjCoin,
+.fjSnow,
+#iceFace{
+
+    will-change:transform,opacity;
+    transform:translateZ(0);
+}
+
+
+#iceFace{
+
+    position:fixed;
+    inset:0;
+
+    z-index:500;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:opacity 2s ease;
+}
+
+
+
+#iceFace.active{
+
+    opacity:1;
+
+}
+
+
+
+.frozenFace{
+
+    width:300px;
+    height:300px;
+
+    border-radius:50%;
+
+
+    background:
+    radial-gradient(
+    circle,
+    white,
+    rgba(150,220,255,.7),
+    transparent 70%
+    );
+
+
+    box-shadow:
+
+    0 0 50px white,
+    0 0 120px cyan,
+    0 0 220px blue;
+
+
+    animation:
+    facePulse 3s infinite alternate;
+
+}
+
+
+
+
+@keyframes facePulse{
+
+
+from{
+
+transform:scale(.95);
+
+}
+
+
+to{
+
+transform:scale(1.08);
+
+}
+
+
+}
+
+
+
+</style>
+
+
+
+<script>
+
+
+window.FrozenJackpot={
+
+version:"V6",
+
+locked:false,
+
+hold:false,
+
+jackpot:false
+
+};
+
+
+
+const FJ={};
+
+
+FJ.machine=
+document.getElementById("machine");
+
+
+FJ.slots=[
+
+document.getElementById("s1"),
+
+document.getElementById("s2"),
+
+document.getElementById("s3")
+
+];
+
+
+FJ.button=
+document.getElementById("spinBtn");
+
+
+FJ.message=
+document.getElementById("message");
+
+
+
+FJ.symbols=[
+
+
+"🍒",
+
+"🍋",
+
+"⭐",
+
+"💎",
+
+"🔔",
+
+"7️⃣",
+
+"💰"
+
+
+];
+
+
+
+
+
+function fjRandomSymbol(){
+
+return FJ.symbols[
+
+Math.floor(
+Math.random()*FJ.symbols.length
+)
+
+];
+
+}
+
+
+
+
+
+function fjSetMessage(txt){
+
+if(FJ.message)
+
+FJ.message.innerHTML=txt;
+
+}
+
+
+
+
+
+function fjLock(){
+
+FrozenJackpot.locked=true;
+
+}
+
+
+function fjUnlock(){
+
+FrozenJackpot.locked=false;
+
+}
+
+
+
+
+
+
+function fjOptimize(){
+
+
+document.documentElement.style.touchAction=
+"manipulation";
+
+
+if(FJ.slots){
+
+FJ.slots.forEach(slot=>{
+
+if(slot){
+
+slot.style.transform=
+"translateZ(0)";
+
+}
+
+});
+
+}
+
+
+}
+
+
+
+
+window.addEventListener(
+"resize",
+fjOptimize
+);
+
+
+
+fjOptimize();
+
+
+
+console.log(
+"Frozen Jackpot V6 PART 1 READY"
+);
+
+
+
+</script>
