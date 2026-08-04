@@ -1,60 +1,122 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="bg">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Frozen Jackpot</title>
-  <link rel="stylesheet" href="css/style.css">
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Frozen Jackpot</title>
+
+<link rel="stylesheet" href="css/style.css">
+
 </head>
+
+
 <body>
-  <main id="app" class="app">
-    <header class="header">
-      <h1>Frozen Jackpot</h1>
-      <div class="balance" id="balance">Balance: $0</div>
-    </header>
 
-    <section class="machine">
-      <div class="reels" id="reels">
-        <div class="reel" data-index="0">
-          <div class="symbol">🍒</div>
-        </div>
-        <div class="reel" data-index="1">
-          <div class="symbol">🍋</div>
-        </div>
-        <div class="reel" data-index="2">
-          <div class="symbol">⭐</div>
-        </div>
-      </div>
 
-      <div class="controls">
-        <button id="spinButton" class="btn primary">SPIN</button>
-        <div class="bet">
-          <label for="betInput">Bet</label>
-          <input id="betInput" type="number" min="1" value="1">
-        </div>
-      </div>
+<div class="machine">
 
-      <div class="holds" id="holds">
-        <button class="hold" data-index="0">HOLD</button>
-        <button class="hold" data-index="1">HOLD</button>
-        <button class="hold" data-index="2">HOLD</button>
-      </div>
 
-      <div class="info">
-        <div id="message" class="message">Good luck!</div>
-      </div>
+<h1>
+❄ FROZEN JACKPOT ❄
+</h1>
 
-      <div class="footer-controls">
-        <button id="resetButton" class="btn">Reset</button>
-        <button id="soundToggle" class="btn">🔊</button>
-      </div>
-    </section>
 
-    <footer class="footer">
-      <small>Saved locally. Works on mobile.</small>
-    </footer>
-  </main>
+<div class="subtitle">
+VARIABLE REWARD MACHINE
+</div>
 
-  <script type="module" src="js/main.js"></script>
+
+
+<div class="slot-area">
+
+
+<div class="reel" id="reel1">
+🍒
+</div>
+
+
+<div class="reel" id="reel2">
+⭐
+</div>
+
+
+<div class="reel" id="reel3">
+💎
+</div>
+
+
+</div>
+
+
+
+<div class="lever" id="lever">
+
+<div class="stick"></div>
+
+<div class="ball"></div>
+
+</div>
+
+
+
+<button id="spinBtn">
+
+🎰 SPIN
+
+</button>
+
+
+
+
+<div id="message">
+Almost...
+</div>
+
+
+
+
+<div class="counter">
+
+Spin:
+<span id="spinCount">
+0
+</span>
+/100
+
+</div>
+
+
+
+
+<div class="progress">
+
+<div id="progressBar">
+
+</div>
+
+</div>
+
+
+
+</div>
+
+
+
+<script src="js/storage.js"></script>
+
+<script src="js/sound.js"></script>
+
+<script src="js/reel.js"></script>
+
+<script src="js/game.js"></script>
+
+<script src="js/main.js"></script>
+
+
 </body>
+
 </html>
