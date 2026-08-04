@@ -1,4 +1,4 @@
-// storage.js — wrapper (kept/updated)
+// js/storage.js — keep existing storage wrapper
 export default class Storage{
   constructor(key){ this.key = key; }
   save(obj){ try{ localStorage.setItem(this.key, JSON.stringify(obj)); }catch(e){console.warn(e);} }

@@ -1,30 +1,20 @@
-// main.js — lightweight module to bootstrap the skeleton (connects later to modules)
+// js/main.js — bootstraps Game and UI wiring
 import Game from './game.js';
-import { getState, subscribe } from './state.js';
+import { State } from './state.js';
+import { CONFIG } from './config.js';
 
-const game = new Game({onUpdate});
+const game = new Game();
 
-function onUpdate(state){
-  // minimal initial render: create reels if missing
-  const reelsContainer = document.getElementById('reels');
-  if(reelsContainer.children.length === 0){
-    state.reels.forEach((s,i)=>{
-      const r = document.createElement('div'); r.className='reel'; r.dataset.index = i; r.textContent = s; reelsContainer.appendChild(r);
-    });
-  } else {
-    state.reels.forEach((s,i)=>{
-      const r = reelsContainer.querySelector(`.reel[data-index="${i}"]`); if(r) r.textContent = s;
-    });
-  }
+function init(){
+  const spinBtn = document.getElementById('spin');
+  spinBtn.addEventListener('click', async ()=>{
+    if(State.isSpinning) return;
+    await game.spin();
+  });
+
+  // initial render of reels handled by Game/ReelsController when spinning
+  game.updateProgress();
 }
 
-subscribe(onUpdate);
-
-// wire basic buttons
-const spinButton = document.getElementById('spinButton');
-spinButton.addEventListener('click', async ()=>{
-  // placeholder — will connect to game.spin when modules finalized
-  console.log('spin clicked');
-});
-
+window.addEventListener('DOMContentLoaded', init);
 export default game;

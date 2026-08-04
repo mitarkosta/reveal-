@@ -4,34 +4,49 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Frozen Jackpot — v2</title>
-  <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <main id="app" class="app">
-    <!-- Machine skeleton -->
-    <section class="machine" id="machine">
-      <!-- reels container -->
-      <div id="reels" class="reels" aria-live="polite"></div>
+    <section class="machine" id="machine" role="application" aria-label="Frozen Jackpot slot machine">
+      <header class="machine-header">
+        <h1 class="title">❄ FROZEN JACKPOT ❄</h1>
+        <div class="subtitle">VARIABLE REWARD MACHINE</div>
+      </header>
 
-      <!-- controls -->
-      <div class="controls" id="controls">
-        <button id="spinButton" class="btn primary">SPIN</button>
-        <div class="bet">
-          <label for="betInput">Bet</label>
-          <input id="betInput" type="number" min="1" value="1">
+      <div class="slot-window" id="slotWindow" aria-hidden="false">
+        <div class="reel" id="reel1" data-index="0">🍒</div>
+        <div class="reel" id="reel2" data-index="1">⭐</div>
+        <div class="reel" id="reel3" data-index="2">💎</div>
+      </div>
+
+      <div class="controls-row">
+        <div class="lever" id="lever" aria-hidden="false">
+          <div class="stick"></div>
+          <div class="ball"></div>
+        </div>
+
+        <div class="controls">
+          <button id="spin" class="btn spin">🎰 SPIN</button>
+          <div class="bet small">
+            <label for="betInput">Bet</label>
+            <input id="betInput" type="number" min="1" value="1">
+          </div>
         </div>
       </div>
 
-      <!-- HOLD overlay (managed per reel) -->
-      <div id="holdOverlay" class="hold-overlay" aria-hidden="true"></div>
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <div id="counter">0 / 100</div>
+          <div id="status">🔷 Ready</div>
+        </div>
+        <div class="progress" id="progress"><div id="bar" style="width:0%"></div></div>
+      </div>
 
-      <!-- final screen (won / game over / results) -->
-      <div id="finalScreen" class="final-screen" aria-hidden="true"></div>
+      <div class="machine-footer">
+        <div id="message" class="message">Good luck!</div>
+      </div>
     </section>
-
-    <aside id="sidebar" class="sidebar" aria-hidden="true"></aside>
-
   </main>
 
   <script type="module" src="js/main.js"></script>

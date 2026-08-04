@@ -1,18 +1,15 @@
-// state.js — simple in-memory state manager
-import { NUM_REELS } from './config.js';
+// js/state.js
+import { CONFIG } from './config.js';
 
-const defaultState = {
-  balance: 50,
-  bet: 1,
-  reels: Array.from({length:NUM_REELS}, ()=>'🍒'),
-  holds: Array.from({length:NUM_REELS}, ()=>false)
+export const State = {
+  spins: 0,
+  session: 0,
+  isSpinning: false,
+  jackpot: false,
+  lastOutcome: null
 };
 
-let _state = {...defaultState};
-const listeners = new Set();
-
-export function getState(){ return {..._state}; }
-export function setState(patch){ _state = {..._state, ...patch}; notify(); }
-export function subscribe(cb){ listeners.add(cb); return ()=>listeners.delete(cb); }
-function notify(){ listeners.forEach(cb=>cb(getState())); }
-export function resetState(){ _state = {...defaultState}; notify(); }
+export function incSpin(){ State.spins += 1; }
+export function resetSpins(){ State.spins = 0; }
+export function setSpinning(v){ State.isSpinning = !!v; }
+export function setLastOutcome(o){ State.lastOutcome = o; }
